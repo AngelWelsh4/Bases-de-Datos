@@ -1,0 +1,8 @@
+/*
+
+*/
+
+# Ejercicio 2
+# 2.1
+DROP TRIGGER IF EXISTS detalle_ticket_??_trigger;
+

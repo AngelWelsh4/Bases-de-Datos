@@ -1,0 +1,89 @@
+﻿mysql> source ejercicioParticipacion3_subconsultas.sql
+Database changed
++----------+-----------------------+--------+
+| id_disco | titulo                | precio |
++----------+-----------------------+--------+
+|       62 | La vecindad del chavo |  10.00 |
++----------+-----------------------+--------+
+1 row in set (0.00 sec)
+
++----------+-----------------------+---------------------+
+| id_disco | titulo                | cantidad_disponible |
++----------+-----------------------+---------------------+
+|      130 | Tributo a José José   |                4200 |
++----------+-----------------------+---------------------+
+1 row in set (0.00 sec)
+
++----------+---------------+-------------------+
+| id_disco | titulo        | fecha_lanzamiento |
++----------+---------------+-------------------+
+|      312 | The Dark Ride | 2022-07-01        |
++----------+---------------+-------------------+
+1 row in set (0.01 sec)
+
++----------+----------------------------------------------+--------+
+| id_disco | titulo                                       | precio |
++----------+----------------------------------------------+--------+
+|      162 | Harry's House                                | 304.00 |
+|      291 | Nothing Was the Same                         | 305.00 |
+|      339 | A 18' del sol                                | 306.00 |
+|      177 | Motomami                                     | 310.00 |
+|      164 | Cinema                                       | 315.00 |
+|      127 | Things Are Swingin                           | 342.21 |
+|      132 | Unorthodox Jukebox                           | 344.45 |
+|      172 | Secret Life                                  | 345.00 |
+|      175 | Aim For The Eyes                             | 345.00 |
+|      301 | Human After Al                               | 349.00 |
+|      133 | Whenever You Need Somebody                   | 349.10 |
+|       12 | Carry On                                     | 350.00 |
+|      219 | Slow Drive                                   | 350.00 |
+|      235 | Human After All                              | 350.00 |
+|      200 | Dirty Deeds Done Dirt Cheap                  | 350.00 |
+|      328 | Nave Espacial                                | 350.00 |
+|      293 | Loud                                         | 350.00 |
+|      279 | Taylor Swift                                 | 350.00 |
+|      232 | homework                                     | 350.00 |
+|      242 | whatever people say i am that's what i'm not | 354.00 |
+|      309 | No Code                                      | 359.99 |
+|      335 | Volcán                                       | 360.00 |
+|        4 | Hidden Figures: The Album                    | 365.14 |
+|      114 | More Life                                    | 365.37 |
+|      150 | Con el paso del tiempo                       | 368.00 |
+|      159 | MTV Unplugged                                | 373.00 |
+|      333 | Marchita                                     | 380.00 |
+|      131 | Último Acto                                  | 385.00 |
+|      305 | Pork Soda                                    | 390.00 |
+|      287 | All My Demons Greeting Me as a Friend        | 391.00 |
+|      304 | Roy Pablo                                    | 393.00 |
+|      276 | Strictly a One-Eyed Jack                     | 399.99 |
+|      193 | Virus                                        | 400.00 |
+|      194 | Codename X                                   | 400.00 |
+|      341 | Al final de este viaje                       | 400.00 |
+|      218 | One-X                                        | 400.00 |
+|      308 | Paradigmes                                   | 400.50 |
+|       27 | Live in england                              | 408.00 |
+|      179 | Oasis                                        | 409.99 |
+|      296 | For Ever                                     | 410.00 |
+|      145 | 5to piso                                     | 415.00 |
+|      272 | Pale Machine                                 | 420.69 |
+|      300 | Poster Girl                                  | 425.00 |
+|      146 | Gente maravillosa                            | 437.00 |
+|      168 | Viejo Marihuano                              | 450.00 |
+|      121 | Pronounced 'leh-'nérd 'skin-'nérd            | 458.19 |
+|       97 | Bad to the Bone                              | 458.85 |
+|      236 | Alive 2007                                   | 460.00 |
+|      303 | Follow the Leader                            | 470.00 |
+|        5 | So Dark the Con of Man                       | 474.04 |
+|      144 | Animal nocturno                              | 476.00 |
+|      149 | A mis amigos                                 | 480.00 |
+|      233 | discovery                                    | 480.00 |
+|      102 | Commercial                                   | 482.18 |
+|       88 | Come Around Sundown                          | 485.00 |
+|      120 | Private Eyes                                 | 485.24 |
+|       94 | Alice in Chains                              | 485.41 |
+|      158 | De Niña a Mujer                              | 490.00 |
+|      267 | Minecraft: Volume Alpha                      | 499.09 |
++----------+----------------------------------------------+--------+
+59 rows in set (0.00 sec)
+
+mysql> notee

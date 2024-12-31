@@ -1,0 +1,1137 @@
+mysql> #----------------------------------------------------
+mysql> --  CORRECCIONES DE LA PARTE PRACTICA DEL EXAMEN 1
+mysql> #----------------------------------------------------
+mysql> 
+mysql> 
+mysql> #--------------------------------
+mysql> -- Creacion de la base del EXAMEN PRACTICO 1
+mysql> #--------------------------------
+mysql> DROP DATABASE IF EXISTS mod_eq11;
+Query OK, 12 rows affected (0.07 sec)
+
+mysql> CREATE DATABASE IF NOT EXISTS mod_eq11 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+Query OK, 1 row affected, 2 warnings (0.00 sec)
+
+mysql> USE mod_eq11;
+Database changed
+mysql> #--------------------------------
+mysql> -- Creacion de tablas en orden 
+mysql> -- Son 12 tablas en total
+mysql> #--------------------------------
+mysql> -- 1. CREACION DE TABLA estado
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS estado(
+    -> 	clave_estado TINYINT UNSIGNED PRIMARY KEY auto_increment, 
+    -> 	nombre VARCHAR(20) NOT NULL UNIQUE KEY
+    -> 	);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> #--------------------------------
+mysql> -- 2. CREACION DE TABLA municipio
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS municipio(
+    -> 	clave_municipio SMALLINT UNSIGNED PRIMARY KEY auto_increment,#en Mexico existen 2445 municipios
+    -> 	nombre VARCHAR(50) NOT NULL,
+    -> 	clave_estado TINYINT UNSIGNED NOT NULL,
+    -> 	CONSTRAINT 	FK_estado_municipio FOREIGN KEY (clave_estado) REFERENCES estado(clave_estado)
+    -> 	);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> #--------------------------------
+mysql> -- 3. CREACION DE TABLA colonia
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS colonia(
+    -> 	id_colonia MEDIUMINT UNSIGNED PRIMARY KEY auto_increment,
+    -> 	nombre VARCHAR(50) NOT NULL,
+    -> 	cp CHAR(5),
+    -> 	clave_municipio SMALLINT UNSIGNED NOT NULL,
+    -> 	CONSTRAINT FK_municipio_colonia FOREIGN KEY (clave_municipio) REFERENCES municipio(clave_municipio)
+    -> 	);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> #--------------------------------
+mysql> -- 4. CREACION DE TABLA direccion
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS direccion(
+    -> 	id_direccion INT UNSIGNED PRIMARY KEY auto_increment,#por el número de permutaciones INT
+    -> 	calle VARCHAR(50) NOT NULL,
+    -> 	num_ext VARCHAR(5) NOT NULL,
+    -> 	num_int VARCHAR(5),#algunos numero interiores contienen letras por eso varchar
+    -> 	id_colonia MEDIUMINT UNSIGNED NOT NULL,
+    -> 	CONSTRAINT FK_colonia_direccion FOREIGN KEY (id_colonia) REFERENCES colonia(id_colonia)
+    -> 	);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> #--------------------------------
+mysql> -- 5. CREACION DE TABLA cliente 
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS cliente(
+    -> 	id_cliente INT UNSIGNED PRIMARY KEY auto_increment,
+    -> 	 	num_tarjeta VARCHAR(19) NOT NULL, 	
+    -> 	 	rfc CHAR(13) NOT NULL UNIQUE KEY, 
+    -> 	 	telefono CHAR(10), 	 	
+    -> 	 	nombre VARCHAR(40) NOT NULL, 
+    -> 	 	id_direccion INT UNSIGNED NOT NULL,	
+    -> 	 	CONSTRAINT FK_direccion_cliente FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion)
+    -> 	 	);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> #------------------------------------
+mysql> -- 6. CREACION DE TABLA administrador
+mysql> #------------------------------------
+mysql> CREATE TABLE IF NOT EXISTS administrador(
+    -> 	id_admin TINYINT UNSIGNED PRIMARY KEY auto_increment, 
+    -> 	rfc CHAR(13) NOT NULL, 
+    -> 	telefono CHAR(10), 
+    -> 	nombre VARCHAR(20) NOT NULL, 
+    -> 	apellido_paterno VARCHAR(20) NOT NULL, 
+    -> 	apellido_materno VARCHAR(20),
+    -> 	contrasenia_codificada CHAR(32) NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 	/* La contraseña se contempla que sea un cifrado tipo md5, bajo el comando "md5('contraseña')" al insertar valores */
+mysql> 
+mysql> #------------------------------
+mysql> -- 7. CREACION DE TABLA modelo
+mysql> #------------------------------
+mysql> CREATE TABLE IF NOT EXISTS modelo(
+    -> 	id_modelo SMALLINT UNSIGNED PRIMARY KEY auto_increment, 
+    -> 	nombre_modelo VARCHAR(30) NOT NULL,
+    -> 	anio SMALLINT UNSIGNED NOT NULL, 
+    -> 	color VARCHAR(20) NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> #--------------------------------
+mysql> -- 8. CREACION DE TABLA vehiculo
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS vehiculo(
+    -> 	placa VARCHAR(7) PRIMARY KEY,
+    -> 	kilometraje SMALLINT UNSIGNED DEFAULT 0, 
+    -> 	estado_disponible ENUM('YES','NO') NOT NULL,
+    -> 	transmision VARCHAR(30) NOT NULL, 
+    -> 	costo_por_dia decimal(7,2), 
+    -> 	id_modelo SMALLINT UNSIGNED NOT NULL, 
+    -> 	CONSTRAINT FK_modelo_vehiculo FOREIGN KEY (id_modelo) REFERENCES modelo(id_modelo));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> #--------------------------------
+mysql> -- 9. CREACION DE TABLA incidente
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS incidente(
+    -> 	id_incidente TINYINT UNSIGNED PRIMARY KEY auto_increment, 
+    -> 	tipo_incidente VARCHAR(30) NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> #--------------------------------
+mysql> -- 10. CREACION DE TABLA vehiculo_renta
+mysql> #--------------------------------
+mysql> CREATE TABLE IF NOT EXISTS vehiculoRenta(
+    -> 	id_cliente INT UNSIGNED NOT NULL, 
+    -> 	placa VARCHAR(7) NOT NULL, 
+    -> 	fecha_incio_renta DATE NOT NULL,
+    -> 	fecha_fin_renta DATE NOT NULL, 
+    -> 	descuento_aplicado ENUM('YES', 'NO') DEFAULT 'NO', 
+    -> 	PRIMARY KEY (id_cliente, placa), 
+    -> 	CONSTRAINT FK_cliente_vehiculoRenta FOREIGN KEY(id_cliente) REFERENCES cliente(id_cliente), 
+    -> 	CONSTRAINT FK_vehiculo_vehiculoRenta FOREIGN KEY(placa) REFERENCES vehiculo(placa)
+    -> 	);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> #--------------------------------
+mysql> -- 11. CREACION DE TABLA incidente_vehiculo
+mysql> #--------------------------------
+mysql> CREATE TABLE incidenteVehiculo(
+    -> 	id_incidente TINYINT UNSIGNED NOT NULL,
+    -> 	placa VARCHAR(7) NOT NULL,
+    -> 	fecha_incidente DATE, 
+    -> 	monto_incidente decimal(10,1),
+    -> 	PRIMARY KEY (id_incidente, placa),
+    -> 	CONSTRAINT FK_incidente_incidenteVehiculo FOREIGN KEY (id_incidente) REFERENCES incidente(id_incidente),
+    -> 	CONSTRAINT FK_vehiculo_incidenteVehiculo FOREIGN KEY (placa) REFERENCES vehiculo(placa)
+    -> 	);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> #------------------------------
+mysql> -- 12. CREACION DE TABLA seguro
+mysql> #------------------------------
+mysql> CREATE TABLE seguro(
+    -> 	num_poliza SMALLINT UNSIGNED PRIMARY KEY,
+    -> 	fecha_inicio_vigencia DATE NOT NULL,
+    -> 	fecha_fin_vigencia DATE NOT NULL,
+    -> 	tipo_cobertura VARCHAR(20) NOT NULL,
+    -> 	suma_asegurada decimal(9,2),
+    -> 	costo_seguro decimal(7,2),
+    -> 	placa VARCHAR(7) NOT NULL,
+    -> 	nombre_aseguradora VARCHAR(25) DEFAULT 'GNP',
+    -> 	telefono_aseguradora VARCHAR(10) NOT NULL DEFAULT 5524609125,
+    -> 	CONSTRAINT FK_vehiculo_seguro FOREIGN KEY (placa) REFERENCES vehiculo(placa)
+    -> 	);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> # 1.
+mysql> DESC estado;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| clave_estado | tinyint unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre       | varchar(20)      | NO   | UNI | NULL    |                |
++--------------+------------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC municipio;
++-----------------+-------------------+------+-----+---------+----------------+
+| Field           | Type              | Null | Key | Default | Extra          |
++-----------------+-------------------+------+-----+---------+----------------+
+| clave_municipio | smallint unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre          | varchar(50)       | NO   |     | NULL    |                |
+| clave_estado    | tinyint unsigned  | NO   | MUL | NULL    |                |
++-----------------+-------------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> DESC colonia;
++-----------------+--------------------+------+-----+---------+----------------+
+| Field           | Type               | Null | Key | Default | Extra          |
++-----------------+--------------------+------+-----+---------+----------------+
+| id_colonia      | mediumint unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre          | varchar(50)        | NO   |     | NULL    |                |
+| cp              | char(5)            | YES  |     | NULL    |                |
+| clave_municipio | smallint unsigned  | NO   | MUL | NULL    |                |
++-----------------+--------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC direccion;
++--------------+--------------------+------+-----+---------+----------------+
+| Field        | Type               | Null | Key | Default | Extra          |
++--------------+--------------------+------+-----+---------+----------------+
+| id_direccion | int unsigned       | NO   | PRI | NULL    | auto_increment |
+| calle        | varchar(50)        | NO   |     | NULL    |                |
+| num_ext      | varchar(5)         | NO   |     | NULL    |                |
+| num_int      | varchar(5)         | YES  |     | NULL    |                |
+| id_colonia   | mediumint unsigned | NO   | MUL | NULL    |                |
++--------------+--------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> DESC cliente;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| id_cliente   | int unsigned | NO   | PRI | NULL    | auto_increment |
+| num_tarjeta  | varchar(19)  | NO   |     | NULL    |                |
+| rfc          | char(13)     | NO   | UNI | NULL    |                |
+| telefono     | char(10)     | YES  |     | NULL    |                |
+| nombre       | varchar(40)  | NO   |     | NULL    |                |
+| id_direccion | int unsigned | NO   | MUL | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> DESC administrador;
++------------------------+------------------+------+-----+---------+----------------+
+| Field                  | Type             | Null | Key | Default | Extra          |
++------------------------+------------------+------+-----+---------+----------------+
+| id_admin               | tinyint unsigned | NO   | PRI | NULL    | auto_increment |
+| rfc                    | char(13)         | NO   |     | NULL    |                |
+| telefono               | char(10)         | YES  |     | NULL    |                |
+| nombre                 | varchar(20)      | NO   |     | NULL    |                |
+| apellido_paterno       | varchar(20)      | NO   |     | NULL    |                |
+| apellido_materno       | varchar(20)      | YES  |     | NULL    |                |
+| contrasenia_codificada | char(32)         | NO   |     | NULL    |                |
++------------------------+------------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> DESC modelo;
++---------------+-------------------+------+-----+---------+----------------+
+| Field         | Type              | Null | Key | Default | Extra          |
++---------------+-------------------+------+-----+---------+----------------+
+| id_modelo     | smallint unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre_modelo | varchar(30)       | NO   |     | NULL    |                |
+| anio          | smallint unsigned | NO   |     | NULL    |                |
+| color         | varchar(20)       | NO   |     | NULL    |                |
++---------------+-------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC vehiculo;
++-------------------+-------------------+------+-----+---------+-------+
+| Field             | Type              | Null | Key | Default | Extra |
++-------------------+-------------------+------+-----+---------+-------+
+| placa             | varchar(7)        | NO   | PRI | NULL    |       |
+| kilometraje       | smallint unsigned | YES  |     | 0       |       |
+| estado_disponible | enum('YES','NO')  | NO   |     | NULL    |       |
+| transmision       | varchar(30)       | NO   |     | NULL    |       |
+| costo_por_dia     | decimal(7,2)      | YES  |     | NULL    |       |
+| id_modelo         | smallint unsigned | NO   | MUL | NULL    |       |
++-------------------+-------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> DESC incidente;
++----------------+------------------+------+-----+---------+----------------+
+| Field          | Type             | Null | Key | Default | Extra          |
++----------------+------------------+------+-----+---------+----------------+
+| id_incidente   | tinyint unsigned | NO   | PRI | NULL    | auto_increment |
+| tipo_incidente | varchar(30)      | NO   |     | NULL    |                |
++----------------+------------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC vehiculoRenta;
++--------------------+------------------+------+-----+---------+-------+
+| Field              | Type             | Null | Key | Default | Extra |
++--------------------+------------------+------+-----+---------+-------+
+| id_cliente         | int unsigned     | NO   | PRI | NULL    |       |
+| placa              | varchar(7)       | NO   | PRI | NULL    |       |
+| fecha_incio_renta  | date             | NO   |     | NULL    |       |
+| fecha_fin_renta    | date             | NO   |     | NULL    |       |
+| descuento_aplicado | enum('YES','NO') | YES  |     | NO      |       |
++--------------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DESC incidenteVehiculo;
++-----------------+------------------+------+-----+---------+-------+
+| Field           | Type             | Null | Key | Default | Extra |
++-----------------+------------------+------+-----+---------+-------+
+| id_incidente    | tinyint unsigned | NO   | PRI | NULL    |       |
+| placa           | varchar(7)       | NO   | PRI | NULL    |       |
+| fecha_incidente | date             | YES  |     | NULL    |       |
+| monto_incidente | decimal(10,1)    | YES  |     | NULL    |       |
++-----------------+------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> DESC seguro;
++-----------------------+-------------------+------+-----+------------+-------+
+| Field                 | Type              | Null | Key | Default    | Extra |
++-----------------------+-------------------+------+-----+------------+-------+
+| num_poliza            | smallint unsigned | NO   | PRI | NULL       |       |
+| fecha_inicio_vigencia | date              | NO   |     | NULL       |       |
+| fecha_fin_vigencia    | date              | NO   |     | NULL       |       |
+| tipo_cobertura        | varchar(20)       | NO   |     | NULL       |       |
+| suma_asegurada        | decimal(9,2)      | YES  |     | NULL       |       |
+| costo_seguro          | decimal(7,2)      | YES  |     | NULL       |       |
+| placa                 | varchar(7)        | NO   | MUL | NULL       |       |
+| nombre_aseguradora    | varchar(25)       | YES  |     | GNP        |       |
+| telefono_aseguradora  | varchar(10)       | NO   |     | 5524609125 |       |
++-----------------------+-------------------+------+-----+------------+-------+
+9 rows in set (0.00 sec)
+
+mysql> 
+mysql> # 2.
+mysql> # VAMOS A INCERTAR 5 VALORES A LAS 12 TABLAS QUE TIENE NUESTRA BASE DE DATOS
+mysql> 
+mysql> #------------------------------------------
+mysql> -- 1. INCERTAMOS VALORES A LA TABLA estado
+mysql> #------------------------------------------
+mysql> INSERT INTO estado (nombre) VALUES
+    -> 	('Ciudad de Mexico'),
+    -> 	('Oaxaca'),
+    -> 	('Tamaulipas'),
+    -> 	('Sonora'),
+    -> 	('Estado de Mexico') ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #---------------------------------------------
+mysql> -- 2. INCERTAMOS VALORES A LA TABLA municipio
+mysql> #---------------------------------------------
+mysql> INSERT INTO municipio (nombre, clave_estado) VALUES
+    -> 	('Iztacalco', 1),
+    -> 	('Tenancingo', 5),
+    -> 	('Xicotencatl', 3),
+    -> 	('San Bartolo Coyotepec', 2),
+    -> 	('Hermosillo', 4) ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #---------------------------------------------
+mysql> -- 3. INCERTAMOS VALORES A LA TABLA colonia
+mysql> #---------------------------------------------
+mysql> INSERT INTO colonia (nombre, cp, clave_municipio) VALUES
+    -> 	('Granjas Mexico', '08400', 1),
+    -> 	('Ramos Millan', '08730', 1),
+    -> 	('Pueblo San Miguel Tecomatlan', '52425', 2),
+    -> 	('Ferrocarrilera', '83013', 4),
+    -> 	('Inpi Picos', '08760', 1) ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #---------------------------------------------
+mysql> -- 4. INCERTAMOS VALORES A LA TABLA direccion
+mysql> #---------------------------------------------
+mysql> INSERT INTO direccion (calle, num_ext, num_int, id_colonia) VALUES
+    -> 	('Cda. 3ra de Avena', '9BIS', NULL, 1),
+    -> 	('Carlos Juan Finlay', '8', '714', 5),
+    -> 	('Sur 133', '2020', NULL, 2),
+    -> 	('Cto. Interior Avenida Rio Churubusco', '216', '104', 1),
+    -> 	('Morelos', '17', NULL, 3) ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #---------------------------------------------
+mysql> -- 5. INCERTAMOS VALORES A LA TABLA cliente
+mysql> #---------------------------------------------
+mysql> INSERT INTO cliente(num_tarjeta, rfc, telefono, nombre, id_direccion) VALUES 
+    -> ('6478523987416852348', 'KSHD890412', '6642793812', 'Kasu Holy Dante', 2),
+    -> ('5746839214875632194', 'PIOR000329', '8462571394', 'Pime Ortiz Ramiro', 1),
+    -> ('5746839252368528194', 'RIUJ000329', '8468798394', 'Reyes Ortega Santiago', 3),
+    -> ('5968425872054100394', 'HEMS961230', '8963145874', 'Hernandez Mendez Sol', 5),
+    -> ('5364789215589625094', 'BARU661230', '3658498774', 'Badillo Reyes Uriel', 4);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #------------------------------------------------
+mysql> -- 6. INCERTAMOS VALORES A LA TABLA administrador
+mysql> #------------------------------------------------
+mysql> INSERT INTO administrador(rfc, telefono, nombre, apellido_paterno, apellido_materno, contrasenia_codificada) VALUES 
+    -> ('HGFJ489625', '9631478529', 'Javier', 'Mendez', 'Nuez', md5('co124ntrasecña')),
+    -> ('POUG347865', '6314978563', 'Lola', 'Perez', 'Ramirez', md5('cosntras31eaña')),
+    -> ('LKDN364125', '3654782256', 'Pablo', 'Reyes', 'Gonzalez', md5('contrd12aseña')),
+    -> ('KISF968616', '9996554788', 'Gloria', 'Julian', 'Rose', md5('c12kmdl12')),
+    -> ('LKKJ534684', '3336698421', 'Adolfo', 'Juarez', 'Puente', md5('co12m12102'));
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #------------------------------------------------
+mysql> -- 7. INCERTAMOS VALORES A LA TABLA modelo
+mysql> #------------------------------------------------
+mysql> INSERT INTO modelo (id_modelo,nombre_modelo,anio,color) VALUES 
+    -> (0,'Honda Civic',2010,'blanco'),(0,'Honda CRV',2020,'negro'),
+    -> (0,'Toyota Yaris',2019,'azul'),
+    -> (0,'Toyota Corolla',2018,'rojo'),
+    -> (0,'Volkswagen Jetta',2005,'gris');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #------------------------------------------------
+mysql> -- 8. INCERTAMOS VALORES A LA TABLA vehiculo
+mysql> #------------------------------------------------
+mysql> INSERT INTO vehiculo(placa, kilometraje, estado_disponible, transmision, costo_por_dia, id_modelo) VALUES
+    -> ('NBJ2011', '0', 'YES', 'Manual', 50000, 4),
+    -> ('FDJ4523', '1000', 'YES', 'Automatico', 35000, 2),
+    -> ('QHF2614', '500', 'NO', 'Continuamente variable', 25000, 5),
+    -> ('NEC2023', '20000', 'NO', 'Doble embrague', 50000, 1),
+    -> ('VAC1577', '3500', 'YES', 'Manual', 50000, 3);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #------------------------------------------------
+mysql> -- 9. INCERTAMOS VALORES A LA TABLA incidente
+mysql> #------------------------------------------------
+mysql> INSERT INTO incidente (tipo_incidente) VALUES
+    ->  ('Colision'),
+    ->  ('Colision multiple'),
+    ->  ('Salidas de la vía'),
+    ->  ('Arrollamiento'),
+    ->  ('Accidente de vuelco') ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>  #------------------------------------------------
+mysql> -- 10. INCERTAMOS VALORES A LA TABLA seguro
+mysql> #------------------------------------------------
+mysql> INSERT INTO seguro (num_poliza, fecha_inicio_vigencia, fecha_fin_vigencia, tipo_cobertura, suma_asegurada, costo_seguro, placa) VALUES
+    ->  (648, '20220722', '20230722', 'Basica', 200000, 12400, 'FDJ4523'),
+    ->  (238, '20220723', '20230723', 'Plus', 260000, 13000, 'NBJ2011'),
+    ->  (292, '20220724', '20230724', 'Master', 340000, 14000, 'NEC2023'),
+    ->  (295, '20220725', '20230725', 'Prime', 370000, 15000, 'VAC1577'),
+    ->  (248, '20220726', '20230726', 'Basica', 210000, 12300, 'QHF2614');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #-----------------------------------------------------
+mysql> -- 11. INCERTAMOS VALORES A LA TABLA incidenteVehiculo
+mysql> #-----------------------------------------------------
+mysql> INSERT INTO incidenteVehiculo (id_incidente, placa, fecha_incidente, monto_incidente) VALUES
+    -> 	(1, 'NBJ2011', '20220922',53012.1),
+    -> 	(4, 'NBJ2011', '20230101',33012.7),
+    -> 	(1, 'NEC2023', '20221029',43012.3),
+    -> 	(3, 'NBJ2011', '20220912',13012.8),
+    -> 	(2, 'NEC2023', '20220903',73012.2) ;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> #-----------------------------------------------------
+mysql> -- 12. INCERTAMOS VALORES A LA TABLA vehiculoRenta
+mysql> #-----------------------------------------------------
+mysql> #INCETANDO CLIENTES CON DESCUENTO 
+mysql> 
+mysql> INSERT INTO vehiculoRenta (id_cliente, placa, fecha_incio_renta, fecha_fin_renta, descuento_aplicado) VALUES
+    -> 	(3, 'NBJ2011', '20221029', '20221122', 'YES'),
+    -> 	(4, 'NBJ2011', '20220912', '20220922', 'YES');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO vehiculoRenta (id_cliente, placa, fecha_incio_renta, fecha_fin_renta) VALUES
+    -> 	(1, 'FDJ4523', '20220901', '20220903'),	
+    -> 	(2, 'NEC2023', '20220101', '20220124'),
+    -> 	(1, 'VAC1577', '20220903', '20220925') ;
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> #----------------------------------------------------
+mysql> --                 PRACTICA 5
+mysql> #----------------------------------------------------
+mysql> 
+mysql> /*Ejercicio 0*/
+mysql> PROMPT m/ (>.<) \\m - [\d] ->
+PROMPT set to 'm/ (>.<) \\m - [\d] ->'
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->/*Ejercicio 1*/
+m/ (>.<) \m - [mod_eq11] ->USE mundo;
+Database changed
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->-- Ejercicio 1.1
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->SELECT pais AS paises_con_a FROM paises WHERE pais LIKE '%a%' AND pais NOT LIKE '% %';
++---------------+
+| paises_con_a  |
++---------------+
+| Afghanistan   |
+| Albania       |
+| Algeria       |
+| Andorra       |
+| Angola        |
+| Argentina     |
+| Armenia       |
+| Australia     |
+| Austria       |
+| Azerbaijan    |
+| Bahamas       |
+| Bahrain       |
+| Bangladesh    |
+| Barbados      |
+| Belarus       |
+| Bhutan        |
+| Bolivia       |
+| Botswana      |
+| Brazil        |
+| Bulgaria      |
+| Cambodia      |
+| Cameroon      |
+| Canada        |
+| Chad          |
+| China         |
+| Colombia      |
+| Croatia       |
+| Cuba          |
+| Denmark       |
+| Dominica      |
+| Ecuador       |
+| Eritrea       |
+| Estonia       |
+| Ethiopia      |
+| Finland       |
+| France        |
+| Gabon         |
+| Gambia        |
+| Georgia       |
+| Germany       |
+| Ghana         |
+| Grenada       |
+| Guatemala     |
+| Guinea        |
+| Guinea-Bissau |
+| Guyana        |
+| Haiti         |
+| Honduras      |
+| Hungary       |
+| Iceland       |
+| India         |
+| Indonesia     |
+| Iran          |
+| Iraq          |
+| Ireland       |
+| Israel        |
+| Italy         |
+| Jamaica       |
+| Japan         |
+| Jordan        |
+| Kazakhstan    |
+| Kenya         |
+| Kiribati      |
+| Kuwait        |
+| Kyrgyzstan    |
+| Laos          |
+| Latvia        |
+| Lebanon       |
+| Liberia       |
+| Libya         |
+| Lithuania     |
+| Macedonia     |
+| Madagascar    |
+| Malawi        |
+| Malaysia      |
+| Maldives      |
+| Mali          |
+| Malta         |
+| Mauritania    |
+| Mauritius     |
+| Moldova       |
+| Monaco        |
+| Mongolia      |
+| Mozambique    |
+| Myanmar       |
+| Namibia       |
+| Nauru         |
+| Nepal         |
+| Netherlands   |
+| Nicaragua     |
+| Nigeria       |
+| Norway        |
+| Oman          |
+| Pakistan      |
+| Palau         |
+| Panama        |
+| Paraguay      |
+| Poland        |
+| Portugal      |
+| Qatar         |
+| Romania       |
+| Russia        |
+| Rwanda        |
+| Samoa         |
+| Senegal       |
+| Serbia        |
+| Singapore     |
+| Slovakia      |
+| Slovenia      |
+| Somalia       |
+| Spain         |
+| Sudan         |
+| Suriname      |
+| Swaziland     |
+| Switzerland   |
+| Syria         |
+| Taiwan        |
+| Tajikistan    |
+| Tanzania      |
+| Thailand      |
+| Tonga         |
+| Tunisia       |
+| Turkmenistan  |
+| Tuvalu        |
+| Uganda        |
+| Ukraine       |
+| Uruguay       |
+| Uzbekistan    |
+| Vanuatu       |
+| Venezuela     |
+| Vietnam       |
+| Zambia        |
+| Zimbabwe      |
++---------------+
+133 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT pais AS paises_con_e FROM paises WHERE pais LIKE '%e%' AND pais NOT LIKE '% %';
++---------------+
+| paises_con_e  |
++---------------+
+| Algeria       |
+| Argentina     |
+| Armenia       |
+| Azerbaijan    |
+| Bangladesh    |
+| Belarus       |
+| Belgium       |
+| Belize        |
+| Benin         |
+| Brunei        |
+| Cameroon      |
+| Chile         |
+| Denmark       |
+| Ecuador       |
+| Egypt         |
+| Eritrea       |
+| Estonia       |
+| Ethiopia      |
+| France        |
+| Georgia       |
+| Germany       |
+| Greece        |
+| Grenada       |
+| Guatemala     |
+| Guinea        |
+| Guinea-Bissau |
+| Iceland       |
+| Indonesia     |
+| Ireland       |
+| Israel        |
+| Kenya         |
+| Lebanon       |
+| Lesotho       |
+| Liberia       |
+| Liechtenstein |
+| Luxembourg    |
+| Macedonia     |
+| Maldives      |
+| Mexico        |
+| Montenegro    |
+| Mozambique    |
+| Nepal         |
+| Netherlands   |
+| Niger         |
+| Nigeria       |
+| Peru          |
+| Philippines   |
+| Senegal       |
+| Serbia        |
+| Seychelles    |
+| Singapore     |
+| Slovenia      |
+| Suriname      |
+| Sweden        |
+| Switzerland   |
+| Timor-Leste   |
+| Turkey        |
+| Turkmenistan  |
+| Ukraine       |
+| Uzbekistan    |
+| Venezuela     |
+| Vietnam       |
+| Yemen         |
+| Zimbabwe      |
++---------------+
+64 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT pais AS paises_con_i FROM paises WHERE pais LIKE '%i%' AND pais NOT LIKE '% %';
++---------------+
+| paises_con_i  |
++---------------+
+| Afghanistan   |
+| Albania       |
+| Algeria       |
+| Argentina     |
+| Armenia       |
+| Australia     |
+| Austria       |
+| Azerbaijan    |
+| Bahrain       |
+| Belgium       |
+| Belize        |
+| Benin         |
+| Bolivia       |
+| Brazil        |
+| Brunei        |
+| Bulgaria      |
+| Burundi       |
+| Cambodia      |
+| Chile         |
+| China         |
+| Colombia      |
+| Croatia       |
+| Djibouti      |
+| Dominica      |
+| Eritrea       |
+| Estonia       |
+| Ethiopia      |
+| Fiji          |
+| Finland       |
+| Gambia        |
+| Georgia       |
+| Guinea        |
+| Guinea-Bissau |
+| Haiti         |
+| Iceland       |
+| India         |
+| Indonesia     |
+| Iran          |
+| Iraq          |
+| Ireland       |
+| Israel        |
+| Italy         |
+| Jamaica       |
+| Kiribati      |
+| Kuwait        |
+| Latvia        |
+| Liberia       |
+| Libya         |
+| Liechtenstein |
+| Lithuania     |
+| Macedonia     |
+| Malawi        |
+| Malaysia      |
+| Maldives      |
+| Mali          |
+| Mauritania    |
+| Mauritius     |
+| Mexico        |
+| Mongolia      |
+| Mozambique    |
+| Namibia       |
+| Nicaragua     |
+| Niger         |
+| Nigeria       |
+| Pakistan      |
+| Philippines   |
+| Romania       |
+| Russia        |
+| Serbia        |
+| Singapore     |
+| Slovakia      |
+| Slovenia      |
+| Somalia       |
+| Spain         |
+| Suriname      |
+| Swaziland     |
+| Switzerland   |
+| Syria         |
+| Taiwan        |
+| Tajikistan    |
+| Tanzania      |
+| Thailand      |
+| Timor-Leste   |
+| Tunisia       |
+| Turkmenistan  |
+| Ukraine       |
+| Uzbekistan    |
+| Vietnam       |
+| Zambia        |
+| Zimbabwe      |
++---------------+
+90 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT pais AS paises_con_o FROM paises WHERE pais LIKE '%o%' AND pais NOT LIKE '% %';
++--------------+
+| paises_con_o |
++--------------+
+| Andorra      |
+| Angola       |
+| Barbados     |
+| Bolivia      |
+| Botswana     |
+| Cambodia     |
+| Cameroon     |
+| Colombia     |
+| Comoros      |
+| Croatia      |
+| Djibouti     |
+| Dominica     |
+| Ecuador      |
+| Estonia      |
+| Ethiopia     |
+| Gabon        |
+| Georgia      |
+| Honduras     |
+| Indonesia    |
+| Jordan       |
+| Laos         |
+| Lebanon      |
+| Lesotho      |
+| Luxembourg   |
+| Macedonia    |
+| Mexico       |
+| Moldova      |
+| Monaco       |
+| Mongolia     |
+| Montenegro   |
+| Morocco      |
+| Mozambique   |
+| Norway       |
+| Oman         |
+| Poland       |
+| Portugal     |
+| Romania      |
+| Samoa        |
+| Singapore    |
+| Slovakia     |
+| Slovenia     |
+| Somalia      |
+| Timor-Leste  |
+| Togo         |
+| Tonga        |
++--------------+
+45 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT pais AS paises_con_u FROM paises WHERE pais LIKE '%u%' AND pais NOT LIKE '% %';
++---------------+
+| paises_con_u  |
++---------------+
+| Australia     |
+| Austria       |
+| Belarus       |
+| Belgium       |
+| Bhutan        |
+| Brunei        |
+| Bulgaria      |
+| Burundi       |
+| Cuba          |
+| Cyprus        |
+| Djibouti      |
+| Ecuador       |
+| Guatemala     |
+| Guinea        |
+| Guinea-Bissau |
+| Guyana        |
+| Honduras      |
+| Hungary       |
+| Kuwait        |
+| Lithuania     |
+| Luxembourg    |
+| Mauritania    |
+| Mauritius     |
+| Mozambique    |
+| Nauru         |
+| Nicaragua     |
+| Palau         |
+| Paraguay      |
+| Peru          |
+| Portugal      |
+| Russia        |
+| Sudan         |
+| Suriname      |
+| Tunisia       |
+| Turkey        |
+| Turkmenistan  |
+| Tuvalu        |
+| Uganda        |
+| Ukraine       |
+| Uruguay       |
+| Uzbekistan    |
+| Vanuatu       |
+| Venezuela     |
++---------------+
+43 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->-- Ejercicio 1.2
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT capital, pais FROM paises WHERE capital LIKE 'B%' AND LENGTH(TRIM(capital))=6 ORDER BY poblacion DESC;
++---------+--------------------------+
+| capital | pais                     |
++---------+--------------------------+
+| Bamako  | Mali                     |
+| Beirut  | Lebanon                  |
+| Bangui  | Central African Republic |
+| Banjul  | Gambia                   |
+| Bissau  | Guinea-Bissau            |
++---------+--------------------------+
+5 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->-- Ejercicio 1.3
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->SELECT pais, capital, LENGTH(pais) AS Caracteres_pais, 
+    -> LENGTH(capital) AS Caracteres_capital
+    ->  FROM paises
+    ->  WHERE LENGTH(pais) = LENGTH(capital)
+    ->  AND LEFT(pais,1)=LEFT(capital,1)
+    ->  ORDER BY Caracteres_pais ASC;
++------------+------------+-----------------+--------------------+
+| pais       | capital    | Caracteres_pais | Caracteres_capital |
++------------+------------+-----------------+--------------------+
+| Taiwan     | Taipei     |               6 |                  6 |
+| Algeria    | Algiers    |               7 |                  7 |
+| Djibouti   | Djibouti   |               8 |                  8 |
+| Singapore  | Singapore  |               9 |                  9 |
+| Luxembourg | Luxembourg |              10 |                 10 |
+| San Marino | San Marino |              10 |                 10 |
++------------+------------+-----------------+--------------------+
+6 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->-- Ejercicio 1.4
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT CONCAT(pais, " con capital ", capital, " tiene ",  TRUNCATE(poblacion/1000000,2),"M de habitantes" ) AS 'Pais,Capital,Poblacion' FROM paises ORDER BY poblacion DESC limit 3;
++------------------------------------------------------------------------+
+| Pais,Capital,Poblacion                                                 |
++------------------------------------------------------------------------+
+| China con capital Beijing tiene 1365.37M de habitantes                 |
+| India con capital New Delhi tiene 1246.16M de habitantes               |
+| United States con capital Washington, D.C. tiene 318.32M de habitantes |
++------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->-- Ejercicio 1.5
+m/ (>.<) \m - [mundo] ->#--------------------------------
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->SELECT pais, FORMAT(gdp, 0) AS 'PIB', FORMAT(gdp/poblacion,0) AS 'PIB per capita' FROM paises WHERE pais ='México' OR ((continente LIKE '%America'OR continente = 'Caribbean') AND gdp/poblacion>10000) ORDER BY gdp/poblacion;
++-----------------------+--------------------+----------------+
+| pais                  | PIB                | PIB per capita |
++-----------------------+--------------------+----------------+
+| Mexico                | 1,183,655,000,000  | 9,887          |
+| Panama                | 36,253,000,000     | 10,644         |
+| Brazil                | 2,254,109,000,000  | 11,115         |
+| Argentina             | 477,028,000,000    | 11,180         |
+| Venezuela             | 382,424,000,000    | 13,212         |
+| Antigua and Barbuda   | 1,176,000,000      | 13,628         |
+| Saint Kitts and Nevis | 765,000,000        | 13,909         |
+| Chile                 | 268,314,000,000    | 15,097         |
+| Uruguay               | 49,919,000,000     | 15,190         |
+| Barbados              | 4,533,000,000      | 15,905         |
+| Trinidad and Tobago   | 23,225,000,000     | 17,488         |
+| Bahamas               | 8,043,000,000      | 22,884         |
+| Canada                | 1,585,000,000,000  | 44,739         |
+| United States         | 16,244,600,000,000 | 51,032         |
++-----------------------+--------------------+----------------+
+14 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->/* Respuestas a preguntas:
+   /*> 1. El atributo gdp es el único en unidad monetaria, y comparando los valores registrados en México con nuestra fuente [1] llegamos a que es a current US$ (dólares a precios actuales).
+   /*> 
+   /*> 2. Comparando el gdp y la población con las fuentes citadas ([1] y [2]), llegamos a que la mejor aproximación para ambos valores corresponde al año 2015. Y en la pagina del inegi podemos corroborar esa cifra [3]. Respuesta: Año 2015
+   /*> 
+   /*> Fuentes:
+   /*> [1] GDP (current US$) | Data. (s. f.). https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2021&locations=MX&start=1960
+   /*> [2] Population, total - Mexico | Data. (s. f.). https://data.worldbank.org/indicator/SP.POP.TOTL?locations=MX
+   /*> [3] https://www.inegi.org.mx/temas/estructura/
+   /*> */
+m/ (>.<) \m - [mundo] ->
+m/ (>.<) \m - [mundo] ->/*Ejercicio 2*/
+m/ (>.<) \m - [mundo] ->USE bank;
+Database changed
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->-- Ejercicio 2.1
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->SELECT * FROM customer WHERE CITY IN('Newton', 'Salem') AND CUST_TYPE_CD != 'B';
++---------+----------------+--------+--------------+-------------+-------------+-------+
+| CUST_ID | ADDRESS        | CITY   | CUST_TYPE_CD | FED_ID      | POSTAL_CODE | STATE |
++---------+----------------+--------+--------------+-------------+-------------+-------+
+|       5 | 2341 Main St   | Salem  | I            | 555-55-5555 | 03079       | NH    |
+|       8 | 472 Freedom Rd | Salem  | I            | 888-88-8888 | 03079       | NH    |
+|       9 | 29 Maple St    | Newton | I            | 999-99-9999 | 02458       | MA    |
++---------+----------------+--------+--------------+-------------+-------------+-------+
+3 rows in set (0.00 sec)
+
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->-- Ejercicio 2.2
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->SELECT DISTINCT STATE FROM customer WHERE FED_ID LIKE '04%';
++-------+
+| STATE |
++-------+
+| NH    |
+| MA    |
++-------+
+2 rows in set (0.00 sec)
+
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->-- Ejercicio 2.3
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->SELECT NAME FROM business WHERE CUST_ID%2 = 1 AND YEAR(INCORP_DATE) <= 2000;
++--------------------+
+| NAME               |
++--------------------+
+| AAA Insurance Inc. |
++--------------------+
+1 row in set (0.00 sec)
+
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->-- Ejercicio 2.4
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->SELECT SUM(AMOUNT) AS Suma_montos
+    -> FROM acc_transaction
+    -> WHERE TXN_DATE BETWEEN '2002-10-01' AND '2004-09-30';
++-------------+
+| Suma_montos |
++-------------+
+|        1000 |
++-------------+
+1 row in set (0.00 sec)
+
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->-- Ejercicio 2.5
+m/ (>.<) \m - [bank] ->#--------------------------------
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->SELECT FIRST_NAME  from employee 
+    -> WHERE TITLE IN ('Teller', 'Head Teller') 
+    -> AND START_DATE < 20030301;
++------------+
+| FIRST_NAME |
++------------+
+| Sarah      |
+| Jane       |
+| Paula      |
+| Thomas     |
+| Samantha   |
+| John       |
+| Cindy      |
+| Theresa    |
+| Beth       |
+| Rick       |
++------------+
+10 rows in set (0.00 sec)
+
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->
+m/ (>.<) \m - [bank] ->/*Ejercicio 3*/
+m/ (>.<) \m - [bank] ->use mod_eq11;
+Database changed
+m/ (>.<) \m - [mod_eq11] ->#--------------------------------
+m/ (>.<) \m - [mod_eq11] ->-- Ejercicio 3.1
+m/ (>.<) \m - [mod_eq11] ->#--------------------------------
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->#¿Cuales son los clientes cuyo nombre termina en “l” y cuyo RFC termina en “0”? Muestra el nombre y el RFC
+m/ (>.<) \m - [mod_eq11] ->SELECT nombre,rfc FROM cliente WHERE nombre like '%l' AND RFC like '%0';
++----------------------+------------+
+| nombre               | rfc        |
++----------------------+------------+
+| Hernandez Mendez Sol | HEMS961230 |
+| Badillo Reyes Uriel  | BARU661230 |
++----------------------+------------+
+2 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->#–¿Cuales son los autos de color blanco o del año 2020? Muestra todos los datos del modelo
+m/ (>.<) \m - [mod_eq11] ->SELECT * FROM modelo WHERE color = "blanco" OR anio = "2020";
++-----------+---------------+------+--------+
+| id_modelo | nombre_modelo | anio | color  |
++-----------+---------------+------+--------+
+|         1 | Honda Civic   | 2010 | blanco |
+|         2 | Honda CRV     | 2020 | negro  |
++-----------+---------------+------+--------+
+2 rows in set (0.00 sec)
+
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->#--------------------------------
+m/ (>.<) \m - [mod_eq11] ->-- Ejercicio 3.2
+m/ (>.<) \m - [mod_eq11] ->#--------------------------------
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->#Determina cual seria la ganancia al  dia, por la rentan de todos los coches que se encuentran disponibles, crea una tabla que lo diga
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->SELECT CONCAT("Ganancia por dia: ", SUM(costo_por_dia)) AS Ganancias_de_coches_disponibles FROM vehiculo WHERE estado_disponible = 'YES';
++---------------------------------+
+| Ganancias_de_coches_disponibles |
++---------------------------------+
+| Ganancia por dia: 135000.00     |
++---------------------------------+
+1 row in set (0.00 sec)
+
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->
+m/ (>.<) \m - [mod_eq11] ->#¿Cuanto se gasto en asegurar los autos en el año 2022?, crea una tabla que lo diga
+m/ (>.<) \m - [mod_eq11] ->SELECT CONCAT("En en este año se aseguraron los autos por un precio de: ", SUM(costo_seguro)) AS gastos_totales_en_asegurar_autos_2022 FROM seguro WHERE YEAR(fecha_inicio_vigencia) = 2022;
++--------------------------------------------------------------------+
+| gastos_totales_en_asegurar_autos_2022                              |
++--------------------------------------------------------------------+
+| En en este año se aseguraron los autos por un precio de: 66700.00  |
++--------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+m/ (>.<) \m - [mod_eq11] ->Terminal close -- exit!

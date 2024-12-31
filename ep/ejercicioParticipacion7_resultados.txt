@@ -1,0 +1,735 @@
+﻿mysql> source ejercicioParticipacion7_outerJoin.sql
++----------------------------------------------------------------------------------------+
+| Ejercicio 1:                                                                           |
++----------------------------------------------------------------------------------------+
+| Listar todos los géneros incluyendo los que no tienen canciones, ordenado por género   |
++----------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++-----------+------------------+------------+------------------------------------+
+| id_genero | género musical   | id_cancion | canción                            |
++-----------+------------------+------------+------------------------------------+
+|         1 | Blues            |        157 | Day Dreams                         |
+|         1 | Blues            |        200 | Something                          |
+|         1 | Blues            |        392 | Not Enough                         |
+|         1 | Blues            |        396 | Moskau                             |
+|         1 | Blues            |        403 | Ou va le monde                     |
+|         2 | Corrido          |        287 | Amarillo                           |
+|         3 | Country          |        144 | Viento                             |
+|         3 | Country          |        404 | Campus                             |
+|         4 | Cumbia           |        145 | Vino y soda                        |
+|         4 | Cumbia           |        160 | El amor nunca pasa de moda         |
+|         4 | Cumbia           |        257 | Como la flor                       |
+|         4 | Cumbia           |        258 | Bidi bidi bom                      |
+|         4 | Cumbia           |        390 | Harvey                             |
+|         5 | Disco            |          8 | Love Again                         |
+|         5 | Disco            |        393 | Ready/Problems                     |
+|         6 | Electronica      |         14 | The prayer                         |
+|         6 | Electronica      |         99 | Clarity                            |
+|         6 | Electronica      |        100 | Spectrum                           |
+|         6 | Electronica      |        271 | Our Fire                           |
+|         6 | Electronica      |        272 | 1 on 1                             |
+|         6 | Electronica      |        273 | Interstellar                       |
+|         6 | Electronica      |        274 | Float Away                         |
+|         6 | Electronica      |        275 | Funk Hole                          |
+|         6 | Electronica      |        280 | Indo Silver Club                   |
+|         6 | Electronica      |        336 | Uranium Fever                      |
+|         6 | Electronica      |        337 | Moog City                          |
+|         6 | Electronica      |        338 | Nornir                             |
+|         6 | Electronica      |        339 | Cats on Mars                       |
+|         6 | Electronica      |        340 | Snailchan Adventure                |
+|         6 | Electronica      |        341 | Halo theme                         |
+|         6 | Electronica      |        342 | My time                            |
+|         6 | Electronica      |        385 | Casio                              |
+|         6 | Electronica      |        386 | Cherry                             |
+|         7 | Flamenco         |       NULL | NULL                               |
+|         8 | Folk             |          2 | Hold You in My Arms                |
+|         8 | Folk             |          3 | Heart                              |
+|         8 | Folk             |         13 | Me gusta                           |
+|         8 | Folk             |        161 | El noa noa                         |
+|         8 | Folk             |        394 | Amtrak                             |
+|         8 | Folk             |        310 | Quien fuera                        |
+|         8 | Folk             |        311 | Ojalá                              |
+|         8 | Folk             |        320 | Playa Girón                        |
+|         8 | Folk             |        321 | Unicornio                          |
+|         9 | Funk             |          4 | Crave                              |
+|         9 | Funk             |         15 | Baila el funk                      |
+|         9 | Funk             |        213 | Vivir por vos                      |
+|         9 | Funk             |        210 | Una mañana                         |
+|         9 | Funk             |        133 | Puro Teatro                        |
+|         9 | Funk             |        335 | Construção                         |
+|        10 | Gospel           |       NULL | NULL                               |
+|        11 | Heavy Metal      |         17 | Ride the lightning                 |
+|        11 | Heavy Metal      |        267 | Te quiero así                      |
+|        11 | Heavy Metal      |        270 | Cómo Te Extraño Mi Amor            |
+|        11 | Heavy Metal      |        292 | Land of canaan                     |
+|        11 | Heavy Metal      |        293 | A rancid romance                   |
+|        11 | Heavy Metal      |        294 | Reign of Terror                    |
+|        11 | Heavy Metal      |        295 | Taste the blood of altar wine      |
+|        11 | Heavy Metal      |        400 | Marly-Gomont                       |
+|        11 | Heavy Metal      |        402 | Lucha de Gigantes                  |
+|        11 | Heavy Metal      |        406 | Great DJ                           |
+|        12 | Hip Hop          |          5 | Beggin                             |
+|        12 | Hip Hop          |         11 | La parada del bus                  |
+|        12 | Hip Hop          |         33 | Greece                             |
+|        12 | Hip Hop          |         34 | Might Not                          |
+|        12 | Hip Hop          |        129 | Not Afraid                         |
+|        12 | Hip Hop          |        241 | It Was A Good Day                  |
+|        12 | Hip Hop          |        245 | The Real Slim Shady                |
+|        12 | Hip Hop          |        428 | How much a dollar cost             |
+|        12 | Hip Hop          |        376 | See You Again                      |
+|        12 | Hip Hop          |        379 | Furthest Thing                     |
+|        13 | Indie            |         16 | Sun                                |
+|        13 | Indie            |         28 | Handsome Devil                     |
+|        13 | Indie            |         27 | Naufrago                           |
+|        13 | Indie            |         36 | Bailando Solo                      |
+|        13 | Indie            |         39 | Nada                               |
+|        13 | Indie            |         40 | Se te nota                         |
+|        13 | Indie            |        244 | Little By Little                   |
+|        13 | Indie            |        300 | BUITRES                            |
+|        13 | Indie            |        349 | A different drum                   |
+|        13 | Indie            |        377 | Black Water Lilies                 |
+|        13 | Indie            |        405 | Lasso                              |
+|        13 | Indie            |        391 | Lets leave in The Morning          |
+|        13 | Indie            |        419 | Cuándo                             |
+|        13 | Indie            |        416 | Solegrande                         |
+|        13 | Indie            |        420 | Serendipity                        |
+|        13 | Indie            |        426 | Khmlwugh                           |
+|        14 | Jazz             |        329 | Zechriel                           |
+|        14 | Jazz             |        334 | Sicilian Clan                      |
+|        14 | Jazz             |        398 | Combat baby                        |
+|        14 | Jazz             |        423 | Pico Diagonal Tres                 |
+|        14 | Jazz             |        427 | Canción para los días de la vida   |
+|        15 | Merengue         |        207 | Todos locos                        |
+|        16 | Pop              |          1 | Kids Again                         |
+|        16 | Pop              |         10 | Another One                        |
+|        16 | Pop              |         31 | Rumor has it                       |
+|        16 | Pop              |          7 | everything i wanted                |
+|        16 | Pop              |          9 | It Takes Two                       |
+|        16 | Pop              |         19 | Cheap thrills                      |
+|        16 | Pop              |         20 | Parecemos tontos                   |
+|        16 | Pop              |         23 | Blinding Lights                    |
+|        16 | Pop              |         67 | 911                                |
+|        16 | Pop              |         73 | Happiness is a butterfly           |
+|        16 | Pop              |         74 | Bartender                          |
+|        16 | Pop              |         80 | Getaway Car                        |
+|        16 | Pop              |        114 | Tierra Ajena                       |
+|        16 | Pop              |        125 | Heather                            |
+|        16 | Pop              |        126 | Maniac                             |
+|        16 | Pop              |        120 | Falling in Love                    |
+|        16 | Pop              |        121 | Cry                                |
+|        16 | Pop              |        247 | afterglow                          |
+|        16 | Pop              |        356 | Lover                              |
+|        16 | Pop              |        166 | Estilo espacial                    |
+|        16 | Pop              |        163 | El triste                          |
+|        16 | Pop              |        194 | Preso                              |
+|        16 | Pop              |        196 | Si me dejas ahora                  |
+|        16 | Pop              |        214 | Volcán                             |
+|        16 | Pop              |        175 | Las estrellas                      |
+|        16 | Pop              |        221 | Historia de Taxi                   |
+|        16 | Pop              |        222 | El amor                            |
+|        16 | Pop              |        223 | Señora de las cuatro décadas       |
+|        16 | Pop              |        224 | Desnuda                            |
+|        16 | Pop              |        225 | Mujeres                            |
+|        16 | Pop              |        226 | ¿Y cómo es él?                     |
+|        16 | Pop              |        227 | Me llamas                          |
+|        16 | Pop              |        228 | Dime                               |
+|        16 | Pop              |        229 | Un velero llamado libertad         |
+|        16 | Pop              |        230 | Cantares                           |
+|        16 | Pop              |        231 | Pajarillo                          |
+|        16 | Pop              |        232 | Hombre                             |
+|        16 | Pop              |        233 | Vive                               |
+|        16 | Pop              |        234 | Leña verde                         |
+|        16 | Pop              |        235 | Celos                              |
+|        16 | Pop              |        236 | Cama y mesa                        |
+|        16 | Pop              |        237 | Amada amante                       |
+|        16 | Pop              |        238 | Que será de ti                     |
+|        16 | Pop              |        239 | Yo te propongo                     |
+|        16 | Pop              |        240 | Concavo y convexo                  |
+|        16 | Pop              |        242 | As It Was                          |
+|        16 | Pop              |        259 | Dejaria todo                       |
+|        16 | Pop              |        260 | Torero                             |
+|        16 | Pop              |        264 | Mala                               |
+|        16 | Pop              |        265 | Cruz de Navajas                    |
+|        16 | Pop              |        277 | 1969dime                           |
+|        16 | Pop              |        298 | Todo de ti                         |
+|        16 | Pop              |        290 | Poli                               |
+|        16 | Pop              |        252 | Sing                               |
+|        16 | Pop              |        254 | The A Team                         |
+|        16 | Pop              |        388 | Don't                              |
+|        16 | Pop              |        358 | The last time                      |
+|        16 | Pop              |        250 | All too well                       |
+|        16 | Pop              |        249 | This is my trying                  |
+|        16 | Pop              |        375 | That's What I Like                 |
+|        16 | Pop              |        378 | Tell Me You Love Me                |
+|        16 | Pop              |        415 | Árboles                            |
+|        16 | Pop              |        422 | Te guardo                          |
+|        16 | Pop              |        424 | La innombrable                     |
+|        16 | Pop              |        425 | Un amor violento                   |
+|        17 | Punk             |         26 | These Days                         |
+|        17 | Punk             |        193 | Payaso                             |
+|        17 | Punk             |        288 | Cactus                             |
+|        17 | Punk             |        348 | War to war                         |
+|        17 | Punk             |        331 | Supernature                        |
+|        17 | Punk             |        409 | Vanille Fraise                     |
+|        17 | Punk             |        407 | A-Punk                             |
+|        18 | Ranchera         |       NULL | NULL                               |
+|        19 | Rap              |        268 | Colocao                            |
+|        19 | Rap              |        276 | Ynlpa                              |
+|        19 | Rap              |        296 | Rucón                              |
+|        19 | Rap              |        291 | El diablo anda suelto              |
+|        19 | Rap              |        300 | BUITRES                            |
+|        19 | Rap              |        397 | Anhelé                             |
+|        20 | Reggae           |        266 | Ya superame                        |
+|        20 | Reggae           |        343 | Willow Tree                        |
+|        20 | Reggae           |        344 | Guns of Narvarone                  |
+|        20 | Reggae           |        261 | Rimas Pa Seducir                   |
+|        21 | Reggaeton        |         37 | Mis ojos lloran por ti             |
+|        21 | Reggaeton        |         38 | Perdoname                          |
+|        21 | Reggaeton        |        110 | La Difícil                         |
+|        21 | Reggaeton        |        111 | Yo Perreo Sola                     |
+|        21 | Reggaeton        |        112 | La Santa                           |
+|        21 | Reggaeton        |        113 | Safaera                            |
+|        21 | Reggaeton        |        269 | Tusa                               |
+|        21 | Reggaeton        |        395 | Forgotten                          |
+|        23 | Rhythm and Blues |          6 | Rolling in the Deep                |
+|        23 | Rhythm and Blues |         32 | The Morning                        |
+|        23 | Rhythm and Blues |         35 | Dennis Rodman                      |
+|        23 | Rhythm and Blues |        401 | Amores Perros                      |
+|        24 | Rock             |         12 | I born for this                    |
+|        24 | Rock             |         18 | Like a stone                       |
+|        24 | Rock             |        350 | Time is Running Out                |
+|        24 | Rock             |          1 | Kids Again                         |
+|        24 | Rock             |         29 | Aire                               |
+|        24 | Rock             |         30 | Next to me                         |
+|        24 | Rock             |         81 | 21 Guns                            |
+|        24 | Rock             |         85 | Last Night On Earth                |
+|        24 | Rock             |         86 | Fake Happy                         |
+|        24 | Rock             |         87 | Pool                               |
+|        24 | Rock             |        105 | Fireside                           |
+|        24 | Rock             |        106 | I Want It All                      |
+|        24 | Rock             |         95 | Not Today                          |
+|        24 | Rock             |         96 | Goner                              |
+|        24 | Rock             |        205 | The end                            |
+|        24 | Rock             |        149 | Amnesia                            |
+|        24 | Rock             |        182 | Lo pasado pasado                   |
+|        24 | Rock             |        183 | Lo que no fu no será               |
+|        24 | Rock             |        243 | Lobo-hombre en París               |
+|        24 | Rock             |        262 | One More Night                     |
+|        24 | Rock             |        263 | Roxanne                            |
+|        24 | Rock             |        278 | Bye Bye                            |
+|        24 | Rock             |        279 | Rock Bottom                        |
+|        24 | Rock             |        256 | Bad Liar                           |
+|        24 | Rock             |        347 | Cthulhu Song                       |
+|        24 | Rock             |        333 | Future Days                        |
+|        24 | Rock             |        399 | Bonnie Hill                        |
+|        24 | Rock             |        408 | Ananas                             |
+|        24 | Rock             |        424 | La innombrable                     |
+|        25 | Rock and Roll    |        156 | Come together                      |
+|        25 | Rock and Roll    |        192 | Pastas y vino                      |
+|        22 | Rumba            |       NULL | NULL                               |
+|        26 | Salsa            |       NULL | NULL                               |
+|        27 | Samba            |       NULL | NULL                               |
+|        28 | Son              |       NULL | NULL                               |
+|        29 | Soul             |        101 | Tears Always Win                   |
+|        29 | Soul             |        102 | Girl On Fire                       |
+|        29 | Soul             |        153 | Because                            |
+|        29 | Soul             |        194 | Preso                              |
+|        29 | Soul             |        196 | Si me dejas ahora                  |
+|        29 | Soul             |        210 | Una mañana                         |
+|        29 | Soul             |        214 | Volcán                             |
+|        29 | Soul             |        149 | Amnesia                            |
+|        29 | Soul             |        159 | El amar y querer                   |
+|        29 | Soul             |        167 | Gavilán o paloma                   |
+|        29 | Soul             |        174 | La nave del olvido                 |
+|        29 | Soul             |        181 | Lo dudo                            |
+|        29 | Soul             |        182 | Lo pasado pasado                   |
+|        29 | Soul             |        183 | Lo que no fu no será               |
+|        29 | Soul             |        184 | Lágrimas                           |
+|        29 | Soul             |        186 | Me basta                           |
+|        29 | Soul             |        193 | Payaso                             |
+|        29 | Soul             |        165 | Esclavo de tu amor                 |
+|        29 | Soul             |        203 | Sólo otra vez                      |
+|        29 | Soul             |        204 | Sólo un momento                    |
+|        29 | Soul             |        330 | That´s Us/Wild Combination         |
+|        30 | Tango            |        201 | Somos                              |
++-----------+------------------+------------+------------------------------------+
+244 rows in set (0.00 sec)
+
++-------------------------------------------------------------------------------------------------+
+| Ejercicio 2:                                                                                    |
++-------------------------------------------------------------------------------------------------+
+| Usando RIGHT JOIN, mostrar el número de géneros musicales que no están asignados a canciones    |
++-------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++---------------------------------------------+
+| Número de géneros musicales sin canciones   |
++---------------------------------------------+
+|                                           7 |
++---------------------------------------------+
+1 row in set (0.00 sec)
+
++-----------------------------------------------------------------+
+| Ejercicio 3:                                                    |
++-----------------------------------------------------------------+
+| Cuáles son los géneros que no han sido asignados a canciones.   |
++-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++-----------+-----------------+
+| id_genero | género musical  |
++-----------+-----------------+
+|         7 | Flamenco        |
+|        10 | Gospel          |
+|        18 | Ranchera        |
+|        22 | Rumba           |
+|        26 | Salsa           |
+|        27 | Samba           |
+|        28 | Son             |
++-----------+-----------------+
+7 rows in set (0.00 sec)
+
++----------------------------------------------------------------+
+| Ejercicio 4:                                                   |
++----------------------------------------------------------------+
+| Lista de idiomas que no tienen canciones, ordenados por idioma |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++-----------+--------------------+
+| id_idioma | idioma             |
++-----------+--------------------+
+|         8 | Bengali            |
+|        22 | Chino cantones     |
+|        28 | Chino Min Nan      |
+|        16 | Chino Wu           |
+|        19 | Coreano            |
+|        29 | Griego             |
+|        25 | Hausa              |
+|         4 | Hindi              |
+|        10 | Indonesio          |
+|        24 | Italiano           |
+|        15 | Javanes            |
+|        30 | Kazako             |
+|        20 | Marati             |
+|        14 | Panyabi occidental |
+|        27 | Persa irani        |
+|         7 | Ruso               |
+|        26 | Tailandes          |
+|        21 | Tamil              |
+|        17 | Telugu             |
+|        18 | Turco              |
+|        11 | Urdu               |
+|        23 | Vietnamita         |
++-----------+--------------------+
+22 rows in set (0.00 sec)
+
++-----------------------------------------+
+| Ejercicio 5:                            |
++-----------------------------------------+
+| Lista de disqueras que no tienen discos |
++-----------------------------------------+
+1 row in set (0.00 sec)
+
++-------------+----------------+
+| id_disquera | disquera       |
++-------------+----------------+
+|          53 | Domino Records |
++-------------+----------------+
+1 row in set (0.00 sec)
+
++-----------------------------------------------------------------------+
+| Ejercicio 6:                                                          |
++-----------------------------------------------------------------------+
+| Usando RIGHT JOIN, mostrar la lista de paises que si tienen disqueras |
++-----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++---------+---------------------------+
+| id_pais | nombre                    |
++---------+---------------------------+
+|       1 | Austria                   |
+|       6 | España                    |
+|      12 | Italia                    |
+|      15 | Paises Bajos              |
+|      18 | Reino Unido               |
+|     111 | Canada                    |
+|     112 | Estados Unidos De America |
+|     113 | Mexico                    |
+|     121 | Cuba                      |
+|     128 | Jamaica                   |
+|     144 | Puerto Rico               |
+|     146 | Argentina                 |
+|     149 | Colombia                  |
+|     156 | Uruguay                   |
+|     173 | Japon                     |
+|     203 | Hong Kong                 |
+|     207 | Australia                 |
++---------+---------------------------+
+17 rows in set (0.00 sec)
+
++----------------------------------------------------------------------------------------------------------------------------+
+| Ejercicio 7:                                                                                                               |
++----------------------------------------------------------------------------------------------------------------------------+
+| Titulos de discos que no han sido vendidos y los tickets (id_ticket y fecha) que no tienen registrados los discos vendidos |
++----------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++----------+-----------------------------------------------+-----------+----------------+
+| id_disco | Título del disco                              | id_ticket | fecha de venta |
++----------+-----------------------------------------------+-----------+----------------+
+|     NULL | NULL                                          |         7 | 2017-04-02     |
+|     NULL | NULL                                          |         9 | 2019-07-11     |
+|     NULL | NULL                                          |        11 | 2018-08-10     |
+|     NULL | NULL                                          |        14 | 2018-08-03     |
+|     NULL | NULL                                          |        15 | 2020-09-30     |
+|     NULL | NULL                                          |        16 | 2017-02-14     |
+|     NULL | NULL                                          |        17 | 2019-04-15     |
+|     NULL | NULL                                          |        18 | 2018-09-10     |
+|     NULL | NULL                                          |        19 | 2020-07-17     |
+|     NULL | NULL                                          |        22 | 2020-06-04     |
+|      201 |  Eclipse                                      |      NULL | NULL           |
+|      334 | :( EP                                         |      NULL | NULL           |
+|      307 | ...And Justice for All                        |      NULL | NULL           |
+|      288 | 24K Magic                                     |      NULL | NULL           |
+|      145 | 5to piso                                      |      NULL | NULL           |
+|      339 | A 18' del sol                                 |      NULL | NULL           |
+|      323 | A Funk Odyssey                                |      NULL | NULL           |
+|       85 | A hard day's night                            |      NULL | NULL           |
+|      149 | A mis amigos                                  |      NULL | NULL           |
+|       91 | A Song for Young Love / Once Upon a Time      |      NULL | NULL           |
+|       93 | A Star Is Born Soundtrack                     |      NULL | NULL           |
+|      217 | A/B                                           |      NULL | NULL           |
+|       21 | Absolution                                    |      NULL | NULL           |
+|      262 | Afternooners                                  |      NULL | NULL           |
+|      175 | Aim For The Eyes                              |      NULL | NULL           |
+|      341 | Al final de este viaje                        |      NULL | NULL           |
+|       94 | Alice in Chains                               |      NULL | NULL           |
+|      236 | Alive 2007                                    |      NULL | NULL           |
+|      287 | All My Demons Greeting Me as a Friend         |      NULL | NULL           |
+|       95 | All the Little Lights                         |      NULL | NULL           |
+|      226 | Alma enamoada                                 |      NULL | NULL           |
+|       75 | Amor Supremo                                  |      NULL | NULL           |
+|      144 | Animal nocturno                               |      NULL | NULL           |
+|      230 | Antics                                        |      NULL | NULL           |
+|      192 | Apex                                          |      NULL | NULL           |
+|      205 | Aroma a Nostalgia                             |      NULL | NULL           |
+|      166 | Asi soy yo                                    |      NULL | NULL           |
+|       52 | Atemahawke                                    |      NULL | NULL           |
+|        3 | Atlas:Intelligence                            |      NULL | NULL           |
+|       96 | Aztlán                                        |      NULL | NULL           |
+|       79 | Bad LOve                                      |      NULL | NULL           |
+|       97 | Bad to the Bone                               |      NULL | NULL           |
+|       82 | Band on the road                              |      NULL | NULL           |
+|      169 | Banda Sonora De La Película: Los Jefes        |      NULL | NULL           |
+|       16 | Beacon                                        |      NULL | NULL           |
+|      241 | Behind the front                              |      NULL | NULL           |
+|       22 | Black Holes and Revelations                   |      NULL | NULL           |
+|       98 | Blue Neighbourhood                            |      NULL | NULL           |
+|       73 | Blurryface                                    |      NULL | NULL           |
+|      173 | Brown Eyed Son                                |      NULL | NULL           |
+|       90 | Calma - Single                                |      NULL | NULL           |
+|      221 | CARAVANA                                      |      NULL | NULL           |
+|      340 | Carrusel                                      |      NULL | NULL           |
+|      326 | Carrusel                                      |      NULL | NULL           |
+|       99 | Cats                                          |      NULL | NULL           |
+|      190 | Celebrando una leyenda                        |      NULL | NULL           |
+|      153 | Celos                                         |      NULL | NULL           |
+|      286 | Change Partners                               |      NULL | NULL           |
+|       42 | Changes                                       |      NULL | NULL           |
+|       64 | Chromatica                                    |      NULL | NULL           |
+|      164 | Cinema                                        |      NULL | NULL           |
+|      140 | Circo Soledad                                 |      NULL | NULL           |
+|      100 | Circología                                    |      NULL | NULL           |
+|       71 | Clarity                                       |      NULL | NULL           |
+|      194 | Codename X                                    |      NULL | NULL           |
+|       88 | Come Around Sundown                           |      NULL | NULL           |
+|      102 | Commercial                                    |      NULL | NULL           |
+|      313 | Compañeros musicales                          |      NULL | NULL           |
+|      150 | Con el paso del tiempo                        |      NULL | NULL           |
+|      154 | Contra Viento Y Marea                         |      NULL | NULL           |
+|      269 | Cowboy Bebop                                  |      NULL | NULL           |
+|      285 | Crossroads                                    |      NULL | NULL           |
+|       77 | Cry                                           |      NULL | NULL           |
+|      174 | Days In Paradise                              |      NULL | NULL           |
+|      158 | De Niña a Mujer                               |      NULL | NULL           |
+|      185 | Descanso Dominical                            |      NULL | NULL           |
+|      208 | Desde mi ventana                              |      NULL | NULL           |
+|      195 | Destroid                                      |      NULL | NULL           |
+|      200 | Dirty Deeds Done Dirt Cheap                   |      NULL | NULL           |
+|      233 | discovery                                     |      NULL | NULL           |
+|       40 | dont smile at me                              |      NULL | NULL           |
+|      104 | Doo-Wops & Hooligans                          |      NULL | NULL           |
+|      105 | Drops of Jupiter                              |      NULL | NULL           |
+|       48 | Dynasty                                       |      NULL | NULL           |
+|      157 | El Amor                                       |      NULL | NULL           |
+|      227 | El madrileño                                  |      NULL | NULL           |
+|      106 | El milagro argentino                          |      NULL | NULL           |
+|      197 | El Morroeste                                  |      NULL | NULL           |
+|      155 | El Poeta De La Canción                        |      NULL | NULL           |
+|      107 | El principe                                   |      NULL | NULL           |
+|      238 | Elephunk                                      |      NULL | NULL           |
+|       89 | En La Soledad                                 |      NULL | NULL           |
+|      186 | En vivo desde Anaheim, CA                     |      NULL | NULL           |
+|      147 | Entre el agua y el fuego                      |      NULL | NULL           |
+|      178 | Entre el cielo y el suelo                     |      NULL | NULL           |
+|      281 | Evemore                                       |      NULL | NULL           |
+|      248 | Everything You've Come to Expect              |      NULL | NULL           |
+|      264 | Exciting Times                                |      NULL | NULL           |
+|       20 | Expectativas                                  |      NULL | NULL           |
+|      251 | False Alarm                                   |      NULL | NULL           |
+|      243 | Favourite worst nightmare                     |      NULL | NULL           |
+|       86 | FEARLESS                                      |      NULL | NULL           |
+|       49 | Fever Dream                                   |      NULL | NULL           |
+|      136 | Fifth Harmony                                 |      NULL | NULL           |
+|      137 | Fine Line                                     |      NULL | NULL           |
+|      210 | Firepower                                     |      NULL | NULL           |
+|      314 | Flick of the Switch                           |      NULL | NULL           |
+|       51 | FM                                            |      NULL | NULL           |
+|      280 | Folklore                                      |      NULL | NULL           |
+|      303 | Follow the Leader                             |      NULL | NULL           |
+|      332 | FOOL                                          |      NULL | NULL           |
+|      296 | For Ever                                      |      NULL | NULL           |
+|      257 | For the punx                                  |      NULL | NULL           |
+|      338 | Fresh Air                                     |      NULL | NULL           |
+|      254 | From Paris With Love                          |      NULL | NULL           |
+|      259 | Future Days                                   |      NULL | NULL           |
+|        8 | Future Nostalgia                              |      NULL | NULL           |
+|      250 | Gameshow                                      |      NULL | NULL           |
+|       57 | Gangsta's Paradise                            |      NULL | NULL           |
+|      206 | Genelipsis                                    |      NULL | NULL           |
+|      146 | Gente maravillosa                             |      NULL | NULL           |
+|       54 | Ghost Stories                                 |      NULL | NULL           |
+|      228 | Gin                                           |      NULL | NULL           |
+|       72 | Girl On Fire                                  |      NULL | NULL           |
+|      225 | Go farther in lightness                       |      NULL | NULL           |
+|      108 | Good Morning Revival                          |      NULL | NULL           |
+|       59 | Grandes exitos de los tigres del norte        |      NULL | NULL           |
+|       32 | Greece                                        |      NULL | NULL           |
+|      271 | Halo                                          |      NULL | NULL           |
+|      316 | Hardwired... to Self-Destruct                 |      NULL | NULL           |
+|      162 | Harry's House                                 |      NULL | NULL           |
+|      135 | HEAVEN                                        |      NULL | NULL           |
+|      139 | Hero                                          |      NULL | NULL           |
+|        4 | Hidden Figures: The Album                     |      NULL | NULL           |
+|      151 | Hombre                                        |      NULL | NULL           |
+|      109 | Homecoming                                    |      NULL | NULL           |
+|      110 | Homenaje al sentir de mi tierra               |      NULL | NULL           |
+|      232 | homework                                      |      NULL | NULL           |
+|      111 | Hot Space                                     |      NULL | NULL           |
+|      138 | Hozier                                        |      NULL | NULL           |
+|      301 | Human After Al                                |      NULL | NULL           |
+|      235 | Human After All                               |      NULL | NULL           |
+|      244 | Humbug                                        |      NULL | NULL           |
+|       45 | Hysteria                                      |      NULL | NULL           |
+|      255 | In the dark                                   |      NULL | NULL           |
+|      315 | In Utero                                      |      NULL | NULL           |
+|      311 | Inquisition Symphony                          |      NULL | NULL           |
+|      141 | Jesús, verbo no sustantivo                    |      NULL | NULL           |
+|      297 | Joanne                                        |      NULL | NULL           |
+|      336 | Julius Popper?                                |      NULL | NULL           |
+|      180 | Juntos                                        |      NULL | NULL           |
+|      298 | K.O.                                          |      NULL | NULL           |
+|       76 | Kid Krow                                      |      NULL | NULL           |
+|      204 | Kilroy Was Here                               |      NULL | NULL           |
+|      209 | Kisses                                        |      NULL | NULL           |
+|      156 | La Carretera                                  |      NULL | NULL           |
+|      324 | La Dulzura                                    |      NULL | NULL           |
+|      181 | La Dulzura                                    |      NULL | NULL           |
+|       13 | La Radiolina                                  |      NULL | NULL           |
+|      292 | La Trenza                                     |      NULL | NULL           |
+|       62 | La vecindad del chavo                         |      NULL | NULL           |
+|       35 | La velocidad de la luz                        |      NULL | NULL           |
+|      112 | La voz de un angel                            |      NULL | NULL           |
+|      265 | Ladies And Gentlemen We Are Floating In Space |      NULL | NULL           |
+|      263 | Land of Cockayne                              |      NULL | NULL           |
+|      198 | Les juro que si llego                         |      NULL | NULL           |
+|       47 | Let's Talk About Love                         |      NULL | NULL           |
+|      318 | Lets Play Two                                 |      NULL | NULL           |
+|       27 | Live in england                               |      NULL | NULL           |
+|       70 | Living Things                                 |      NULL | NULL           |
+|      325 | Los de Atrás Vienen Conmigo                   |      NULL | NULL           |
+|      113 | Los duo                                       |      NULL | NULL           |
+|      222 | Los no tan tristes                            |      NULL | NULL           |
+|      337 | Los Tres MTV Unplugged                        |      NULL | NULL           |
+|      203 | Lost on You                                   |      NULL | NULL           |
+|      252 | Lost Songs (Found)                            |      NULL | NULL           |
+|      293 | Loud                                          |      NULL | NULL           |
+|      331 | Love Yourself: Her                            |      NULL | NULL           |
+|      184 | Love-Paraiso                                  |      NULL | NULL           |
+|       83 | Lover                                         |      NULL | NULL           |
+|      295 | Loving In Stereo                              |      NULL | NULL           |
+|      196 | Luces Fantasma                                |      NULL | NULL           |
+|      215 | Luciferian Light Orchestra                    |      NULL | NULL           |
+|      327 | Mango Negro                                   |      NULL | NULL           |
+|       34 | Mansionz                                      |      NULL | NULL           |
+|      333 | Marchita                                      |      NULL | NULL           |
+|      160 | Más allá                                      |      NULL | NULL           |
+|       28 | Memoria Futuro                                |      NULL | NULL           |
+|      207 | Mercury – Act 1                               |      NULL | NULL           |
+|      163 | Mil siluetas                                  |      NULL | NULL           |
+|      267 | Minecraft: Volume Alpha                       |      NULL | NULL           |
+|       36 | Mis ojos lloran por ti                        |      NULL | NULL           |
+|      239 | Monkey Business                               |      NULL | NULL           |
+|      306 | Moon Safari                                   |      NULL | NULL           |
+|      114 | More Life                                     |      NULL | NULL           |
+|      310 | Mothership Connection                         |      NULL | NULL           |
+|      177 | Motomami                                      |      NULL | NULL           |
+|      253 | Mr Soul Of Jamaica                            |      NULL | NULL           |
+|      159 | MTV Unplugged                                 |      NULL | NULL           |
+|       53 | MTV Unplugged in New York                     |      NULL | NULL           |
+|      274 | Mundo Lite                                    |      NULL | NULL           |
+|      275 | Music for the Masses                          |      NULL | NULL           |
+|      115 | My Way, The best of Frank                     |      NULL | NULL           |
+|      328 | Nave Espacial                                 |      NULL | NULL           |
+|      321 | Neighborhoods                                 |      NULL | NULL           |
+|       56 | Nevermind                                     |      NULL | NULL           |
+|       92 | New Light                                     |      NULL | NULL           |
+|      289 | Nine Track Mind                               |      NULL | NULL           |
+|      309 | No Code                                       |      NULL | NULL           |
+|      182 | No Jacket Required                            |      NULL | NULL           |
+|      116 | No todo lo puedes dar                         |      NULL | NULL           |
+|       80 | Norma                                         |      NULL | NULL           |
+|       65 | Norman F**king Rockwell                       |      NULL | NULL           |
+|      291 | Nothing Was the Same                          |      NULL | NULL           |
+|      179 | Oasis                                         |      NULL | NULL           |
+|      260 | Obaa Sima                                     |      NULL | NULL           |
+|      189 | Ocean                                         |      NULL | NULL           |
+|      117 | Off the wall                                  |      NULL | NULL           |
+|      218 | One-X                                         |      NULL | NULL           |
+|      170 | Only the strong                               |      NULL | NULL           |
+|      191 | Onyx                                          |      NULL | NULL           |
+|       18 | Out of exile                                  |      NULL | NULL           |
+|      272 | Pale Machine                                  |      NULL | NULL           |
+|      308 | Paradigmes                                    |      NULL | NULL           |
+|      188 | Parte de mí                                   |      NULL | NULL           |
+|      258 | Passion                                       |      NULL | NULL           |
+|      118 | Pharmacy                                      |      NULL | NULL           |
+|      119 | Please please me                              |      NULL | NULL           |
+|      305 | Pork Soda                                     |      NULL | NULL           |
+|      300 | Poster Girl                                   |      NULL | NULL           |
+|      223 | Pray for the wicked                           |      NULL | NULL           |
+|       44 | Prequelle                                     |      NULL | NULL           |
+|        9 | Prism                                         |      NULL | NULL           |
+|      120 | Private Eyes                                  |      NULL | NULL           |
+|      121 | Pronounced 'leh-'nérd 'skin-'nérd             |      NULL | NULL           |
+|      122 | Punto de partida                              |      NULL | NULL           |
+|      294 | Racine carree                                 |      NULL | NULL           |
+|      268 | Radio Onsen Utopia                            |      NULL | NULL           |
+|      231 | RandomAccessMemories                          |      NULL | NULL           |
+|       15 | RE$FRIADO                                     |      NULL | NULL           |
+|       78 | Recovery                                      |      NULL | NULL           |
+|      278 | Red                                           |      NULL | NULL           |
+|      183 | Reggatta De Blanc                             |      NULL | NULL           |
+|       66 | Reputation                                    |      NULL | NULL           |
+|      123 | Revolution                                    |      NULL | NULL           |
+|       17 | Ride the lightning                            |      NULL | NULL           |
+|       14 | Ride Waves                                    |      NULL | NULL           |
+|      304 | Roy Pablo                                     |      NULL | NULL           |
+|      329 | San Lucas                                     |      NULL | NULL           |
+|      211 | Santos grifos                                 |      NULL | NULL           |
+|       39 | Se te nota                                    |      NULL | NULL           |
+|      172 | Secret Life                                   |      NULL | NULL           |
+|       87 | Shawn Mendes                                  |      NULL | NULL           |
+|      256 | Shriek                                        |      NULL | NULL           |
+|      124 | Sick Boy                                      |      NULL | NULL           |
+|       50 | Silent Alarm                                  |      NULL | NULL           |
+|      143 | Sin daños a terceros                          |      NULL | NULL           |
+|      213 | Sing Along Songs for the Damned & Delirious   |      NULL | NULL           |
+|      176 | Singles                                       |      NULL | NULL           |
+|      212 | Sitra Ahra                                    |      NULL | NULL           |
+|      219 | Slow Drive                                    |      NULL | NULL           |
+|       11 | Smile                                         |      NULL | NULL           |
+|      270 | Snailchan Adventure                           |      NULL | NULL           |
+|        5 | So Dark the Con of Man                        |      NULL | NULL           |
+|       61 | Soledad                                       |      NULL | NULL           |
+|      317 | Some Girls                                    |      NULL | NULL           |
+|      302 | Songs for Dads                                |      NULL | NULL           |
+|      125 | Songs of experience                           |      NULL | NULL           |
+|       81 | Songs of Innocence                            |      NULL | NULL           |
+|      277 | Speak Now                                     |      NULL | NULL           |
+|      229 | Stoney                                        |      NULL | NULL           |
+|      282 | Strange Fruit                                 |      NULL | NULL           |
+|      276 | Strictly a One-Eyed Jack                      |      NULL | NULL           |
+|      245 | Suck It and See                               |      NULL | NULL           |
+|      279 | Taylor Swift                                  |      NULL | NULL           |
+|      261 | Teenage Dreams                                |      NULL | NULL           |
+|      290 | Tell Me You Love Me                           |      NULL | NULL           |
+|       24 | The 2nd Law                                   |      NULL | NULL           |
+|      247 | The Age of the Understatement                 |      NULL | NULL           |
+|       60 | The big Eye                                   |      NULL | NULL           |
+|      312 | The Dark Ride                                 |      NULL | NULL           |
+|      237 | The E.N.D                                     |      NULL | NULL           |
+|      214 | The frozen tears of angels                    |      NULL | NULL           |
+|      165 | The Marshall Mathers LP                       |      NULL | NULL           |
+|      161 | The Predator                                  |      NULL | NULL           |
+|       23 | The Resistance                                |      NULL | NULL           |
+|      199 | The Room                                      |      NULL | NULL           |
+|      126 | The Senior                                    |      NULL | NULL           |
+|       10 | The Thrill Of It All                          |      NULL | NULL           |
+|      299 | The Wanted                                    |      NULL | NULL           |
+|      127 | Things Are Swingin                            |      NULL | NULL           |
+|       58 | Thriller                                      |      NULL | NULL           |
+|      148 | Tiempo de otoño                               |      NULL | NULL           |
+|       26 | Tiempos mejores                               |      NULL | NULL           |
+|      224 | To pimp a butterfly                           |      NULL | NULL           |
+|      128 | Todos somos mas                               |      NULL | NULL           |
+|      129 | Torches                                       |      NULL | NULL           |
+|      330 | Tornaluna                                     |      NULL | NULL           |
+|      249 | Tourist History                               |      NULL | NULL           |
+|      246 | Tranquility Base Hotel and Casino             |      NULL | NULL           |
+|      240 | Translation                                   |      NULL | NULL           |
+|      234 | tron:legacy                                   |      NULL | NULL           |
+|        2 | Trouble                                       |      NULL | NULL           |
+|      216 | True                                          |      NULL | NULL           |
+|      152 | Tu Y Nadie Mas                                |      NULL | NULL           |
+|       63 | Ufemia                                        |      NULL | NULL           |
+|      320 | Underclass Hero                               |      NULL | NULL           |
+|      132 | Unorthodox Jukebox                            |      NULL | NULL           |
+|       33 | Up for the Days                               |      NULL | NULL           |
+|      266 | Uranium Fever                                 |      NULL | NULL           |
+|      187 | Vencedor                                      |      NULL | NULL           |
+|      168 | Viejo Marihuano                               |      NULL | NULL           |
+|      193 | Virus                                         |      NULL | NULL           |
+|      142 | Vivo                                          |      NULL | NULL           |
+|       43 | Voicenotes                                    |      NULL | NULL           |
+|      335 | Volcán                                        |      NULL | NULL           |
+|      319 | Vulgar Display of Power                       |      NULL | NULL           |
+|      171 | Water Under The Bridge                        |      NULL | NULL           |
+|      273 | Waterloo                                      |      NULL | NULL           |
+|       19 | We are born                                   |      NULL | NULL           |
+|      283 | We're off to See the wizard                   |      NULL | NULL           |
+|      242 | whatever people say i am that's what i'm not  |      NULL | NULL           |
+|      284 | When I Take My Sugar Tea                      |      NULL | NULL           |
+|        7 | When We All Fall Asleep, Where Do We Go?      |      NULL | NULL           |
+|      133 | Whenever You Need Somebody                    |      NULL | NULL           |
+|       46 | Whitesnake                                    |      NULL | NULL           |
+|       55 | Wild Ones                                     |      NULL | NULL           |
+|      134 | Wild Summer                                   |      NULL | NULL           |
+|      202 | Wonderful Wonderful                           |      NULL | NULL           |
+|      220 | X                                             |      NULL | NULL           |
+|      322 | Yield                                         |      NULL | NULL           |
+|      167 | Yo No Creo En la Democracia                   |      NULL | NULL           |
++----------+-----------------------------------------------+-----------+----------------+
+332 rows in set (0.00 sec)
+
++-----------------------------------------------------------------------------------------------------------+
+| Ejercicio 8:                                                                                              |
++-----------------------------------------------------------------------------------------------------------+
+| Generar un reporte que indique el número de registros que no tienen asignación según la tabla indicada    |
++-----------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++--------------------+--------------------+-----------------+
+| Tabla              | Total en catálogo  | Sin asignación  |
++--------------------+--------------------+-----------------+
+| Idiomas            |                 30 |              22 |
+| Géneros musicales  |                 30 |               7 |
+| Discos             |                341 |             178 |
+| Canciones          |                428 |             202 |
+| Artistas           |                365 |             209 |
++--------------------+--------------------+-----------------+
+5 rows in set (0.01 sec)
+
+mysql> notee

@@ -1,0 +1,49 @@
+PROMPT \Y E Q U I P O 11 (\d) \;
+
+delimiter $$
+-- Ejercicio 1
+--(1)
+USE hostal
+
+ SELECT concat('Tipo ',id_tipo_empleado) as 'Tipo empleado',COUNT(id_tipo_empleado) as 'Numero empleados' from empleado GROUP BY id_tipo_empleado HAVING COUNT(id_tipo_empleado)>5 ORDER BY COUNT(id_tipo_empleado) DESC$$
+
+--(2)
+SELECT UPPER(LEFT(apellido,1)) AS "Inicial", COUNT(*) AS 'Frecuencia' FROM cliente WHERE apellido REGEXP '^[A-Z]' GROUP BY Inicial ORDER BY Frecuencia DESC$$
+
+--(3) 
+SELECT CONCAT('Tipo ',id_tipo_habitacion) AS 'Tipo de habitación',COUNT(*) AS 'Número de habitaciones' FROM habitacion GROUP BY id_tipo_habitacion HAVING COUNT(*) = (SELECT MAX(cantidad) FROM (SELECT COUNT(*) AS cantidad FROM habitacion GROUP BY id_tipo_habitacion) AS t)$$
+
+--(4)
+SELECT Año,trimestre,COUNT(*) AS Total FROM (SELECT DATE_FORMAT(fecha_salida, '%y') AS Año, 
+    CASE 
+      WHEN MONTH(fecha_salida) BETWEEN 1 AND 3 THEN 'Primer trimestre'
+      WHEN MONTH(fecha_salida) BETWEEN 4 AND 6 THEN 'Segundo trimestre'
+      WHEN MONTH(fecha_salida) BETWEEN 7 AND 9 THEN 'Tercer trimestre'
+      ELSE 'Cuarto trimestre' END AS trimestre FROM estancia) AS subconsulta
+WHERE Año IN (SELECT (DATE_FORMAT(fecha_salida, '%y')) FROM estancia) GROUP BY Año, trimestre
+HAVING COUNT(*) > 3 ORDER BY Año DESC, CASE trimestre 
+           WHEN 'Primer trimestre' THEN 1 
+           WHEN 'Segundo trimestre' THEN 2 
+           WHEN 'Tercer trimestre' THEN 3 
+           ELSE 4 
+         END ASC$$
+
+--(5) 
+ SELECT DATE_FORMAT(fecha_salida, '%y') AS 'Año',
+ CASE 
+   WHEN MONTH(fecha_salida) BETWEEN 1 AND 3 THEN 'Primer trimestre'
+   WHEN MONTH(fecha_salida) BETWEEN 4 AND 6 THEN 'Segundo trimestre'
+   WHEN MONTH(fecha_salida) BETWEEN 7 AND 9 THEN 'Tercer trimestre'
+   ELSE 'Cuarto trimestre' 
+       END AS trimestre , COUNT(*) AS Total
+FROM estancia GROUP BY 1,2 HAVING COUNT(*) >3 ORDER BY 1 DESC, 
+CASE trimestre 
+           WHEN 'Primer trimestre' THEN 1 
+           WHEN 'Segundo trimestre' THEN 2 
+           WHEN 'Tercer trimestre' THEN 3 
+           ELSE 4 
+         END ASC$$
+
+--Ejercicio 2
+USE sakila
+

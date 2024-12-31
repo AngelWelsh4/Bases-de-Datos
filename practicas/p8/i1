@@ -1,0 +1,19 @@
+/*
+=================================
+BASES DE DATOS: Practica 8
+Equipo 11
+=================================
+*/
+# 1.4
+USE replicas;
+DROP IF EXISTS fibonacci;
+DELIMITER $$
+CREATE FUNCTION fibonacci(n INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+DECLARE n_fib INT;
+DECLARE contador=0;
+IF n=0 THEN
+	SET n_fib=0
+ELSEIF 
+DELIMITER ;

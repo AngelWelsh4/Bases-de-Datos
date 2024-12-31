@@ -1,0 +1,17 @@
+0. PROMPT m/(>.<)\\m - [\d]->
+
+SOURCE C:\Users\Angel\Desktop\base_mundo.sql
+USE mundo;
+1.2. SELECT capital, pais FROM paises WHERE capital LIKE 'B%' AND LENGTH(TRIM(capital))=6 ORDER BY poblacion DESC;
+1.5. SELECT DISTINCT continente FROM paises;#Para identificar la sintáxis de los valores referentes al continente americano
+	SELECT pais, FORMAT(gdp, 0) AS 'PIB', FORMAT(gdp/poblacion,0) AS 'PIB per capita' FROM paises WHERE pais ='México' OR ((continente LIKE '%America'OR continente = 'Caribbean') AND gdp/poblacion>10000) ORDER BY gdp/poblacion;
+	SELECT * FROM paises WHERE pais ='México';
+	/* Respuestas a preguntas:
+1. El atributo gdp es el único en unidad monetaria, y comparando los valores registrados en México con nuestra fuente [1] llegamos a que es a current US$ (dólares a precios actuales).
+2. Comparando el gdp y la población con las fuentes citadas ([1] y [2]), llegamos a que la mejor aproximación para ambos valores corresponde al año 2015.
+Fuentes:
+[1] GDP (current US$) | Data. (s. f.). https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2021&locations=MX&start=1960
+[2] Population, total - Mexico | Data. (s. f.). https://data.worldbank.org/indicator/SP.POP.TOTL?locations=MX
+*/
+
+SOURCE C:\Users\Angel\Desktop\pr04_eq11.sql

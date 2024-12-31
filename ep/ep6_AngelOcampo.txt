@@ -1,0 +1,556 @@
+﻿mysql> 
+mysql> PROMPT (AngelOcampo en: \d \\\D) mysql>
+PROMPT set to '(AngelOcampo en: \d \\\D) mysql>'
+(AngelOcampo en: pixup \Tue May  2 03:08:25 2023) mysql>
+(AngelOcampo en: pixup \Tue May  2 03:08:31 2023) mysql>/*
+   /*> =================================
+   /*> Ejercicio de participación 6: Inner join
+   /*> Nombre: Ocampo García Victor Emmanuel Miguel Ángel
+   /*> Fecha: 30-04-23
+   /*> =================================
+   /*> */
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>USE pixup;
+Database changed
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql># 1.
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>SELECT p.nombre AS 'pais', d.nombre AS 'disquera', COUNT(id_disco) AS 'total_discos'
+    -> FROM disco
+    -> 	NATURAL JOIN disquera AS d
+    -> 	JOIN pais AS p USING (id_pais)
+    -> GROUP BY id_disquera
+    -> HAVING  COUNT(id_disco)>=5
+    -> ORDER BY 3 DESC, 2;
++---------------------------+-----------------------+--------------+
+| pais                      | disquera              | total_discos |
++---------------------------+-----------------------+--------------+
+| Estados Unidos De America | Universal Music Group |           41 |
+| Mexico                    | Sony Music            |           39 |
+| Paises Bajos              | Spinnin Records       |           21 |
+| Italia                    | AVANT! Records        |           19 |
+| Reino Unido               | Independiente         |           15 |
+| Estados Unidos De America | Holodeck Records      |           12 |
+| España                    | Oihuka                |           10 |
+| Australia                 | R.I.P Society         |           10 |
+| Estados Unidos De America | DFA                   |            9 |
+| Reino Unido               | Parlophone            |            9 |
+| Reino Unido               | EMI                   |            8 |
+| Austria                   | SILO Arts             |            8 |
+| Reino Unido               | Zarcorp               |            8 |
+| Estados Unidos De America | Song Music Stories    |            7 |
+| Estados Unidos De America | Sony ATV Harmony      |            7 |
+| Estados Unidos De America | Sub Pop               |            7 |
+| Estados Unidos De America | Columbia              |            6 |
+| Canada                    | 604 Records           |            5 |
+| Mexico                    | MALIGNA               |            5 |
+| Reino Unido               | XL Recordings         |            5 |
++---------------------------+-----------------------+--------------+
+20 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql># 2.
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>SELECT id_genero, nombre AS 'género musical', COUNT(id_cancion) AS 'Total de canciones por género'
+    -> FROM disco_cancion
+    -> 	NATURAL JOIN genero
+    -> GROUP BY id_genero
+    -> ORDER BY 3 DESC; 
++-----------+------------------+--------------------------------+
+| id_genero | género musical   | Total de canciones por género  |
++-----------+------------------+--------------------------------+
+|        16 | Pop              |                             65 |
+|        24 | Rock             |                             29 |
+|        29 | Soul             |                             21 |
+|         6 | Electronica      |                             18 |
+|        13 | Indie            |                             16 |
+|        11 | Heavy Metal      |                             10 |
+|        12 | Hip Hop          |                             10 |
+|         8 | Folk             |                              9 |
+|        21 | Reggaeton        |                              8 |
+|        17 | Punk             |                              7 |
+|         9 | Funk             |                              6 |
+|        19 | Rap              |                              6 |
+|         1 | Blues            |                              5 |
+|         4 | Cumbia           |                              5 |
+|        14 | Jazz             |                              5 |
+|        20 | Reggae           |                              4 |
+|        23 | Rhythm and Blues |                              4 |
+|         3 | Country          |                              2 |
+|         5 | Disco            |                              2 |
+|        25 | Rock and Roll    |                              2 |
+|         2 | Corrido          |                              1 |
+|        15 | Merengue         |                              1 |
+|        30 | Tango            |                              1 |
++-----------+------------------+--------------------------------+
+23 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql># 3.
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>SELECT id_cancion, c.nombre AS 'canción', g.nombre AS 'género musical'
+    -> FROM disco_cancion
+    -> 	NATURAL JOIN genero AS g
+    -> 	JOIN cancion AS c USING (id_cancion)
+    -> WHERE id_genero IN (SELECT id_genero
+    -> 	FROM disco_cancion
+    -> 	GROUP BY id_genero
+    -> 	HAVING COUNT(id_cancion)<5
+    -> 					)
+    -> ORDER BY 3, 2;
++------------+---------------------+------------------+
+| id_cancion | canción             | género musical   |
++------------+---------------------+------------------+
+|        287 | Amarillo            | Corrido          |
+|        404 | Campus              | Country          |
+|        144 | Viento              | Country          |
+|          8 | Love Again          | Disco            |
+|        393 | Ready/Problems      | Disco            |
+|        207 | Todos locos         | Merengue         |
+|        344 | Guns of Narvarone   | Reggae           |
+|        261 | Rimas Pa Seducir    | Reggae           |
+|        343 | Willow Tree         | Reggae           |
+|        266 | Ya superame         | Reggae           |
+|        401 | Amores Perros       | Rhythm and Blues |
+|         35 | Dennis Rodman       | Rhythm and Blues |
+|          6 | Rolling in the Deep | Rhythm and Blues |
+|         32 | The Morning         | Rhythm and Blues |
+|        156 | Come together       | Rock and Roll    |
+|        192 | Pastas y vino       | Rock and Roll    |
+|        201 | Somos               | Tango            |
++------------+---------------------+------------------+
+17 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql># 4.
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>SELECT id_cancion, c.nombre AS 'canción', g.nombre AS 'género musical', i.nombre AS 'idioma'
+    -> FROM disco_cancion
+    -> 	NATURAL JOIN cancion AS c 
+    -> 	JOIN genero AS g USING (id_genero) 
+    -> 	JOIN idioma AS i USING (id_idioma)
+    -> WHERE id_idioma=(SELECT id_idioma FROM idioma WHERE nombre LIKE '%Español%')
+    -> 	AND id_genero IN (SELECT id_genero FROM genero WHERE nombre LIKE 'F%' OR nombre LIKE 'R%');
++------------+------------------------+------------------+----------+
+| id_cancion | canción                | género musical   | idioma   |
++------------+------------------------+------------------+----------+
+|         13 | Me gusta               | Folk             | Español  |
+|        161 | El noa noa             | Folk             | Español  |
+|        310 | Quien fuera            | Folk             | Español  |
+|        311 | Ojalá                  | Folk             | Español  |
+|        320 | Playa Girón            | Folk             | Español  |
+|        321 | Unicornio              | Folk             | Español  |
+|         15 | Baila el funk          | Funk             | Español  |
+|        213 | Vivir por vos          | Funk             | Español  |
+|        210 | Una mañana             | Funk             | Español  |
+|        133 | Puro Teatro            | Funk             | Español  |
+|        268 | Colocao                | Rap              | Español  |
+|        276 | Ynlpa                  | Rap              | Español  |
+|        296 | Rucón                  | Rap              | Español  |
+|        291 | El diablo anda suelto  | Rap              | Español  |
+|        300 | BUITRES                | Rap              | Español  |
+|        266 | Ya superame            | Reggae           | Español  |
+|        261 | Rimas Pa Seducir       | Reggae           | Español  |
+|         37 | Mis ojos lloran por ti | Reggaeton        | Español  |
+|         38 | Perdoname              | Reggaeton        | Español  |
+|        110 | La Difícil             | Reggaeton        | Español  |
+|        111 | Yo Perreo Sola         | Reggaeton        | Español  |
+|        112 | La Santa               | Reggaeton        | Español  |
+|        113 | Safaera                | Reggaeton        | Español  |
+|        269 | Tusa                   | Reggaeton        | Español  |
+|        401 | Amores Perros          | Rhythm and Blues | Español  |
+|         29 | Aire                   | Rock             | Español  |
+|        149 | Amnesia                | Rock             | Español  |
+|        182 | Lo pasado pasado       | Rock             | Español  |
+|        183 | Lo que no fu no será   | Rock             | Español  |
+|        243 | Lobo-hombre en París   | Rock             | Español  |
+|        278 | Bye Bye                | Rock             | Español  |
+|        279 | Rock Bottom            | Rock             | Español  |
+|        408 | Ananas                 | Rock             | Español  |
+|        424 | La innombrable         | Rock             | Español  |
+|        192 | Pastas y vino          | Rock and Roll    | Español  |
++------------+------------------------+------------------+----------+
+35 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql># 5.
+(AngelOcampo en: pixup \Tue May  2 03:08:53 2023) mysql>SELECT c.nombre AS 'canción', titulo AS 'disco', a.nombre AS 'artista',
+    -> 	g.nombre AS 'género musical', i.nombre AS 'idioma', v.nombre AS 'versión'
+    -> FROM disco_cancion
+    -> 	NATURAL JOIN cancion AS c
+    -> 	JOIN disco USING (id_disco)
+    -> 	JOIN artista AS a USING (id_artista)
+    -> 	JOIN genero AS g USING (id_genero)
+    -> 	JOIN idioma AS i USING (id_idioma)
+    -> 	JOIN version AS v USING (id_version)
+    -> ORDER BY titulo, a.nombre, c.nombre;
++------------------------------------+---------------------------------------------+----------------------------+------------------+----------------+-----------+
+| canción                            | disco                                       | artista                    | género musical   | idioma         | versión   |
++------------------------------------+---------------------------------------------+----------------------------+------------------+----------------+-----------+
+| Rucón                              |  Eclipse                                    | Alemán                     | Rap              | Español        | Estudio   |
+| Pico Diagonal Tres                 | :( EP                                       | Silvana Estrada            | Jazz             | Español        | Acústico  |
+| Combat baby                        | ...And Justice for All                      | Mick Jagger                | Jazz             | Inglés         | Acústico  |
+| Day Dreams                         | 21                                          | Adele                      | Blues            | Inglés         | Estudio   |
+| Rolling in the Deep                | 21                                          | Adele                      | Rhythm and Blues | Inglés         | Estudio   |
+| Rumor has it                       | 21                                          | Adele                      | Pop              | Inglés         | Estudio   |
+| 21 Guns                            | 21st Century Breakdown                      | Green Day                  | Rock             | Inglés         | Estudio   |
+| Last Night On Earth                | 21st Century Breakdown                      | Green Day                  | Rock             | Inglés         | Estudio   |
+| That's What I Like                 | 24K Magic                                   | Bruno Mars                 | Pop              | Inglés         | Estudio   |
+| Canción para los días de la vida   | A 18' del sol                               | Luis Alberto Spinetta      | Jazz             | Español        | Acústico  |
+| ¿Y cómo es él?                     | A mis amigos                                | José Luis Perales          | Pop              | Español        | Estudio   |
+| Cantares                           | A mis amigos                                | José Luis Perales          | Pop              | Español        | Estudio   |
+| Dime                               | A mis amigos                                | José Luis Perales          | Pop              | Español        | Estudio   |
+| Me llamas                          | A mis amigos                                | José Luis Perales          | Pop              | Español        | Estudio   |
+| Un velero llamado libertad         | A mis amigos                                | José Luis Perales          | Pop              | Español        | Estudio   |
+| Because                            | Abbey Road                                  | The Beatles                | Soul             | Inglés         | Estudio   |
+| Come together                      | Abbey Road                                  | The Beatles                | Rock and Roll    | Inglés         | Estudio   |
+| Something                          | Abbey Road                                  | The Beatles                | Blues            | Inglés         | Estudio   |
+| The end                            | Abbey Road                                  | The Beatles                | Rock             | Inglés         | Estudio   |
+| Time is Running Out                | Absolution                                  | Muse                       | Rock             | Inglés         | Estudio   |
+| Blinding Lights                    | After Hours                                 | The Weeknd                 | Pop              | Inglés         | Estudio   |
+| Fake Happy                         | After Laughter                              | Paramore                   | Rock             | Inglés         | Estudio   |
+| Pool                               | After Laughter                              | Paramore                   | Rock             | Inglés         | Estudio   |
+| That´s Us/Wild Combination         | Afternooners                                | Kraftwerk                  | Soul             | Aleman         | Estudio   |
+| Ojalá                              | Al final de este viaje                      | Silvio Rodriguez           | Folk             | Español        | Estudio   |
+| Playa Girón                        | Al final de este viaje                      | Silvio Rodriguez           | Folk             | Español        | Estudio   |
+| Quien fuera                        | Al final de este viaje                      | Silvio Rodriguez           | Folk             | Español        | Estudio   |
+| Unicornio                          | Al final de este viaje                      | Silvio Rodriguez           | Folk             | Español        | Estudio   |
+| Black Water Lilies                 | All My Demons Greeting Me as a Friend       | Aurora                     | Indie            | Inglés         | Estudio   |
+| Fireside                           | AM                                          | Arctic Monkeys             | Rock             | Inglés         | Estudio   |
+| I Want It All                      | AM                                          | Arctic Monkeys             | Rock             | Inglés         | Estudio   |
+| Tierra Ajena                       | Amor Supremo                                | Carla Morrison             | Pop              | Español        | Estudio   |
+| 1 on 1                             | Apex                                        | Excision                   | Electronica      | Inglés         | Estudio   |
+| BUITRES                            | Aroma a Nostalgia                           | Daniel Quién               | Indie            | Español        | Estudio   |
+| Heart                              | Atlas:Intelligence                          | Sleeping At Last           | Folk             | Aleman         | Estudio   |
+| Sun                                | Beacon                                      | Two door cinema club       | Indie            | Inglés         | Estudio   |
+| Goner                              | Blurryface                                  | Twenty One Pilots          | Rock             | Inglés         | Estudio   |
+| Not Today                          | Blurryface                                  | Twenty One Pilots          | Rock             | Inglés         | Estudio   |
+| BUITRES                            | CARAVANA                                    | WOS                        | Rap              | Español        | Estudio   |
+| I born for this                    | Carry On                                    | The Score                  | Rock             | Inglés         | Estudio   |
+| Cómo Te Extraño Mi Amor            | Celebrando una leyenda                      | Leo Dan                    | Heavy Metal      | Español        | Estudio   |
+| 911                                | Chromatica                                  | Lady Gaga                  | Pop              | Inglés         | Estudio   |
+| Little By Little                   | Cinema                                      | The Marías                 | Indie            | Inglés         | Estudio   |
+| Desnuda                            | Circo Soledad                               | Ricardo Arjona             | Pop              | Español        | Estudio   |
+| El amor                            | Circo Soledad                               | Ricardo Arjona             | Pop              | Español        | Estudio   |
+| Historia de Taxi                   | Circo Soledad                               | Ricardo Arjona             | Pop              | Español        | Estudio   |
+| Mujeres                            | Circo Soledad                               | Ricardo Arjona             | Pop              | Español        | Estudio   |
+| Señora de las cuatro décadas       | Circo Soledad                               | Ricardo Arjona             | Pop              | Español        | Estudio   |
+| El amor nunca pasa de moda         | Circología                                  | Los Caligaris              | Cumbia           | Español        | Estudio   |
+| Todos locos                        | Circología                                  | Los Caligaris              | Merengue         | Español        | Estudio   |
+| Vino y soda                        | Circología                                  | Los Caligaris              | Cumbia           | Español        | Estudio   |
+| Vivir por vos                      | Circología                                  | Los Caligaris              | Funk             | Español        | Estudio   |
+| Clarity                            | Clarity                                     | Zedd                       | Electronica      | Inglés         | Estudio   |
+| Spectrum                           | Clarity                                     | Zedd                       | Electronica      | Inglés         | Estudio   |
+| Estilo espacial                    | Club atletico decadente                     | Los Auténticos Decadentes  | Pop              | Español        | Estudio   |
+| Somos                              | Club atletico decadente                     | Los Auténticos Decadentes  | Tango            | Español        | Estudio   |
+| Float Away                         | Codename X                                  | Excision                   | Electronica      | Inglés         | Estudio   |
+| Vanille Fraise                     | Compañeros musicales                        | Caro Argueta               | Punk             | Inglés         | Acústico  |
+| Cats on Mars                       | Cowboy Bebop                                | Youko Kanno                | Electronica      | Inglés         | Estudio   |
+| Cry                                | Cry                                         | Cigarettes After Sex       | Pop              | Inglés         | Estudio   |
+| Falling in Love                    | Cry                                         | Cigarettes After Sex       | Pop              | Inglés         | Estudio   |
+| Preso                              | De Viaje                                    | José José                  | Soul             | Español        | Estudio   |
+| Si me dejas ahora                  | De Viaje                                    | José José                  | Soul             | Español        | Estudio   |
+| Una mañana                         | De Viaje                                    | José José                  | Soul             | Español        | Estudio   |
+| Volcán                             | De Viaje                                    | José José                  | Soul             | Español        | Estudio   |
+| Cruz de Navajas                    | Descanso Dominical                          | Mecano                     | Pop              | Español        | Estudio   |
+| Amarillo                           | Desde mi ventana                            | Julión Álvarez             | Corrido          | Español        | Estudio   |
+| Funk Hole                          | Destroid                                    | Excision                   | Electronica      | Inglés         | Estudio   |
+| Rock Bottom                        | Dirty Deeds Done Dirt Cheap                 | Chuck Berry                | Rock             | Español        | Estudio   |
+| Pastas y vino                      | El milagro argentino                        | Los Auténticos Decadentes  | Rock and Roll    | Español        | Estudio   |
+| Bye Bye                            | El Morroeste                                | Frankie Ruiz               | Rock             | Español        | Estudio   |
+| Ynlpa                              | El Morroeste                                | Funk Hole                  | Rap              | Español        | Estudio   |
+| Amnesia                            | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| El amar y querer                   | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| El triste                          | El principe                                 | José José                  | Pop              | Español        | Estudio   |
+| Gavilán o paloma                   | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| La nave del olvido                 | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Lágrimas                           | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Lo dudo                            | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Lo pasado pasado                   | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Lo que no fu no será               | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Me basta                           | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Payaso                             | El principe                                 | José José                  | Soul             | Español        | Estudio   |
+| Ya superame                        | En vivo desde Anaheim, CA                   | Grupo Firme                | Reggae           | Español        | Estudio   |
+| Next to me                         | Evolve                                      | Imagine Dragons            | Rock             | Inglés         | Estudio   |
+| Sicilian Clan                      | Exciting Times                              | John Zorn                  | Jazz             | Inglés         | Estudio   |
+| Parecemos tontos                   | Expectativas                                | Enrique Bunbury            | Pop              | Español        | Estudio   |
+| Poli                               | Firepower                                   | León Larregui              | Pop              | Inglés         | Estudio   |
+| Lucha de Gigantes                  | Flick of the Switch                         | freddie Mercury            | Heavy Metal      | Inglés         | Acústico  |
+| This is my trying                  | Folklore                                    | Taylor Swift               | Pop              | Inglés         | Estudio   |
+| Amtrak                             | Follow the Leader                           | Los Retros                 | Folk             | Inglés         | Estudio   |
+| Casio                              | For Ever                                    | Jungle                     | Electronica      | Inglés         | Estudio   |
+| Cherry                             | For Ever                                    | Jungle                     | Electronica      | Inglés         | Estudio   |
+| The last time                      | For the punx                                | Taylor Swift               | Pop              | Inglés         | Estudio   |
+| War to war                         | For the punx                                | The Casualties             | Punk             | Inglés         | Concierto |
+| Khmlwugh                           | Fresh Air                                   | Homeshake                  | Indie            | Chino mandarin | Estudio   |
+| Guns of Narvarone                  | From Paris With Love                        | The Skatalites             | Reggae           | Inglés         | Concierto |
+| Future Days                        | Future Days                                 | CAN                        | Rock             | Aleman         | Estudio   |
+| Love Again                         | Future Nostalgia                            | Dua Lipa                   | Disco            | Inglés         | Estudio   |
+| Cactus                             | Genelipsis                                  | Daniel Altamirano          | Punk             | Español        | Acústico  |
+| Girl On Fire                       | Girl On Fire                                | Alicia Keys                | Soul             | Inglés         | Estudio   |
+| Tears Always Win                   | Girl On Fire                                | Alicia Keys                | Soul             | Inglés         | Estudio   |
+| Greece                             | Greece                                      | DJ khaled & Drake          | Hip Hop          | Inglés         | Estudio   |
+| Halo theme                         | Halo                                        | Martin O Donnel            | Electronica      | Inglés         | Estudio   |
+| Not Enough                         | Hardwired... to Self-Destruct               | Jain                       | Blues            | Arabe          | Estudio   |
+| As It Was                          | Harry's House                               | Harry Styles               | Pop              | Inglés         | Estudio   |
+| Crave                              | Hidden Figures: The Album                   | Pharrell Williams          | Funk             | Aleman         | Estudio   |
+| Celos                              | Hombre                                      | José María Napoleón        | Pop              | Español        | Estudio   |
+| Hombre                             | Hombre                                      | José María Napoleón        | Pop              | Español        | Estudio   |
+| Leña verde                         | Hombre                                      | José María Napoleón        | Pop              | Español        | Estudio   |
+| Pajarillo                          | Hombre                                      | José María Napoleón        | Pop              | Español        | Estudio   |
+| Vive                               | Hombre                                      | José María Napoleón        | Pop              | Español        | Estudio   |
+| A-Punk                             | In Utero                                    | Elvis Presley              | Punk             | Inglés         | Concierto |
+| Harvey                             | Inquisition Symphony                        | Eicca Toppinen             | Cumbia           | Inglés         | Estudio   |
+| La innombrable                     | Julius Popper?                              | Julius Popper              | Rock             | Español        | Estudio   |
+| Heather                            | Kid Krow                                    | Conan Gray                 | Pop              | Inglés         | Estudio   |
+| Maniac                             | Kid Krow                                    | Conan Gray                 | Pop              | Inglés         | Estudio   |
+| Rimas Pa Seducir                   | La Dulzura                                  | Cultura Profética          | Reggae           | Español        | Estudio   |
+| Me gusta                           | La Radiolina                                | Manu Chao                  | Folk             | Español        | Estudio   |
+| Bailando Solo                      | La velocidad de la luz                      | Los bunkers                | Indie            | Español        | Estudio   |
+| Construção                         | Land of Cockayne                            | Chico Buarque              | Funk             | Portugues      | Estudio   |
+| 1969dime                           | Les juro que si llego                       | Nina Simone                | Pop              | Español        | Estudio   |
+| Moskau                             | Lets Play Two                               | Karen O                    | Blues            | Inglés         | Concierto |
+| Handsome Devil                     | Live in england                             | The Smiths                 | Indie            | Inglés         | Estudio   |
+| El noa noa                         | Los duo                                     | Juan Gabriel               | Folk             | Español        | Estudio   |
+| Un amor violento                   | Los Tres MTV Unplugged                      | Los tres                   | Pop              | Español        | Acústico  |
+| Todo de ti                         | Lost on You                                 | LP                         | Pop              | Inglés         | Acústico  |
+| Another One                        | Love Goes                                   | Sam Smith                  | Pop              | Inglés         | Estudio   |
+| Kids Again                         | Love Goes                                   | Sam Smith                  | Pop              | Aleman         | Estudio   |
+| Serendipity                        | Love Yourself: Her                          | RUZZI                      | Indie            | Español        | Estudio   |
+| Mala                               | Love-Paraiso                                | La Garfield                | Pop              | Inglés         | Estudio   |
+| afterglow                          | Lover                                       | Ed Sheeran                 | Pop              | Inglés         | Estudio   |
+| Lover                              | Lover                                       | Taylor Swift               | Pop              | Inglés         | Estudio   |
+| Taste the blood of altar wine      | Luciferian Light Orchestra                  | Luciferian light Orchestra | Heavy Metal      | Inglés         | Estudio   |
+| Árboles                            | Mango Negro                                 | Rubio                      | Pop              | Español        | Estudio   |
+| Dennis Rodman                      | Mansionz                                    | Mansionz & Dennis Rodman   | Rhythm and Blues | Inglés         | Estudio   |
+| Te guardo                          | Marchita                                    | Jan Romina                 | Pop              | Español        | Estudio   |
+| Naufrago                           | Memoria Futuro                              | Siddhartha                 | Indie            | Español        | Estudio   |
+| Bad Liar                           | Mercury – Act 1                             | Imagine Dragons            | Rock             | Inglés         | Estudio   |
+| Lobo-hombre en París               | Mil siluetas                                | La Unión                   | Rock             | Español        | Estudio   |
+| Moog City                          | Minecraft: Volume Alpha                     | C418                       | Electronica      | Inglés         | Estudio   |
+| Mis ojos lloran por ti             | Mis ojos lloran por ti                      | Big Boy & Angel Lopez      | Reggaeton        | Español        | Estudio   |
+| Anhelé                             | Moon Safari                                 | Sr. Bikini                 | Rap              | Inglés         | Estudio   |
+| Amores Perros                      | Mothership Connection                       | Cepillin                   | Rhythm and Blues | Español        | Acústico  |
+| Willow Tree                        | Mr Soul Of Jamaica                          | Miles Kane                 | Reggae           | Inglés         | Estudio   |
+| Amada amante                       | MTV Unplugged                               | Roberto Carlos             | Pop              | Español        | Estudio   |
+| Cama y mesa                        | MTV Unplugged                               | Roberto Carlos             | Pop              | Español        | Estudio   |
+| Concavo y convexo                  | MTV Unplugged                               | Roberto Carlos             | Pop              | Español        | Estudio   |
+| Que será de ti                     | MTV Unplugged                               | Roberto Carlos             | Pop              | Español        | Estudio   |
+| Yo te propongo                     | MTV Unplugged                               | Roberto Carlos             | Pop              | Español        | Estudio   |
+| Cuándo                             | Nave Espacial                               | RUZZI                      | Indie            | Español        | Estudio   |
+| Ready/Problems                     | Neighborhoods                               | Sexy Pigeon                | Disco            | Inglés         | Estudio   |
+| See You Again                      | Nine Track Mind                             | Charlie Puth               | Hip Hop          | Inglés         | Estudio   |
+| Ananas                             | No Code                                     | David Bowie                | Rock             | Español        | Concierto |
+| One More Night                     | No Jacket Required                          | Phil Collins               | Rock             | Inglés         | Estudio   |
+| Bartender                          | Norman F**king Rockwell                     | Lana del Rey               | Pop              | Inglés         | Estudio   |
+| Happiness is a butterfly           | Norman F**king Rockwell                     | Lana del Rey               | Pop              | Inglés         | Estudio   |
+| Furthest Thing                     | Nothing Was the Same                        | Drake                      | Hip Hop          | Inglés         | Estudio   |
+| Perdoname                          | Nuevas Metas                                | Factoria                   | Reggaeton        | Español        | Estudio   |
+| Zechriel                           | Obaa Sima                                   | John Zorn                  | Jazz             | Inglés         | Estudio   |
+| Tusa                               | Ocean                                       | Karol G                    | Reggaeton        | Español        | Estudio   |
+| Our Fire                           | Onyx                                        | Excision                   | Electronica      | Inglés         | Estudio   |
+| Like a stone                       | Out of exile                                | Audioslave                 | Rock             | Inglés         | Estudio   |
+| My time                            | Pale Machine                                | Bo en                      | Electronica      | Inglés         | Estudio   |
+| Marly-Gomont                       | Paradigmes                                  | Angus Young                | Heavy Metal      | Inglés         | Concierto |
+| Colocao                            | Parte de mí                                 | Nicki Nicole               | Rap              | Español        | Estudio   |
+| A different drum                   | Passion                                     | Peter Gabriel              | Indie            | Inglés         | Estudio   |
+| Lasso                              | Pork Soda                                   | Her´s                      | Indie            | Inglés         | Concierto |
+| It Takes Two                       | Prism                                       | Katy Perry                 | Pop              | Inglés         | Estudio   |
+| Nornir                             | Radio Onsen Utopia                          | Etsuko Yakushimaru         | Electronica      | Japones        | Estudio   |
+| Baila el funk                      | RE$FRIADO                                   | Kiddo Toto                 | Funk             | Español        | Estudio   |
+| Not Afraid                         | Recovery                                    | Eminem                     | Hip Hop          | Inglés         | Estudio   |
+| All too well                       | Red                                         | Taylor Swift               | Pop              | Inglés         | Estudio   |
+| Roxanne                            | Reggatta De Blanc                           | The Police                 | Rock             | Inglés         | Estudio   |
+| Nada                               | Reptilectric                                | Zoe                        | Indie            | Español        | Estudio   |
+| Getaway Car                        | Reputation                                  | Taylor Swift               | Pop              | Inglés         | Estudio   |
+| Ride the lightning                 | Ride the lightning                          | Metallica                  | Heavy Metal      | Inglés         | Estudio   |
+| The prayer                         | Ride Waves                                  | Griz                       | Electronica      | Inglés         | Estudio   |
+| Forgotten                          | Roy Pablo                                   | Carlos Santana             | Reggaeton        | Inglés         | Estudio   |
+| El diablo anda suelto              | Santos grifos                               | La Santa Grifa             | Rap              | Español        | Estudio   |
+| Se te nota                         | Se te nota                                  | Lele Pons & Guaynaa        | Indie            | Español        | Estudio   |
+| Cthulhu Song                       | Shriek                                      | Shriek                     | Rock             | Inglés         | Estudio   |
+| Kids Again                         | Simulation Theory(Super Deluxe)             | Muse                       | Rock             | Inglés         | Estudio   |
+| A rancid romance                   | Sing Along Songs for the Damned & Delirious | Diablo Swing Orchestra     | Heavy Metal      | Inglés         | Estudio   |
+| Dejaria todo                       | Singles                                     | Chayanne                   | Pop              | Español        | Estudio   |
+| Torero                             | Singles                                     | Chayanne                   | Pop              | Español        | Estudio   |
+| Land of canaan                     | Sitra Ahra                                  | Therion                    | Heavy Metal      | Inglés         | Estudio   |
+| La parada del bus                  | Smile                                       | Charles Ans                | Hip Hop          | Español        | Estudio   |
+| Snailchan Adventure                | Snailchan Adventure                         | Snails House               | Electronica      | Inglés         | Estudio   |
+| Beggin                             | So Dark the Con of Man                      | Madcon                     | Hip Hop          | Aleman         | Estudio   |
+| Great DJ                           | Some Girls                                  | Fur                        | Heavy Metal      | Inglés         | Estudio   |
+| Bonnie Hill                        | Songs for Dads                              | Tom Morello                | Rock             | Inglés         | Estudio   |
+| These Days                         | Spring ep                                   | Wallows                    | Punk             | Inglés         | Estudio   |
+| Supernature                        | Teenage Dreams                              | Aphex Twin                 | Punk             | Arabe          | Estudio   |
+| Tell Me You Love Me                | Tell Me You Love Me                         | Demi lovato                | Pop              | Inglés         | Estudio   |
+| Lets leave in The Morning          | The Dark Ride                               | Boy Pablo                  | Indie            | Chino mandarin | Estudio   |
+| Reign of Terror                    | The frozen tears of angels                  | Rhapsody of fire           | Heavy Metal      | Inglés         | Estudio   |
+| The Real Slim Shady                | The Marshall Mathers LP                     | Eminem                     | Hip Hop          | Inglés         | Estudio   |
+| It Was A Good Day                  | The Predator                                | Ice Cube                   | Hip Hop          | Inglés         | Estudio   |
+| Indo Silver Club                   | The Room                                    | Mos Def                    | Electronica      | Español        | Estudio   |
+| Aire                               | Tiempos mejores                             | Comisario Pantera          | Rock             | Español        | Estudio   |
+| How much a dollar cost             | To pimp a butterfly                         | Kendrick Lamar             | Hip Hop          | Inglés         | Estudio   |
+| Solegrande                         | Tornaluna                                   | Vanessa Zamora             | Indie            | Español        | Estudio   |
+| Preso                              | Tributo a José José                         | Aleks Syntek               | Pop              | Español        | Estudio   |
+| Una mañana                         | Tributo a José José                         | Café Tacuba                | Funk             | Español        | Estudio   |
+| Amnesia                            | Tributo a José José                         | Control Machete            | Rock             | Español        | Estudio   |
+| Lo que no fu no será               | Tributo a José José                         | El Gran Silencio           | Rock             | Español        | Estudio   |
+| Si me dejas ahora                  | Tributo a José José                         | Leonardo de Lozanne        | Pop              | Español        | Estudio   |
+| Lo pasado pasado                   | Tributo a José José                         | Maldita Vecindad           | Rock             | Español        | Estudio   |
+| Volcán                             | Tributo a José José                         | Moenia                     | Pop              | Español        | Estudio   |
+| Payaso                             | Tributo a José José                         | Molotov                    | Punk             | Español        | Estudio   |
+| The Morning                        | Trilogy                                     | The Weeknd                 | Rhythm and Blues | Inglés         | Estudio   |
+| Hold You in My Arms                | Trouble                                     | Ray LaMontagne             | Folk             | Aleman         | Estudio   |
+| Esclavo de tu amor                 | Último Acto                                 | Vicentico                  | Soul             | Español        | Estudio   |
+| Las estrellas                      | Último Acto                                 | Vicentico                  | Pop              | Español        | Estudio   |
+| Puro Teatro                        | Último Acto                                 | Vicentico                  | Funk             | Español        | Estudio   |
+| Sólo otra vez                      | Último Acto                                 | Vicentico                  | Soul             | Español        | Estudio   |
+| Sólo un momento                    | Último Acto                                 | Vicentico                  | Soul             | Español        | Estudio   |
+| Viento                             | Último Acto                                 | Vicentico                  | Country          | Español        | Estudio   |
+| Ou va le monde                     | Underclass Hero                             | Chester Bennington         | Blues            | Frances        | Concierto |
+| Might Not                          | Up for the Days                             | Belly & The Weeknd         | Hip Hop          | Inglés         | Estudio   |
+| Uranium Fever                      | Uranium Fever                               | Elton Britt                | Electronica      | Inglés         | Estudio   |
+| Te quiero así                      | Vencedor                                    | Valentin Elizalde          | Heavy Metal      | Español        | Estudio   |
+| Interstellar                       | Virus                                       | Excision                   | Electronica      | Inglés         | Estudio   |
+| Bidi bidi bom                      | Vivo                                        | Selena                     | Cumbia           | Español        | Estudio   |
+| Como la flor                       | Vivo                                        | Selena                     | Cumbia           | Español        | Estudio   |
+| La innombrable                     | Volcán                                      | AQUIHAYAQUIHAY             | Pop              | Español        | Estudio   |
+| Campus                             | Vulgar Display of Power                     | Alan Hetfield              | Country          | Español        | Acústico  |
+| Cheap thrills                      | We are born                                 | Sia                        | Pop              | Inglés         | Estudio   |
+| everything i wanted                | When We All Fall Asleep, Where Do We Go?    | Billie Eilish              | Pop              | Inglés         | Estudio   |
+| Don't                              | X                                           | Ed Sheeran                 | Pop              | Inglés         | Estudio   |
+| Sing                               | X                                           | Ed Sheeran                 | Pop              | Inglés         | Estudio   |
+| The A Team                         | X                                           | Ed Sheeran                 | Pop              | Inglés         | Estudio   |
+| La Difícil                         | YHLQMDLG                                    | Bad Bunny                  | Reggaeton        | Español        | Estudio   |
+| La Santa                           | YHLQMDLG                                    | Bad Bunny                  | Reggaeton        | Español        | Estudio   |
+| Safaera                            | YHLQMDLG                                    | Bad Bunny                  | Reggaeton        | Español        | Estudio   |
+| Yo Perreo Sola                     | YHLQMDLG                                    | Bad Bunny                  | Reggaeton        | Español        | Estudio   |
++------------------------------------+---------------------------------------------+----------------------------+------------------+----------------+-----------+
+237 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql># 6.
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql>SELECT CONCAT(nombre,' ', apellido_paterno) AS 'Cliente', id_ticket, 
+    -> 	GROUP_CONCAT(titulo SEPARATOR " :: ") AS 'Discos vendidos por ticket'
+    -> FROM detalle_ticket
+    -> 	NATURAL JOIN disco
+    -> 	NATURAL JOIN ticket 
+    -> 	NATURAL JOIN cliente 
+    -> GROUP BY id_ticket
+    -> ORDER BY id_ticket;
++-------------------+-----------+---------------------------------------------------+
+| Cliente           | id_ticket | Discos vendidos por ticket                        |
++-------------------+-----------+---------------------------------------------------+
+| César Ramírez     |         1 | Simulation Theory(Super Deluxe) :: After Laughter |
+| Abril Alarcón     |         2 | Abbey Road                                        |
+| Cristina Sánchez  |         3 | Último Acto                                       |
+| Alexis Martínez   |         4 | 21 :: Carry On :: Evolve :: YHLQMDLG              |
+| Alma Maguey       |         5 | Tributo a José José                               |
+| Axa Sánchez       |         6 | Spring ep :: Reptilectric :: AM                   |
+| Fernando Becerril |         8 | Nuevas Metas                                      |
+| Fernando Becerril |        10 | Trilogy :: 21st Century Breakdown                 |
+| Jesús Morales     |        12 | Carry On                                          |
+| Abril Alarcón     |        13 | Love Goes                                         |
+| Hannia Sánchez    |        20 | Club atletico decadente :: De Viaje               |
+| Ricardo Gonzalez  |        21 | After Hours                                       |
++-------------------+-----------+---------------------------------------------------+
+12 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql># 7.
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql>SELECT CONCAT(nombre,' ', apellido_paterno) AS 'Cliente', id_ticket, 
+    -> 	JSON_ARRAYAGG(titulo) AS 'Discos vendidos por ticket'
+    -> FROM detalle_ticket
+    -> 	NATURAL JOIN disco
+    -> 	NATURAL JOIN ticket 
+    -> 	NATURAL JOIN cliente 
+    -> GROUP BY id_ticket
+    -> ORDER BY id_ticket;
++-------------------+-----------+-------------------------------------------------------+
+| Cliente           | id_ticket | Discos vendidos por ticket                            |
++-------------------+-----------+-------------------------------------------------------+
+| César Ramírez     |         1 | ["Simulation Theory(Super Deluxe)", "After Laughter"] |
+| Abril Alarcón     |         2 | ["Abbey Road"]                                        |
+| Cristina Sánchez  |         3 | ["Último Acto"]                                       |
+| Alexis Martínez   |         4 | ["21", "Carry On", "Evolve", "YHLQMDLG"]              |
+| Alma Maguey       |         5 | ["Tributo a José José"]                               |
+| Axa Sánchez       |         6 | ["Spring ep", "Reptilectric", "AM"]                   |
+| Fernando Becerril |         8 | ["Nuevas Metas"]                                      |
+| Fernando Becerril |        10 | ["Trilogy", "21st Century Breakdown"]                 |
+| Jesús Morales     |        12 | ["Carry On"]                                          |
+| Abril Alarcón     |        13 | ["Love Goes"]                                         |
+| Hannia Sánchez    |        20 | ["Club atletico decadente", "De Viaje"]               |
+| Ricardo Gonzalez  |        21 | ["After Hours"]                                       |
++-------------------+-----------+-------------------------------------------------------+
+12 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql># 8.
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql>SELECT CONCAT(nombre,' ', apellido_paterno) AS 'Cliente', id_ticket, 
+    -> 	JSON_OBJECTAGG(titulo, cantidad) AS 'Discos vendidos por ticket', ROUND(SUM(precio*cantidad), 0) AS 'total'
+    -> FROM detalle_ticket
+    -> 	NATURAL JOIN disco
+    -> 	NATURAL JOIN ticket 
+    -> 	NATURAL JOIN cliente 
+    -> GROUP BY id_ticket
+    -> ORDER BY id_ticket;
++-------------------+-----------+-------------------------------------------------------------+-------+
+| Cliente           | id_ticket | Discos vendidos por ticket                                  | total |
++-------------------+-----------+-------------------------------------------------------------+-------+
+| César Ramírez     |         1 | {"After Laughter": 2, "Simulation Theory(Super Deluxe)": 1} |   690 |
+| Abril Alarcón     |         2 | {"Abbey Road": 3}                                           |   576 |
+| Cristina Sánchez  |         3 | {"Último Acto": 2}                                          |   770 |
+| Alexis Martínez   |         4 | {"21": 1, "Evolve": 2, "Carry On": 1, "YHLQMDLG": 2}        |  1410 |
+| Alma Maguey       |         5 | {"Tributo a José José": 1}                                  |   226 |
+| Axa Sánchez       |         6 | {"AM": 1, "Spring ep": 1, "Reptilectric": 1}                |   653 |
+| Fernando Becerril |         8 | {"Nuevas Metas": 1}                                         |   200 |
+| Fernando Becerril |        10 | {"Trilogy": 2, "21st Century Breakdown": 1}                 |   600 |
+| Jesús Morales     |        12 | {"Carry On": 1}                                             |   350 |
+| Abril Alarcón     |        13 | {"Love Goes": 5}                                            |   895 |
+| Hannia Sánchez    |        20 | {"De Viaje": 1, "Club atletico decadente": 2}               |   743 |
+| Ricardo Gonzalez  |        21 | {"After Hours": 1}                                          |   180 |
++-------------------+-----------+-------------------------------------------------------------+-------+
+12 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql># 9.
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql>SELECT CONCAT(nombre,' ', apellido_paterno) AS 'Cliente', id_ticket, DATE(fecha) AS 'Fecha de venta',
+    -> 	titulo AS 'Disco', cantidad, CONCAT('$', ROUND(precio, 1)) AS 'Precio', 
+    -> 	LPAD(CONCAT('$', ROUND(precio*cantidad, 1)), LENGTH('Subtotal'), ' ') AS 'Subtotal'
+    -> FROM ticket
+    -> 	NATURAL JOIN detalle_ticket
+    -> 	NATURAL JOIN cliente
+    -> 	NATURAL JOIN disco
+    -> WHERE id_cliente IN (SELECT id_cliente
+    -> 	FROM ticket
+    -> 	GROUP BY 1
+    -> 	HAVING COUNT(id_ticket)>1)
+    -> ORDER BY 1;
++-------------------+-----------+----------------+---------------------------------+----------+--------+----------+
+| Cliente           | id_ticket | Fecha de venta | Disco                           | cantidad | Precio | Subtotal |
++-------------------+-----------+----------------+---------------------------------+----------+--------+----------+
+| Abril Alarcón     |         2 | 2020-02-22     | Abbey Road                      |        3 | $192.0 |   $576.0 |
+| Abril Alarcón     |        13 | 2019-11-20     | Love Goes                       |        5 | $179.0 |   $895.0 |
+| César Ramírez     |         1 | 2019-01-23     | Simulation Theory(Super Deluxe) |        1 | $290.0 |   $290.0 |
+| César Ramírez     |         1 | 2019-01-23     | After Laughter                  |        2 | $200.0 |   $400.0 |
+| Fernando Becerril |         8 | 2020-06-23     | Nuevas Metas                    |        1 | $200.0 |   $200.0 |
+| Fernando Becerril |        10 | 2019-09-01     | Trilogy                         |        2 | $200.0 |   $400.0 |
+| Fernando Becerril |        10 | 2019-09-01     | 21st Century Breakdown          |        1 | $200.0 |   $200.0 |
++-------------------+-----------+----------------+---------------------------------+----------+--------+----------+
+7 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql># 10.
+(AngelOcampo en: pixup \Tue May  2 03:08:54 2023) mysql>SELECT CONCAT(nombre,' ', apellido_paterno) AS 'Cliente', id_ticket, DATE(fecha) AS 'Fecha de venta',
+    -> 	JSON_OBJECTAGG(titulo, cantidad) AS 'Discos vendidos por ticket', 
+    -> 	LPAD(CONCAT('$', FORMAT(ROUND(SUM(precio*cantidad), 0), 1)), LENGTH('Total pagado'), ' ') AS 'Total pagado'
+    -> FROM ticket
+    -> 	NATURAL JOIN detalle_ticket
+    -> 	NATURAL JOIN cliente
+    -> 	NATURAL JOIN disco
+    -> WHERE id_cliente IN (SELECT id_cliente
+    -> 	FROM ticket
+    -> 	GROUP BY id_cliente
+    -> 	HAVING COUNT(id_ticket)=1
+    -> 	ORDER BY 1
+    -> 	)
+    -> GROUP BY id_ticket
+    -> ORDER BY id_direccion;  
++-------------------+-----------+----------------+------------------------------------------------------+--------------+
+| Cliente           | id_ticket | Fecha de venta | Discos vendidos por ticket                           | Total pagado |
++-------------------+-----------+----------------+------------------------------------------------------+--------------+
+| Alexis Martínez   |         4 | 2020-11-20     | {"21": 1, "Evolve": 2, "Carry On": 1, "YHLQMDLG": 2} |     $1,410.0 |
+| Alma Maguey       |         5 | 2020-12-13     | {"Tributo a José José": 1}                           |       $226.0 |
+| Axa Sánchez       |         6 | 2019-05-03     | {"AM": 1, "Spring ep": 1, "Reptilectric": 1}         |       $653.0 |
+| Cristina Sánchez  |         3 | 2018-03-28     | {"Último Acto": 2}                                   |       $770.0 |
+| Jesús Morales     |        12 | 2017-10-02     | {"Carry On": 1}                                      |       $350.0 |
+| Hannia Sánchez    |        20 | 2019-05-19     | {"De Viaje": 1, "Club atletico decadente": 2}        |       $743.0 |
+| Ricardo Gonzalez  |        21 | 2018-06-04     | {"After Hours": 1}                                   |       $180.0 |
++-------------------+-----------+----------------+------------------------------------------------------+--------------+
+7 rows in set (0.00 sec)
+
+(AngelOcampo en: pixup \Tue May  2 03:08:55 2023) mysql>NOTEE;

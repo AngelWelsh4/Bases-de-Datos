@@ -1,0 +1,50 @@
+mysql> SELECT customername AS 'nombre-empresa', c.city AS 'ciudad-empresa', 
+    -> 	CONCAT('$', FORMAT(monto, 2)) AS 'gasto-empresa',
+    -> 	CASE 
+    -> 		WHEN CONCAT(firstname, ' ', lastname) IS NULL THEN '-'
+    -> 		ELSE CONCAT(firstname, ' ', lastname)
+    -> 		END AS 'representante-venta', 
+    -> 	CASE 
+    -> 		WHEN o.postalcode IS NULL THEN '-'
+    -> 		ELSE o.postalcode 
+    -> 		END AS 'CP-oficina'
+    -> FROM ((SELECT customernumber, sum(amount) AS 'monto' 
+    -> 	FROM payments
+    -> 	GROUP BY 1
+    -> 	HAVING sum(amount)>200000)
+    -> 	UNION
+    -> 	(SELECT customernumber, CASE 
+    -> 		WHEN monto2 IS NOT NULL THEN monto2
+    -> 		ELSE 0
+    -> 		END AS 'monto'
+    -> 	FROM 
+    -> 		(SELECT customernumber
+    -> 		FROM customers
+    -> 		WHERE city LIKE 'P%') AS t1
+    -> 		LEFT JOIN 
+    -> 		(SELECT customernumber, sum(amount) AS 'monto2'
+    -> 		FROM payments
+    -> 		GROUP BY 1
+    -> 		ORDER BY sum(amount) DESC) AS t2
+    -> 		USING(customernumber))
+    -> 	ORDER BY 2 DESC) AS subconsulta
+    -> 	NATURAL JOIN customers AS c
+    -> 	LEFT JOIN employees ON salesrepemployeenumber=employeenumber
+    -> 	LEFT JOIN offices AS o USING (officecode) 
+    -> ;
++------------------------------+----------------+---------------+---------------------+------------+
+| nombre-empresa               | ciudad-empresa | gasto-empresa | representante-venta | CP-oficina |
++------------------------------+----------------+---------------+---------------------+------------+
+| Euro+ Shopping Channel       | Madrid         | $715,738.98   | Gerard Hernandez    | 75017      |
+| Mini Gifts Distributors Ltd. | San Rafael     | $584,188.24   | Leslie Jennings     | 94080      |
+| Toys4GrownUps.com            | Pasadena       | $93,803.30    | Leslie Thompson     | 94080      |
+| La Corne D'abondance, Co.    | Paris          | $86,553.52    | Loui Bondur         | 75017      |
+| Auto Canal+ Petit            | Paris          | $86,436.97    | Loui Bondur         | 75017      |
+| Motor Mint Distributors Inc. | Philadelphia   | $77,726.59    | George Vanauf       | 10022      |
+| Lyon Souveniers              | Paris          | $67,659.19    | Loui Bondur         | 75017      |
+| Classic Gift Ideas, Inc      | Philadelphia   | $57,939.34    | Julie Firrelli      | 02107      |
+| Paris Collectable Exchange   | Paris          | $0.00         | -                   | -          |
++------------------------------+----------------+---------------+---------------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> NOTEE;

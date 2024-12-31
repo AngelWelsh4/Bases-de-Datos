@@ -1,0 +1,466 @@
+﻿mysql> PROMPT (AngelOcampo en: \d \\\D) mysql>
+PROMPT set to '(AngelOcampo en: \d \\\D) mysql>'
+(AngelOcampo en: (none) \Thu Apr 27 10:23:22 2023) mysql>/*
+   /*> =================================
+   /*> Ejercicio de participación 4: Update
+   /*> Nombre: Ocampo García Victor Emmanuel Miguel Ángel
+   /*> Fecha: 25-04-23
+   /*> =================================
+   /*> */
+(AngelOcampo en: (none) \Thu Apr 27 10:23:38 2023) mysql>USE collectionhw;
+Database changed
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:38 2023) mysql># 1.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:38 2023) mysql>DROP TABLE IF EXISTS carritosAOG;
+Query OK, 0 rows affected (0.32 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:39 2023) mysql>CREATE TABLE IF NOT EXISTS carritosAOG AS SELECT * FROM carritos;
+Query OK, 346 rows affected (1.07 sec)
+Records: 346  Duplicates: 0  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql># 2.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>SELECT DISTINCT color FROM carritosAOG ORDER BY 1;
++---------------------------------+
+| color                           |
++---------------------------------+
+| Antifreeze Green                |
+| Black                           |
+| Blue                            |
+| Brown                           |
+| Chrome & Dk. Blue               |
+| Clear Blue                      |
+| Clear Orange                    |
+| Clear Purple                    |
+| Clear Red                       |
+| Clear Yellow                    |
+| Day-Glo Orange                  |
+| DayGlo Yellow                   |
+| Dk. Blue                        |
+| Dk. Green                       |
+| Dk. Olive Green                 |
+| Dk. Yellow                      |
+| Green                           |
+| Grey                            |
+| Lime Green                      |
+| Lt. Blue                        |
+| Magenta                         |
+| Matte Black                     |
+| Matte Blue                      |
+| Matte Dk. Olive                 |
+| Matte Silver                    |
+| Mtflk. Aqua                     |
+| Mtflk. Aqua Blue                |
+| Mtflk. Black                    |
+| Mtflk. Blue                     |
+| Mtflk. Brown                    |
+| Mtflk. Copper                   |
+| Mtflk. Dk. Blue                 |
+| Mtflk. Dk. Copper               |
+| Mtflk. Dk. Green                |
+| Mtflk. Dk. Magenta              |
+| Mtflk. Dk. Orange               |
+| Mtflk. Dk. Purple               |
+| Mtflk. Dk. Red                  |
+| Mtflk. Dk. Red & Gold Chrome    |
+| Mtflk. Dk. Teal & Orange        |
+| Mtflk. Gold                     |
+| Mtflk. Green                    |
+| Mtflk. Grey                     |
+| Mtflk. Lt. Blue                 |
+| Mtflk. Magenta                  |
+| Mtflk. Midnight Blue            |
+| Mtflk. Olive                    |
+| Mtflk. Orange                   |
+| Mtflk. Plum Purple              |
+| Mtflk. Purple                   |
+| Mtflk. Red                      |
+| Mtflk. Red & Yellow             |
+| Mtflk. Silver                   |
+| Mtflk. Silver & Black           |
+| Mtflk. Steel Blue               |
+| Mtflk. Teal                     |
+| Orange                          |
+| Pearl Aqua                      |
+| Pearl Brown                     |
+| Pearl Dk. Magenta               |
+| Pearl Dk. Yellow                |
+| Pearl Green                     |
+| Pearl Lt. Blue                  |
+| Pearl Magenta                   |
+| Pearl Pink                      |
+| Pearl Turqouise                 |
+| Pearl Violet                    |
+| Pearl White                     |
+| Pearl White w/Clear Aqua Canopy |
+| Pearl Yellow                    |
+| Red                             |
+| Red & Clear Blue                |
+| Red & Turquoise                 |
+| Satin Blue                      |
+| Satin Blue & Clear              |
+| Satin Copper                    |
+| Satin Dk. Orange                |
+| Satin Dk. Red                   |
+| Satin Gold                      |
+| Satin Green                     |
+| Satin Lime Green                |
+| Satin Lt. Blue                  |
+| Silver & Mtflk. Teal            |
+| Spectraflame Aqua Blue          |
+| Spectraflame Black              |
+| Spectraflame Blue               |
+| Spectraflame Dk. Copper         |
+| Spectraflame Dk. Orange         |
+| Spectraflame Dk. Red            |
+| Spectraflame Green              |
+| Spectraflame Purple             |
+| Spectraflame Red                |
+| Spectraflame Red & White        |
+| Tan                             |
+| Turquoise                       |
+| White                           |
+| White & Clear Dk. Magenta       |
+| Yellow                          |
++---------------------------------+
+98 rows in set (0.08 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql># 3.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>UPDATE carritosAOG 
+    -> SET color=SUBSTRING(color, LENGTH('Mtflk. _'), LENGTH(color)) 
+    -> WHERE color LIKE 'Mtflk.%';
+Query OK, 126 rows affected (0.18 sec)
+Rows matched: 126  Changed: 126  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>UPDATE carritosAOG 
+    -> SET color=SUBSTRING(color, LENGTH('Satin _'), LENGTH(color)) 
+    -> WHERE color LIKE 'Satin%';
+Query OK, 16 rows affected (0.21 sec)
+Rows matched: 16  Changed: 16  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:40 2023) mysql>UPDATE carritosAOG 
+    -> SET color=SUBSTRING(color, LENGTH('Spectraflame _'), LENGTH(color)) 
+    -> WHERE color LIKE 'Spectraflame%';
+Query OK, 15 rows affected (0.14 sec)
+Rows matched: 15  Changed: 15  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql># 4.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql>SELECT DISTINCT color FROM carritosAOG ORDER BY 1;
++---------------------------------+
+| color                           |
++---------------------------------+
+| Antifreeze Green                |
+| Aqua                            |
+| Aqua Blue                       |
+| Black                           |
+| Blue                            |
+| Blue & Clear                    |
+| Brown                           |
+| Chrome & Dk. Blue               |
+| Clear Blue                      |
+| Clear Orange                    |
+| Clear Purple                    |
+| Clear Red                       |
+| Clear Yellow                    |
+| Copper                          |
+| Day-Glo Orange                  |
+| DayGlo Yellow                   |
+| Dk. Blue                        |
+| Dk. Copper                      |
+| Dk. Green                       |
+| Dk. Magenta                     |
+| Dk. Olive Green                 |
+| Dk. Orange                      |
+| Dk. Purple                      |
+| Dk. Red                         |
+| Dk. Red & Gold Chrome           |
+| Dk. Teal & Orange               |
+| Dk. Yellow                      |
+| Gold                            |
+| Green                           |
+| Grey                            |
+| Lime Green                      |
+| Lt. Blue                        |
+| Magenta                         |
+| Matte Black                     |
+| Matte Blue                      |
+| Matte Dk. Olive                 |
+| Matte Silver                    |
+| Midnight Blue                   |
+| Olive                           |
+| Orange                          |
+| Pearl Aqua                      |
+| Pearl Brown                     |
+| Pearl Dk. Magenta               |
+| Pearl Dk. Yellow                |
+| Pearl Green                     |
+| Pearl Lt. Blue                  |
+| Pearl Magenta                   |
+| Pearl Pink                      |
+| Pearl Turqouise                 |
+| Pearl Violet                    |
+| Pearl White                     |
+| Pearl White w/Clear Aqua Canopy |
+| Pearl Yellow                    |
+| Plum Purple                     |
+| Purple                          |
+| Red                             |
+| Red & Clear Blue                |
+| Red & Turquoise                 |
+| Red & White                     |
+| Red & Yellow                    |
+| Silver                          |
+| Silver & Black                  |
+| Silver & Mtflk. Teal            |
+| Steel Blue                      |
+| Tan                             |
+| Teal                            |
+| Turquoise                       |
+| White                           |
+| White & Clear Dk. Magenta       |
+| Yellow                          |
++---------------------------------+
+70 rows in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql># 5.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql>UPDATE carritosAOG 
+    -> SET ubicacion='Perisur' 
+    -> WHERE ubicacion IS NULL 
+    -> 	AND color='Red' 
+    -> 	AND (series LIKE '%Stars%' OR series LIKE '%Racers%' OR series LIKE '%Muscle%');
+Query OK, 14 rows affected (0.19 sec)
+Rows matched: 14  Changed: 14  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql># 6.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql>UPDATE carritosAOG
+    -> SET notas=CONCAT(modelo, ' modelo corregido'), modelo=SUBSTRING(nombre, 1, 4)*1
+    -> WHERE nombre LIKE '19__ %' OR nombre LIKE '20__ %'; 
+Query OK, 12 rows affected (0.21 sec)
+Rows matched: 12  Changed: 12  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql># 7.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:41 2023) mysql>ALTER TABLE carritosAOG
+    -> ADD precioNuevo DECIMAL(10,2) DEFAULT 0.0 
+    -> AFTER precio;
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql># 8.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>SELECT nombre, modelo, precio, precioNuevo FROM carritosAOG LIMIT 10;
++----------------------------+--------+--------+-------------+
+| nombre                     | modelo | precio | precioNuevo |
++----------------------------+--------+--------+-------------+
+| Imparable                  |   2016 |    126 |        0.00 |
+| Ford Falcon Race Car       |   2007 |   1108 |        0.00 |
+| BMW M3 GT2                 |   2013 |    217 |        0.00 |
+| '71 Plymouth Road Runner   |   2009 |    372 |        0.00 |
+| Growler                    |   2004 |    839 |        0.00 |
+| Funny Side Up              |   2019 |    890 |        0.00 |
+| 2013 Viper SRT             |   2013 |    745 |        0.00 |
+| '12 Lamborghini Aventador  |   2009 |    459 |        0.00 |
+| Hypertruck                 |   2003 |    174 |        0.00 |
+| Spin King                  |   2007 |    342 |        0.00 |
++----------------------------+--------+--------+-------------+
+10 rows in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql># 9.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>UPDATE carritosAOG
+    -> SET precioNuevo=precio*(1-.25)
+    -> WHERE modelo=2012;
+Query OK, 24 rows affected (0.06 sec)
+Rows matched: 24  Changed: 24  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>UPDATE carritosAOG
+    -> SET precioNuevo=precio*(1-.20)
+    -> WHERE modelo=2019;
+Query OK, 22 rows affected (0.06 sec)
+Rows matched: 22  Changed: 22  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>UPDATE carritosAOG
+    -> SET precioNuevo=precio*(1-.10)
+    -> WHERE modelo=2010 OR modelo=2013 OR modelo=2020;
+Query OK, 35 rows affected (0.05 sec)
+Rows matched: 35  Changed: 35  Warnings: 0
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql># 10.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>SELECT modelo, COUNT(*) AS 'Total de carritos' 
+    -> FROM carritosAOG
+    -> GROUP BY 1
+    -> ORDER BY 2 DESC;
++--------+-------------------+
+| modelo | Total de carritos |
++--------+-------------------+
+|   2012 |                24 |
+|   2007 |                23 |
+|   2019 |                22 |
+|   2009 |                21 |
+|   2004 |                21 |
+|   1998 |                20 |
+|   2006 |                20 |
+|   2010 |                20 |
+|   2002 |                18 |
+|   2016 |                16 |
+|   2013 |                15 |
+|   2003 |                15 |
+|   2018 |                15 |
+|   2001 |                14 |
+|   2014 |                14 |
+|   2008 |                14 |
+|   2017 |                14 |
+|   2000 |                11 |
+|   2011 |                 9 |
+|   2005 |                 9 |
+|   1999 |                 5 |
+|   2015 |                 5 |
+|   1985 |                 1 |
++--------+-------------------+
+23 rows in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql># 11.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>SELECT nombre, modelo, precio, ROUND(precioNuevo, 1) AS 'precio con descuento', ROUND(precio-precioNuevo, 1) AS 'cantidad descontada',
+    -> ROUND(((precio-precioNuevo)/precio)*100, 0) AS '% de descuento' 
+    -> FROM carritosAOG
+    -> WHERE precioNuevo!=0.0
+    -> ORDER BY 2;
++------------------------------------+--------+--------+----------------------+---------------------+----------------+
+| nombre                             | modelo | precio | precio con descuento | cantidad descontada | % de descuento |
++------------------------------------+--------+--------+----------------------+---------------------+----------------+
+| Volkswagen Beetle                  |   2010 |    314 |                282.6 |                31.4 |             10 |
+| 2010 Ford Mustang GT               |   2010 |    584 |                525.6 |                58.4 |             10 |
+| Ducati 1098                        |   2010 |   1094 |                984.6 |               109.4 |             10 |
+| '70 Camaro Road Race               |   2010 |   1679 |               1511.1 |               167.9 |             10 |
+| Mitsubishi 2008 Lancer Evolution   |   2010 |    956 |                860.4 |                95.6 |             10 |
+| Dodge Challenger Concept           |   2010 |   1683 |               1514.7 |               168.3 |             10 |
+| Custom '64 Galaxie 500             |   2010 |   1785 |               1606.5 |               178.5 |             10 |
+| '64 Lincoln Continental            |   2010 |    272 |                244.8 |                27.2 |             10 |
+| Yur So Fast                        |   2010 |   1926 |               1733.4 |               192.6 |             10 |
+| Split Vision                       |   2010 |    198 |                178.2 |                19.8 |             10 |
+| Canyon Carver                      |   2010 |   1968 |               1771.2 |               196.8 |             10 |
+| 2010 Chevy Impala                  |   2010 |   1496 |               1346.4 |               149.6 |             10 |
+| '70 Chevy Camaro RS                |   2010 |   1757 |               1581.3 |               175.7 |             10 |
+| Dieselboy                          |   2010 |    571 |                513.9 |                57.1 |             10 |
+| 2010 Ford Mustang GT               |   2010 |   1321 |               1188.9 |               132.1 |             10 |
+| Skull Crusher                      |   2010 |    280 |                252.0 |                28.0 |             10 |
+| Cadillac Cien Concept              |   2010 |   1026 |                923.4 |               102.6 |             10 |
+| 2010 Chevy Impala                  |   2010 |   1973 |               1775.7 |               197.3 |             10 |
+| Twin Mill III                      |   2010 |   1021 |                918.9 |               102.1 |             10 |
+| '10 Camaro SS                      |   2010 |    678 |                610.2 |                67.8 |             10 |
+| Scoopa Di Fuego                    |   2012 |   1876 |               1407.0 |               469.0 |             25 |
+| Tread Air                          |   2012 |    659 |                494.3 |               164.8 |             25 |
+| Mad Propz                          |   2012 |   1026 |                769.5 |               256.5 |             25 |
+| Volkswagen Brasilia                |   2012 |   1024 |                768.0 |               256.0 |             25 |
+| Cadillac CTS V                     |   2012 |   1821 |               1365.8 |               455.3 |             25 |
+| 2012 Volkswagen Beetle             |   2012 |    241 |                180.8 |                60.3 |             25 |
+| Snow Ride                          |   2012 |   1093 |                819.8 |               273.3 |             25 |
+| Dirty Outlaw                       |   2012 |    665 |                498.8 |               166.3 |             25 |
+| The Bat                            |   2012 |    819 |                614.3 |               204.8 |             25 |
+| Megane Trophy                      |   2012 |    683 |                512.3 |               170.8 |             25 |
+| Street Creeper                     |   2012 |    155 |                116.3 |                38.8 |             25 |
+| Combat Medic                       |   2012 |    574 |                430.5 |               143.5 |             25 |
+| Fast Fortress                      |   2012 |    154 |                115.5 |                38.5 |             25 |
+| Bentley Continental Supersports    |   2012 |    633 |                474.8 |               158.3 |             25 |
+| Mitsubishi 2008 Lancer Evolution   |   2012 |   1988 |               1491.0 |               497.0 |             25 |
+| 2012 Mustang Boss 302 Laguna Seca  |   2012 |    906 |                679.5 |               226.5 |             25 |
+| Growler                            |   2012 |    856 |                642.0 |               214.0 |             25 |
+| 2012 Mustang Boss 302 Laguna Seca  |   2012 |   1391 |               1043.3 |               347.8 |             25 |
+| Ford GTX1                          |   2012 |    183 |                137.3 |                45.8 |             25 |
+| '69 Corvette                       |   2012 |   1705 |               1278.8 |               426.3 |             25 |
+| Circle Trucker                     |   2012 |    467 |                350.3 |               116.8 |             25 |
+| '66 Chevy Nova                     |   2012 |    780 |                585.0 |               195.0 |             25 |
+| Porsche 911 GT2                    |   2012 |    505 |                378.8 |               126.3 |             25 |
+| Subaru WRX STI                     |   2012 |   1298 |                973.5 |               324.5 |             25 |
+| Scion xB                           |   2013 |   1537 |               1383.3 |               153.7 |             10 |
+| Ferrari 458 Italia                 |   2013 |    613 |                551.7 |                61.3 |             10 |
+| 2013 Viper SRT                     |   2013 |    745 |                670.5 |                74.5 |             10 |
+| Altered Ego                        |   2013 |   1324 |               1191.6 |               132.4 |             10 |
+| BMW 2002                           |   2013 |   1616 |               1454.4 |               161.6 |             10 |
+| Tyrrell P34                        |   2013 |   1525 |               1372.5 |               152.5 |             10 |
+| Surf Crate                         |   2013 |   1301 |               1170.9 |               130.1 |             10 |
+| Megane Trophy                      |   2013 |    993 |                893.7 |                99.3 |             10 |
+| Ferrari 458 Italia                 |   2013 |   1897 |               1707.3 |               189.7 |             10 |
+| '68 COPO Camaro                    |   2013 |   1522 |               1369.8 |               152.2 |             10 |
+| BMW M3 GT2                         |   2013 |    217 |                195.3 |                21.7 |             10 |
+| Arachnorod                         |   2013 |    765 |                688.5 |                76.5 |             10 |
+| Sling Shot                         |   2013 |   1621 |               1458.9 |               162.1 |             10 |
+| Fast Felion                        |   2013 |   1427 |               1284.3 |               142.7 |             10 |
+| '10 Toyota Tundra                  |   2013 |    884 |                795.6 |                88.4 |             10 |
+| GMC Motorhome                      |   2019 |   1854 |               1483.2 |               370.8 |             20 |
+| Mazda RX-7                         |   2019 |   1763 |               1410.4 |               352.6 |             20 |
+| Harley-Davidson Fat Boy            |   2019 |   1099 |                879.2 |               219.8 |             20 |
+| Funny Side Up                      |   2019 |    890 |                712.0 |               178.0 |             20 |
+| '11 Corvette Grand Sport           |   2019 |    897 |                717.6 |               179.4 |             20 |
+| '73 Pontiac Firebird               |   2019 |   1259 |               1007.2 |               251.8 |             20 |
+| '47 Chevy Fleetline                |   2019 |   1883 |               1506.4 |               376.6 |             20 |
+| Sharkruiser                        |   2019 |    529 |                423.2 |               105.8 |             20 |
+| Fast Gassin'                       |   2019 |   1668 |               1334.4 |               333.6 |             20 |
+| Mega-Duty                          |   2019 |   1225 |                980.0 |               245.0 |             20 |
+| '67 Shelby GT-500                  |   2019 |    489 |                391.2 |                97.8 |             20 |
+| C6 Corvette                        |   2019 |   1657 |               1325.6 |               331.4 |             20 |
+| '70 Chevelle SS                    |   2019 |    590 |                472.0 |               118.0 |             20 |
+| '68 Dodge Dart                     |   2019 |    322 |                257.6 |                64.4 |             20 |
+| Custom '69 Chevy Pickup            |   2019 |    204 |                163.2 |                40.8 |             20 |
+| '68 Hemi Barracuda                 |   2019 |   1835 |               1468.0 |               367.0 |             20 |
+| '69 Ford Torino Talladega          |   2019 |   1284 |               1027.2 |               256.8 |             20 |
+| '69 Camaro                         |   2019 |    622 |                497.6 |               124.4 |             20 |
+| '70 Ford Mustang Mach 1            |   2019 |    733 |                586.4 |               146.6 |             20 |
+| '68 Dodge Dart                     |   2019 |   1712 |               1369.6 |               342.4 |             20 |
+| Mad Manga                          |   2019 |   1401 |               1120.8 |               280.2 |             20 |
+| '71 Dodge Challenger               |   2019 |   1850 |               1480.0 |               370.0 |             20 |
++------------------------------------+--------+--------+----------------------+---------------------+----------------+
+81 rows in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql># 12.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:42 2023) mysql>SELECT modelo, COUNT(*) AS 'Total de carritos', 
+    -> 	LPAD(FORMAT(SUM(precio), 1), LENGTH('Venta Total'), ' ') AS 'Venta total', 
+    -> 	CASE 
+    -> 		WHEN precioNuevo=0.0 THEN LPAD(FORMAT(SUM(precio), 1), LENGTH('Venta con descuento'), ' ') 
+    -> 		ELSE LPAD(FORMAT(SUM(precioNuevo), 1), LENGTH('Venta con descuento'), ' ')
+    -> 		END AS 'Venta con descuento', 
+    -> 	CASE 
+    -> 		WHEN precioNuevo=0.0 THEN LPAD(0.0, LENGTH('Cantidad descontada'), ' ')
+    -> 		ELSE LPAD(FORMAT((SUM(precio)-SUM(precioNuevo)), 1), LENGTH('Cantidad descontada'), ' ') 
+    -> 		END AS 'Cantidad descontada'
+    -> FROM carritosAOG
+    -> GROUP BY 1
+    -> ORDER BY 1;
++--------+-------------------+-------------+---------------------+---------------------+
+| modelo | Total de carritos | Venta total | Venta con descuento | Cantidad descontada |
++--------+-------------------+-------------+---------------------+---------------------+
+|   1985 |                 1 |       238.0 |               238.0 |                 0.0 |
+|   1998 |                20 |    21,223.0 |            21,223.0 |                 0.0 |
+|   1999 |                 5 |     6,005.0 |             6,005.0 |                 0.0 |
+|   2000 |                11 |    12,227.0 |            12,227.0 |                 0.0 |
+|   2001 |                14 |    14,734.0 |            14,734.0 |                 0.0 |
+|   2002 |                18 |    21,788.0 |            21,788.0 |                 0.0 |
+|   2003 |                15 |    18,864.0 |            18,864.0 |                 0.0 |
+|   2004 |                21 |    23,775.0 |            23,775.0 |                 0.0 |
+|   2005 |                 9 |     9,053.0 |             9,053.0 |                 0.0 |
+|   2006 |                20 |    17,975.0 |            17,975.0 |                 0.0 |
+|   2007 |                23 |    20,767.0 |            20,767.0 |                 0.0 |
+|   2008 |                14 |    17,235.0 |            17,235.0 |                 0.0 |
+|   2009 |                21 |    20,281.0 |            20,281.0 |                 0.0 |
+|   2010 |                20 |    22,582.0 |            20,323.8 |             2,258.2 |
+|   2011 |                 9 |     9,067.0 |             9,067.0 |                 0.0 |
+|   2012 |                24 |    21,502.0 |            16,126.5 |             5,375.5 |
+|   2013 |                15 |    17,987.0 |            16,188.3 |             1,798.7 |
+|   2014 |                14 |    13,040.0 |            13,040.0 |                 0.0 |
+|   2015 |                 5 |     3,027.0 |             3,027.0 |                 0.0 |
+|   2016 |                16 |    14,887.0 |            14,887.0 |                 0.0 |
+|   2017 |                14 |    15,570.0 |            15,570.0 |                 0.0 |
+|   2018 |                15 |    13,642.0 |            13,642.0 |                 0.0 |
+|   2019 |                22 |    25,766.0 |            20,612.8 |             5,153.2 |
++--------+-------------------+-------------+---------------------+---------------------+
+23 rows in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:43 2023) mysql># 13.
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:43 2023) mysql>SELECT COUNT(*) FROM carritosAOG;
++----------+
+| COUNT(*) |
++----------+
+|      346 |
++----------+
+1 row in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 10:23:44 2023) mysql>NOTEE;

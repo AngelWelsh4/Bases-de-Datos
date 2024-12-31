@@ -1,0 +1,1052 @@
+mysql> -- 0
+mysql> prompt '\O\y \R:\m (\d) \(EQUIPO 11)'>
+PROMPT set to ''\O\y \R:\m (\d) \(EQUIPO 11)'>'
+'May23 19:04 ((none)) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 ((none)) (EQUIPO 11)'>EQUIPO 11)'>-- 1
+'May23 19:04 ((none)) (EQUIPO 11)'>EQUIPO 11)'>USE pixup
+Database changed
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP PROCEDURE IF EXISTS muestra_artistasInicial;
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE PROCEDURE muestra_artistasInicial(IN n INT)
+    -> BEGIN
+    -> -- CONSULTA REQUERIDA
+    ->      SELECT a.id_artista, a.nombre, a.descripcion
+    ->      FROM artista AS a
+    ->      INNER JOIN (
+    ->      SELECT LEFT(nombre, 1) AS inicial
+    ->      FROM artista
+    ->      GROUP BY LEFT(nombre, 1)
+    ->      HAVING COUNT(*) = n
+    ->   ) AS sub ON LEFT(a.nombre, 1) = sub.inicial;
+    -> 
+    -> END $$
+Query OK, 0 rows affected (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL muestra_artistasInicial(1);
++------------+------------------+----------------------------+
+| id_artista | nombre           | descripcion                |
++------------+------------------+----------------------------+
+|        136 | Queen            | Banda                      |
+|        145 | U2               | Banda de rock irlandesa    |
+|        148 | Ximena Sariñana  | Actriz y cantante mexicana |
++------------+------------------+----------------------------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL muestra_artistasInicial(2);
++------------+-------------+--------------------------------------------+
+| id_artista | nombre      | descripcion                                |
++------------+-------------+--------------------------------------------+
+|         37 | Zoe         | NULL                                       |
+|         69 | Zedd        | NULL                                       |
+|        149 | Yuridia     | Cantante mexicana ex alumna de La Academia |
+|        282 | Youko Kanno | NULL                                       |
++------------+-------------+--------------------------------------------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL muestra_artistasInicial(4);
++------------+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id_artista | nombre              | descripcion                                                                                                                                              |
++------------+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         26 | Wallows             | NULL                                                                                                                                                     |
+|         29 | Imagine Dragons     | NULL                                                                                                                                                     |
+|         40 | WILLOW              | NULL                                                                                                                                                     |
+|         49 | Of Monsters and Men | NULL                                                                                                                                                     |
+|        160 | Iván Santos Ortiz   | Conocido como Santaflow, es un artista Español que ha trabajado ya a diferentes niveles: MC, vocalista, compositor y productor                           |
+|        174 | Ice Cube            | rapero y actor estadounidense                                                                                                                            |
+|        228 | WOS                 | Gran exponente del Hip-Hop Argentino                                                                                                                     |
+|        290 | Wham!               | Wham! fue un dúo británico de pop, creado en 1981 por George Michael y Andrew Ridgeley, hasta que se separaron en 1986.                                  |
+|        293 | One direction       | Banda británica formada en 2010 por el programa The X Factor                                                                                             |
+|        295 | One republic        | NULL                                                                                                                                                     |
+|        340 | Ozzy Osbourne       | NULL                                                                                                                                                     |
+|        346 | Incubus             | Incubus es una banda de rock alternativo estadounidense formada por el vocalista Brandon Boyd, el guitarrista Mike Einziger y la batería José Pasillas   |
++------------+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+12 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- VERIFICAMOS QUE CALL muestra_artistasInicial(3); ES VACÍO 
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL muestra_artistasInicial(3);
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- 2 
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP PROCEDURE IF EXISTS cuantosMun; 
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE PROCEDURE cuantosMun(IN estado_param VARCHAR(50))
+    -> BEGIN
+    -> -- CONSULTA REQUERIDA
+    ->     SELECT estado.clave, estado.nombre, COUNT(municipio.clave) AS total_mun
+    ->     FROM estado
+    ->     INNER JOIN municipio ON estado.clave = municipio.clave_estado
+    ->     WHERE estado.nombre LIKE CONCAT(estado_param, '%')
+    ->     GROUP BY 1,2;
+    -> END $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuantosMun('Aguascalientes');
++-------+----------------+-----------+
+| clave | nombre         | total_mun |
++-------+----------------+-----------+
+| 01    | Aguascalientes |        11 |
++-------+----------------+-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuantosMun('Yucatán');
++-------+----------+-----------+
+| clave | nombre   | total_mun |
++-------+----------+-----------+
+| 31    | Yucatán  |       106 |
++-------+----------+-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuantosMun('Hidalgo');
++-------+---------+-----------+
+| clave | nombre  | total_mun |
++-------+---------+-----------+
+| 14    | Hidalgo |       125 |
++-------+---------+-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- 3
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP PROCEDURE IF EXISTS cuenta_cliente;
+Query OK, 0 rows affected (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE PROCEDURE cuenta_cliente(IN cuenta DECIMAL(6,2), IN d VARCHAR(100), IN cantidad INT)
+    -> BEGIN
+    -> DECLARE p DECIMAL(6,2);
+    -> DECLARE gasto DECIMAL(6,2);
+    -> DECLARE picafresa INT;
+    -> SELECT precio INTO p FROM disco WHERE titulo = d;
+    -> SET gasto = p * cantidad;
+    -> SET cuenta = cuenta - gasto;
+    -> IF cuenta > 0 THEN SELECT CONCAT('Su saldo es de: ', cuenta) AS saldo;
+    -> ELSE SELECT CONCAT('Su compra excede a su saldo disponible');
+    -> END IF;
+    -> SET picafresa = cuenta/3;
+    -> SELECT CONCAT('Con su saldo actual le alcanza para comprar: ', picafresa, ' picafresas gigantes') AS picafresas;
+    -> END $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuenta_cliente(4100.50, 'Love Goes', 1);
++-------------------------+
+| saldo                   |
++-------------------------+
+| Su saldo es de: 3921.50 |
++-------------------------+
+1 row in set (0.00 sec)
+
++-----------------------------------------------------------------------+
+| picafresas                                                            |
++-----------------------------------------------------------------------+
+| Con su saldo actual le alcanza para comprar: 1307 picafresas gigantes |
++-----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuenta_cliente(3921.50, 'AM', 5);
++-------------------------+
+| saldo                   |
++-------------------------+
+| Su saldo es de: 2671.50 |
++-------------------------+
+1 row in set (0.00 sec)
+
++----------------------------------------------------------------------+
+| picafresas                                                           |
++----------------------------------------------------------------------+
+| Con su saldo actual le alcanza para comprar: 891 picafresas gigantes |
++----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuenta_cliente(2671.50, 'dont smile at me', 3);
++-------------------------+
+| saldo                   |
++-------------------------+
+| Su saldo es de: 2041.50 |
++-------------------------+
+1 row in set (0.00 sec)
+
++----------------------------------------------------------------------+
+| picafresas                                                           |
++----------------------------------------------------------------------+
+| Con su saldo actual le alcanza para comprar: 681 picafresas gigantes |
++----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CALL cuenta_cliente(2041.50, 'Grandes éxitos de los Tigres del Norte', 2);
++-----------------------+
+| saldo                 |
++-----------------------+
+| Su saldo es de: 41.50 |
++-----------------------+
+1 row in set (0.00 sec)
+
++---------------------------------------------------------------------+
+| picafresas                                                          |
++---------------------------------------------------------------------+
+| Con su saldo actual le alcanza para comprar: 14 picafresas gigantes |
++---------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>/*
+   /*> PREGUNTAS:
+   /*> Si llamamos el procedimiento podemos contestar las siguientes preguntas
+   /*> ¿Cuánto dinero quedaría en su cuenta si comprara todos los discos anteriores?
+   /*>  
+   /*>     Al final le queda 41.50
+   /*> 
+   /*> ¿Cuántas pica fresas gigantes de 3 pesos c/u puede comprarse con lo que le queda luego
+   /*> de adquirir todos los discos?
+   /*> 
+   /*>     Y le alcanza para 14 picafresas Gigantes
+   /*> 
+   /*> */
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'># Ejercicio 2
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'># 2.1
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP TRIGGER IF EXISTS detalle_ticket_BI_trigger;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP TRIGGER IF EXISTS detalle_ticket_AU_trigger;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP TRIGGER IF EXISTS detalle_ticket_AD_trigger;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP TRIGGER IF EXISTS detalle_ticket_BU_trigger;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DROP TRIGGER IF EXISTS disco_AU_trigger;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:04 (pixup) (EQUIPO 11)'>EQUIPO 11)'>UPDATE detalle_ticket NATURAL JOIN disco
+    -> SET subtotal=precio*cantidad; #actualizar subtotal
+Query OK, 20 rows affected, 3 warnings (0.01 sec)
+Rows matched: 20  Changed: 20  Warnings: 3
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>UPDATE ticket NATURAL JOIN (SELECT id_ticket, SUM(subtotal) AS 'total_cal'
+    -> FROM detalle_ticket
+    -> GROUP BY id_ticket) AS sub1
+    -> SET total=total_cal; #actualizar total
+Query OK, 12 rows affected (0.01 sec)
+Rows matched: 12  Changed: 12  Warnings: 0
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 1
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE TRIGGER detalle_ticket_BI_trigger BEFORE INSERT ON detalle_ticket
+    -> FOR EACH ROW
+    -> BEGIN
+    -> DECLARE vprecio DECIMAL(6, 2);
+    -> DECLARE vtotal DECIMAL(10, 0);
+    -> -- encontrar el precio del disco
+    -> SELECT precio INTO vprecio FROM disco WHERE id_disco=NEW.id_disco;
+    -> -- actualizar el subtotal
+    -> SET NEW.subtotal=vprecio*NEW.cantidad;
+    -> -- actualizar el total
+    -> UPDATE ticket 
+    -> SET total=total+NEW.subtotal
+    -> WHERE id_ticket=NEW.id_ticket;
+    -> END ; $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 2
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE TRIGGER detalle_ticket_BU_trigger BEFORE UPDATE ON detalle_ticket
+    -> FOR EACH ROW
+    -> BEGIN 
+    -> DECLARE vprecio DECIMAL(6, 2); 
+    -> DECLARE vtotal DECIMAL(10, 0);
+    -> -- encontrar el precio del disco
+    -> SELECT precio INTO vprecio FROM disco WHERE id_disco=NEW.id_disco;
+    -> -- actualizar el subtotal
+    -> SET NEW.subtotal=vprecio*NEW.cantidad;
+    -> -- actualizar el total
+    -> UPDATE ticket 
+    -> SET total=total-OLD.subtotal+NEW.subtotal
+    -> WHERE id_ticket=NEW.id_ticket;
+    -> END ; $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 3
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE TRIGGER detalle_ticket_AD_trigger AFTER DELETE ON detalle_ticket
+    -> FOR EACH ROW
+    -> BEGIN  
+    -> -- actualizar el total
+    -> UPDATE ticket 
+    -> SET total=total-OLD.subtotal
+    -> WHERE id_ticket=OLD.id_ticket;
+    -> END ; $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 4
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER $$
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>CREATE TRIGGER disco_AU_trigger AFTER UPDATE ON disco
+    -> FOR EACH ROW
+    -> BEGIN  
+    -> -- actualizar el subtotal
+    -> UPDATE detalle_ticket 
+    -> SET subtotal=NEW.precio*cantidad
+    -> WHERE id_disco=NEW.id_disco;
+    -> -- el total ya se actualizó
+    -> END ; $$
+Query OK, 0 rows affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>DELIMITER ;
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'># Anexo
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 0
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        1 |      250 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |        1 |      200 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+20 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   653 |          4 |
+|         7 | 2017-04-02 00:00:00 |     0 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   600 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 1
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>insert into detalle_ticket(id_ticket,id_disco,cantidad) values(7,6,2);
+Query OK, 1 row affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        1 |      250 |
+|         7 |        6 |        2 |      400 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |        1 |      200 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+21 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   653 |          4 |
+|         7 | 2017-04-02 00:00:00 |   400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   600 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from disco where id_disco = 6;
++----------+--------+-------------------+--------+---------------------+---------+-------------+
+| id_disco | titulo | fecha_lanzamiento | precio | cantidad_disponible | portada | id_disquera |
++----------+--------+-------------------+--------+---------------------+---------+-------------+
+|        6 | 21     | 2011-01-19        | 200.00 |                  10 | NULL    |           1 |
++----------+--------+-------------------+--------+---------------------+---------+-------------+
+1 row in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>insert into detalle_ticket(id_ticket,id_disco,cantidad)
+    -> values(7,59,1);
+Query OK, 1 row affected (0.01 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        1 |      250 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |        1 |      200 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   653 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   600 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 2
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        1 |      250 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |        1 |      200 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>update detalle_ticket set cantidad = 2 where id_ticket = 6 and
+    -> id_disco = 69;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        2 |      500 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |        1 |      200 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   903 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   600 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>update detalle_ticket set cantidad = 10 where id_ticket = 10 and
+    -> id_disco = 67;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        2 |      500 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        10 |       67 |       10 |     2000 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   903 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |  2400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 3
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>delete from detalle_ticket where id_ticket = 10 and id_disco = 67;
+Query OK, 1 row affected (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        2 |      500 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+21 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |   903 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         6 |       29 |        1 |      205 |
+|         6 |       38 |        1 |      198 |
+|         6 |       69 |        2 |      500 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+21 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>delete from detalle_ticket where id_ticket = 6;
+Query OK, 3 rows affected (0.04 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+18 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |     0 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>-- Prueba 4
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select id_disco, titulo, precio from disco where id_disco = 41;
++----------+-------------+--------+
+| id_disco | titulo      | precio |
++----------+-------------+--------+
+|       41 | After Hours | 180.00 |
++----------+-------------+--------+
+1 row in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      180 |
++-----------+----------+----------+----------+
+18 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |     0 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   180 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>update disco set precio = 200 where id_disco = 41;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      200 |
++-----------+----------+----------+----------+
+18 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1410 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |     0 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1400 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   200 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select id_disco, titulo, precio from disco where id_disco = 6;
++----------+--------+--------+
+| id_disco | titulo | precio |
++----------+--------+--------+
+|        6 | 21     | 200.00 |
++----------+--------+--------+
+1 row in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      200 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         7 |        6 |        2 |      400 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      200 |
++-----------+----------+----------+----------+
+18 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>update disco set precio = 150 where id_disco = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from detalle_ticket;
++-----------+----------+----------+----------+
+| id_ticket | id_disco | cantidad | subtotal |
++-----------+----------+----------+----------+
+|         1 |       25 |        1 |      290 |
+|         1 |       68 |        2 |      400 |
+|         2 |       84 |        3 |      576 |
+|         3 |      131 |        2 |      770 |
+|         4 |        6 |        1 |      150 |
+|         4 |       12 |        1 |      350 |
+|         4 |       30 |        2 |      420 |
+|         4 |       74 |        2 |      440 |
+|         5 |      130 |        1 |      226 |
+|         7 |        6 |        2 |      300 |
+|         7 |       59 |        1 |     1000 |
+|         8 |       37 |        1 |      200 |
+|        10 |       31 |        2 |      400 |
+|        12 |       12 |        1 |      350 |
+|        13 |        1 |        5 |      895 |
+|        20 |      101 |        2 |      496 |
+|        20 |      103 |        1 |      247 |
+|        21 |       41 |        1 |      200 |
++-----------+----------+----------+----------+
+18 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>select * from ticket;
++-----------+---------------------+-------+------------+
+| id_ticket | fecha               | total | id_cliente |
++-----------+---------------------+-------+------------+
+|         1 | 2019-01-23 00:00:00 |   690 |          5 |
+|         2 | 2020-02-22 00:00:00 |   576 |          1 |
+|         3 | 2018-03-28 00:00:00 |   770 |          6 |
+|         4 | 2020-11-20 00:00:00 |  1360 |          2 |
+|         5 | 2020-12-13 00:00:00 |   226 |          3 |
+|         6 | 2019-05-02 23:00:00 |     0 |          4 |
+|         7 | 2017-04-02 00:00:00 |  1300 |         18 |
+|         8 | 2020-06-22 23:00:00 |   200 |         15 |
+|         9 | 2019-07-10 23:00:00 |     0 |          5 |
+|        10 | 2019-08-31 23:00:00 |   400 |         15 |
+|        11 | 2018-08-09 23:00:00 |     0 |         20 |
+|        12 | 2017-10-01 23:00:00 |   350 |         22 |
+|        13 | 2019-11-20 00:00:00 |   895 |          1 |
+|        14 | 2018-08-02 23:00:00 |     0 |         21 |
+|        15 | 2020-09-29 23:00:00 |     0 |         30 |
+|        16 | 2017-02-14 00:00:00 |     0 |         35 |
+|        17 | 2019-04-14 23:00:00 |     0 |         40 |
+|        18 | 2018-09-09 23:00:00 |     0 |         41 |
+|        19 | 2020-07-16 23:00:00 |     0 |         32 |
+|        20 | 2019-05-18 23:00:00 |   743 |         48 |
+|        21 | 2018-06-03 23:00:00 |   200 |         55 |
+|        22 | 2020-06-03 23:00:00 |     0 |         15 |
++-----------+---------------------+-------+------------+
+22 rows in set (0.00 sec)
+
+'May23 19:05 (pixup) (EQUIPO 11)'>EQUIPO 11)'>Terminal close -- exit!

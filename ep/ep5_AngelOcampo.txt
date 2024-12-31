@@ -1,0 +1,46 @@
+mysql> PROMPT (AngelOcampo en: \d \\\D) mysql>
+PROMPT set to '(AngelOcampo en: \d \\\D) mysql>'
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:01 2023) mysql>/*
+   /*> =================================
+   /*> Ejercicio de participación 5: Delete
+   /*> Nombre: Ocampo García Victor Emmanuel Miguel Ángel
+   /*> Fecha: 26-04-23
+   /*> =================================
+   /*> */
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>USE collectionhw;
+Database changed
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 1.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>DELETE FROM carritosAOG
+    -> WHERE (color LIKE '%Black%' OR color LIKE '%Orange%') AND (modelo IN (2002, 2012, 2019));
+Query OK, 16 rows affected (0.07 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 2.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>DELETE FROM carritosAOG
+    -> WHERE 100<precio AND precio<250;
+Query OK, 26 rows affected (0.10 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 3.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>DELETE FROM carritosAOG
+    -> WHERE color='Pearl White' AND notas IS NULL AND ubicacion IS NULL;
+Query OK, 20 rows affected (0.05 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 4.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>DELETE FROM carritosAOG
+    -> WHERE descripcion LIKE '%White stripes%' AND ubicacion IS NULL;
+Query OK, 28 rows affected (0.04 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 5.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>DELETE FROM carritosAOG
+    -> WHERE precio=(SELECT MAX(precio) FROM carritos); #en la subconsulta no puede estar la misma tabla o marca error
+Query OK, 1 row affected (0.05 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql># 6.
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:11 2023) mysql>SELECT COUNT(*) FROM carritosAOG;
++----------+
+| COUNT(*) |
++----------+
+|      255 |
++----------+
+1 row in set (0.00 sec)
+
+(AngelOcampo en: collectionhw \Thu Apr 27 02:12:12 2023) mysql>NOTEE;
