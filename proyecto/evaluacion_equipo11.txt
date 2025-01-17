@@ -1,0 +1,686 @@
+mysql> /* =======================================================
+   /*> Proyecto Final Bases de datos
+   /*> Fecha: 03-06-2023
+   /*> Equipo N: 11
+   /*> Integrante 1: Méndez López Pedro Axel
+   /*> Integrante 2: Mendoza Domínguez Anabel
+   /*> Integrante 3: Aragón Juárez Daniel
+   /*> Integrante 4: Ocampo García Víctor Emmanuel Miguel Ángel
+   /*> Integrante 5: Salmeron Morales Jazel Alizaid
+   /*> ========================================================*/
+mysql> USE covid;
+Database changed
+mysql> /* =======================================================
+   /*> 				SECCION 1: Consultas
+   /*> ========================================================*/
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 1 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> select id_paciente,edad,fecha_sintomas,fecha_ingreso,nom_estado,nom_mun,descripcion 
+    -> from (((((pacientes inner join mexicanos using(id_paciente)) 
+    -> inner join municipios on mexicanos.edomun_resi = municipios.edo_mun) 
+    -> inner join estados using(clave_edo)) inner join resultado using(clave_resultado)) 
+    -> inner join tipos_paciente on tipos_paciente.clave_tipo = pacientes.tipo_paciente) 
+    -> inner join embarazos using(id_paciente)  
+    -> where tipos_paciente.clave_tipo = 2 and (nom_mun like '%Cárdenas%' OR nom_mun like '%Zapata%' OR nom_mun like '%Atotonilco%') 
+    -> order by descripcion desc,edad;
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+| id_paciente | edad | fecha_sintomas | fecha_ingreso | nom_estado                      | nom_mun                                 | descripcion            |
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+| 1b4ea0      |   17 | 2020-07-23     | 2020-07-24    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 137bb0      |   24 | 2020-06-06     | 2020-06-07    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 0278bc      |   29 | 2020-06-25     | 2020-06-27    | Veracruz de Ignacio de la Llave | Nanchital De Lázaro Cárdenas Del Río    | Positivo SARS-CoV-2    |
+| 020fc0      |   30 | 2020-06-07     | 2020-06-15    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 1416c5      |   31 | 2020-06-25     | 2020-06-30    | Hidalgo                         | Atotonilco El Grande                    | Positivo SARS-CoV-2    |
+| 0dcaeb      |   33 | 2020-07-10     | 2020-07-17    | Quintana Roo                    | Lázaro Cárdenas                         | Positivo SARS-CoV-2    |
+| 15ec58      |   35 | 2020-05-29     | 2020-05-29    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 135724      |   37 | 2020-07-09     | 2020-07-15    | Quintana Roo                    | Lázaro Cárdenas                         | Positivo SARS-CoV-2    |
+| 120828      |   48 | 2020-07-20     | 2020-07-21    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 155dd7      |   18 | 2020-04-02     | 2020-04-06    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 0539f8      |   24 | 2020-04-10     | 2020-04-16    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 167d28      |   26 | 2020-03-09     | 2020-03-09    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 1c0997      |   26 | 2020-07-10     | 2020-07-17    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 041a3e      |   30 | 2020-07-14     | 2020-07-18    | Tabasco                         | Emiliano Zapata                         | No positivo SARS-CoV-2 |
+| 169ce5      |   30 | 2020-04-06     | 2020-04-07    | Morelos                         | Emiliano Zapata                         | No positivo SARS-CoV-2 |
+| 03a9a2      |   32 | 2020-01-23     | 2020-01-23    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 1893b4      |   34 | 2020-05-12     | 2020-05-18    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 1b4f5c      |   36 | 2020-04-24     | 2020-04-24    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 026cfa      |   39 | 2020-06-27     | 2020-07-09    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+19 rows in set (3.49 sec)
+
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 2 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> SELECT est_nac.nom_estado AS 'Estado de nacimiento', est_resi.nom_estado AS 'Estado de residencia', mun.nom_mun AS 'Municipio de residencia', p.edad AS Edad 
+    -> FROM pacientes p 
+    -> JOIN embarazos e ON p.id_paciente = e.id_paciente 
+    -> JOIN defunciones d ON e.id_paciente = d.id_paciente 
+    -> JOIN mexicanos mex ON e.id_paciente = mex.id_paciente  
+    -> JOIN municipios mun ON mex.edomun_resi = mun.edo_mun 
+    -> JOIN estados est_nac ON edo_nacim = est_nac.clave_edo 
+    -> JOIN estados est_resi ON LEFT(mex.edomun_resi, 2) = est_resi.clave_edo 
+    -> WHERE edo_nacim != LEFT(mex.edomun_resi, 2)
+    -> AND clave_resultado = 1  
+    -> ORDER BY 1 ASC;
++---------------------------------+----------------------+--------------------------+------+
+| Estado de nacimiento            | Estado de residencia | Municipio de residencia  | Edad |
++---------------------------------+----------------------+--------------------------+------+
+| Chiapas                         | Puebla               | Tehuacán                 |   41 |
+| Chiapas                         | Baja California      | Tijuana                  |   24 |
+| Ciudad de México                | México               | Naucalpan De Juárez      |   39 |
+| Ciudad de México                | México               | Naucalpan De Juárez      |   29 |
+| Ciudad de México                | México               | Ecatepec De Morelos      |   33 |
+| Guerrero                        | Michoacán de Ocampo  | Los Reyes                |   20 |
+| Guerrero                        | Michoacán de Ocampo  | Uruapan                  |   31 |
+| Jalisco                         | Baja California      | Tijuana                  |   39 |
+| México                          | Puebla               | San Pedro Cholula        |   33 |
+| México                          | Oaxaca               | Santo Domingo Chihuitán  |   31 |
+| Sinaloa                         | Baja California      | Tijuana                  |   32 |
+| Sinaloa                         | Baja California      | Mexicali                 |   40 |
+| Tabasco                         | Quintana Roo         | Benito Juárez            |   37 |
+| Veracruz de Ignacio de la Llave | Ciudad de México     | Gustavo A. Madero        |   32 |
+| Veracruz de Ignacio de la Llave | Chihuahua            | Juárez                   |   26 |
++---------------------------------+----------------------+--------------------------+------+
+15 rows in set (0.06 sec)
+
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 3 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> SELECT nom_estado AS 'Entidad Federativa', LPAD(FORMAT(COUNT(id_paciente), 0), LENGTH('Total de defunciones'), ' ') AS 'Total de defunciones'
+    -> FROM 
+    -> 	((SELECT nom_estado, id_paciente
+    -> 	FROM defunciones
+    -> 		LEFT JOIN pacientes USING (id_paciente)
+    -> 		NATURAL JOIN resultado
+    -> 		JOIN cat_sino ON otro_caso=clave
+    -> 		NATURAL JOIN mexicanos
+    -> 		JOIN municipios ON edomun_resi=edo_mun
+    -> 		NATURAL JOIN estados
+    -> 	WHERE clave_resultado=1 AND clave=2)
+    -> UNION (SELECT nom_estado, id_paciente
+    -> 	FROM defunciones
+    -> 		LEFT JOIN pacientes USING (id_paciente)
+    -> 		NATURAL JOIN resultado
+    -> 		JOIN cat_sino ON otro_caso=clave
+    -> 		NATURAL JOIN extranjeros
+    -> 		JOIN municipios ON edomun_resi=edo_mun
+    -> 		NATURAL JOIN estados
+    -> 	WHERE clave_resultado=1 AND clave=2)) AS sub1
+    -> GROUP BY nom_estado
+    -> ORDER BY nom_estado;
++---------------------------------+----------------------+
+| Entidad Federativa              | Total de defunciones |
++---------------------------------+----------------------+
+| Aguascalientes                  |                   17 |
+| Baja California                 |                  520 |
+| Baja California Sur             |                   59 |
+| Campeche                        |                  175 |
+| Chiapas                         |                  253 |
+| Chihuahua                       |                  170 |
+| Ciudad de México                |                1,873 |
+| Coahuila de Zaragoza            |                   68 |
+| Colima                          |                   85 |
+| Durango                         |                   58 |
+| Guanajuato                      |                  247 |
+| Guerrero                        |                  547 |
+| Hidalgo                         |                  557 |
+| Jalisco                         |                  363 |
+| México                          |                2,725 |
+| Michoacán de Ocampo             |                  327 |
+| Morelos                         |                  290 |
+| Nayarit                         |                  169 |
+| Nuevo León                      |                  168 |
+| Oaxaca                          |                  430 |
+| Puebla                          |                1,196 |
+| Querétaro                       |                  229 |
+| Quintana Roo                    |                  455 |
+| San Luis Potosí                 |                  304 |
+| Sinaloa                         |                  772 |
+| Sonora                          |                  538 |
+| Tabasco                         |                  868 |
+| Tamaulipas                      |                  392 |
+| Tlaxcala                        |                  224 |
+| Veracruz de Ignacio de la Llave |                1,003 |
+| Yucatán                         |                  138 |
+| Zacatecas                       |                  114 |
++---------------------------------+----------------------+
+32 rows in set (3.83 sec)
+
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 4 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql>  SELECT p.id_paciente, p.edad, e.nom_estado 'Estado de la Unidad Médica', pa.nom_pais AS Nacionalidad,     CASE WHEN ex.pais_origen = ex.pais_nacionalidad THEN pa.nom_pais
+    ->          ELSE 'Se ignora' END AS 'Pais de origen',
+    ->          CASE WHEN ex.pais_origen = ex.pais_nacionalidad THEN 'Si'
+    ->          ELSE 'No' END AS "Es migrante", res.descripcion AS 'Prueba COVID'
+    -> FROM pacientes p
+    -> JOIN extranjeros ex USING (id_paciente)
+    -> JOIN pais pa ON ex.pais_nacionalidad = pa.clave_pais
+    -> JOIN embarazos emb USING (id_paciente)
+    -> LEFT JOIN resultado res USING(clave_resultado)
+    -> JOIN estados e ON p.edo_um = e.clave_edo ORDER BY 3,4;
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-------------+------------------------+
+| id_paciente | edad | Estado de la Unidad Médica  | Nacionalidad                    | Pais de origen                  | Es migrante | Prueba COVID           |
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-------------+------------------------+
+| 16df25      |   25 | Baja California             | Cuba                            | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 0f23e8      |   23 | Baja California             | El Salvador                     | El Salvador                     | Si          | Positivo SARS-CoV-2    |
+| 0f77da      |   23 | Baja California             | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 136574      |   32 | Baja California             | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 10c500      |   31 | Baja California             | Haití                           | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 017afe      |   23 | Baja California             | Haití                           | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 01092d      |   25 | Baja California             | República de Honduras           | República de Honduras           | Si          | No positivo SARS-CoV-2 |
+| 001e1a      |   33 | Baja California Sur         | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 10526a      |   37 | Baja California Sur         | Venezuela                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 184217      |   21 | Campeche                    | El Salvador                     | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 18d5ec      |   24 | Campeche                    | República de Honduras           | República de Honduras           | Si          | Positivo SARS-CoV-2    |
+| 15df5a      |   31 | Chiapas                     | Cuba                            | Cuba                            | Si          | Positivo SARS-CoV-2    |
+| 1bf4b5      |   34 | Chiapas                     | Guatemala                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 08e0c4      |   22 | Chiapas                     | Guatemala                       | Guatemala                       | Si          | No positivo SARS-CoV-2 |
+| 07e90c      |   30 | Chiapas                     | Haití                           | Haití                           | Si          | No positivo SARS-CoV-2 |
+| 035579      |   24 | Chiapas                     | República de Honduras           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 02fadc      |   30 | Chiapas                     | República de Honduras           | República de Honduras           | Si          | Positivo SARS-CoV-2    |
+| 067133      |   27 | Chihuahua                   | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 00db02      |   40 | Chihuahua                   | Taiwán                          | Se ignora                       | No          | Resultado pendiente    |
+| 16c978      |   38 | Ciudad de México            | Bielorrusia                     | Se ignora                       | No          | Resultado pendiente    |
+| 10d0c2      |   21 | Ciudad de México            | Bolivia                         | Bolivia                         | Si          | No positivo SARS-CoV-2 |
+| 18df2b      |   40 | Ciudad de México            | Brasil                          | Se ignora                       | No          | Resultado pendiente    |
+| 1e58ef      |   42 | Ciudad de México            | Brasil                          | Se ignora                       | No          | Resultado pendiente    |
+| 1a1cd8      |   31 | Ciudad de México            | Camboya                         | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 167843      |   32 | Ciudad de México            | Chile                           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 02200a      |   30 | Ciudad de México            | Chile                           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0a21d3      |   28 | Ciudad de México            | Colombia                        | Colombia                        | Si          | No positivo SARS-CoV-2 |
+| 122ca8      |   29 | Ciudad de México            | Colombia                        | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 072c56      |   39 | Ciudad de México            | Ecuador                         | Se ignora                       | No          | Resultado pendiente    |
+| 11f122      |   34 | Ciudad de México            | España                          | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 130df3      |   24 | Ciudad de México            | España                          | Se ignora                       | No          | Resultado pendiente    |
+| 1525a8      |   38 | Ciudad de México            | España                          | Se ignora                       | No          | Resultado pendiente    |
+| 0d0d9f      |   42 | Ciudad de México            | Estados Unidos de América       | Se ignora                       | No          | Resultado pendiente    |
+| 090b72      |   38 | Ciudad de México            | Francia                         | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1ae53e      |   25 | Ciudad de México            | Guatemala                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0ec19d      |   34 | Ciudad de México            | Japón                           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0270d5      |   28 | Ciudad de México            | Otro                            | Otro                            | Si          | No positivo SARS-CoV-2 |
+| 1789b2      |   42 | Ciudad de México            | Ucrania                         | Se ignora                       | No          | Resultado pendiente    |
+| 05c850      |   38 | Ciudad de México            | Venezuela                       | Venezuela                       | Si          | Positivo SARS-CoV-2    |
+| 0630cc      |   37 | Ciudad de México            | Venezuela                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0b0505      |   34 | Ciudad de México            | Venezuela                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0c0399      |   39 | Ciudad de México            | Venezuela                       | Se ignora                       | No          | Resultado pendiente    |
+| 10ff73      |   33 | Ciudad de México            | Venezuela                       | Se ignora                       | No          | Resultado pendiente    |
+| 124e7d      |   33 | Ciudad de México            | Venezuela                       | Venezuela                       | Si          | Positivo SARS-CoV-2    |
+| 19d777      |   36 | Ciudad de México            | Venezuela                       | Se ignora                       | No          | Resultado pendiente    |
+| 0a253b      |   36 | Coahuila de Zaragoza        | El Salvador                     | El Salvador                     | Si          | Positivo SARS-CoV-2    |
+| 1db08b      |   29 | Durango                     | Estados Unidos de América       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 0cf512      |   18 | Guanajuato                  | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1b692b      |   29 | Guerrero                    | Venezuela                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 079d51      |   26 | Hidalgo                     | Cuba                            | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 083355      |   24 | Jalisco                     | Ecuador                         | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 119afc      |   27 | México                      | Colombia                        | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0ab96f      |   29 | México                      | Letonia                         | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 17462c      |   38 | México                      | Rumania                         | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1c02b5      |   36 | México                      | Venezuela                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 047618      |   27 | Nayarit                     | Cuba                            | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1328bc      |   25 | Nuevo León                  | El Salvador                     | El Salvador                     | Si          | No positivo SARS-CoV-2 |
+| 07fc3c      |   19 | Nuevo León                  | El Salvador                     | El Salvador                     | Si          | No positivo SARS-CoV-2 |
+| 10ec16      |   25 | Nuevo León                  | Estados Unidos de América       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 0fca74      |   19 | Nuevo León                  | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0f9dbb      |   26 | Nuevo León                  | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1685bf      |   29 | Nuevo León                  | Perú                            | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 00eefb      |   29 | Nuevo León                  | República de Honduras           | República de Honduras           | Si          | No positivo SARS-CoV-2 |
+| 04568d      |   24 | Nuevo León                  | República de Honduras           | República de Honduras           | Si          | No positivo SARS-CoV-2 |
+| 094eb3      |   21 | Nuevo León                  | República de Honduras           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0fe0bb      |   33 | Puebla                      | Australia                       | Australia                       | Si          | No positivo SARS-CoV-2 |
+| 0a8e87      |   32 | Puebla                      | Eslovaquia                      | Eslovaquia                      | Si          | No positivo SARS-CoV-2 |
+| 11bacf      |   23 | Puebla                      | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1ca26e      |   26 | Puebla                      | República Oriental del Uruguay  | República Oriental del Uruguay  | Si          | No positivo SARS-CoV-2 |
+| 030823      |   35 | Quintana Roo                | Colombia                        | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 1b02ad      |   30 | Quintana Roo                | Cuba                            | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 184082      |   30 | Quintana Roo                | Cuba                            | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 137a04      |   28 | Quintana Roo                | Cuba                            | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0931c3      |   35 | Quintana Roo                | Guatemala                       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 197a07      |   23 | Quintana Roo                | Guatemala                       | Se ignora                       | No          | Resultado pendiente    |
+| 1bdc8c      |   31 | Quintana Roo                | Guatemala                       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 1190c3      |   24 | Quintana Roo                | Venezuela                       | Venezuela                       | Si          | No positivo SARS-CoV-2 |
+| 014226      |   19 | San Luis Potosí             | Estados Unidos de América       | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 14363d      |   20 | San Luis Potosí             | Estados Unidos de América       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 1c866c      |   33 | San Luis Potosí             | Suiza                           | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0d2b98      |   21 | Sonora                      | Estados Unidos de América       | Estados Unidos de América       | Si          | Resultado pendiente    |
+| 16d58a      |   35 | Sonora                      | Estados Unidos de América       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 0596b6      |   38 | Tamaulipas                  | Cuba                            | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 0b6132      |   28 | Tamaulipas                  | Estados Unidos de América       | Se ignora                       | No          | Positivo SARS-CoV-2    |
+| 1aafe8      |   37 | Tamaulipas                  | Ghana                           | Ghana                           | Si          | Positivo SARS-CoV-2    |
+| 1abfb9      |   20 | Tamaulipas                  | República de Honduras           | República de Honduras           | Si          | No positivo SARS-CoV-2 |
+| 0e9358      |   33 | Tlaxcala                    | El Salvador                     | Se ignora                       | No          | No positivo SARS-CoV-2 |
+| 01e42f      |   23 | Tlaxcala                    | República de Honduras           | Se ignora                       | No          | Positivo SARS-CoV-2    |
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-------------+------------------------+
+88 rows in set (0.07 sec)
+
+mysql> 
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 5 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> SELECT r.clave_sector, s.nom_sector AS Sector, FORMAT(r.total,0) AS Total 
+    -> FROM (
+    ->     SELECT clave_sector, count(*) AS total
+    ->     FROM pacientes p
+    ->     JOIN resultado r ON p.clave_resultado = r.clave_resultado
+    ->     WHERE r.descripcion = 'Positivo SARS-CoV-2'
+    ->     GROUP BY clave_sector
+    -> ) r 
+    -> JOIN sector s ON r.clave_sector = s.clave_sector 
+    -> WHERE r.total = (
+    ->     SELECT max(total)
+    ->     FROM (
+    ->         SELECT count(*) AS total
+    ->         FROM pacientes p
+    ->         JOIN resultado r ON p.clave_resultado = r.clave_resultado
+    ->         WHERE r.descripcion = 'Positivo SARS-CoV-2'
+    ->         GROUP BY clave_sector
+    ->     ) x
+    -> );
++--------------+--------+---------+
+| clave_sector | Sector | Total   |
++--------------+--------+---------+
+|           12 | SSA    | 288,777 |
++--------------+--------+---------+
+1 row in set (14.89 sec)
+
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 6 |
+   /*> +-------------+
+   /*> */
+mysql> select nom_estado as 'Estado',
+    -> lpad(format(pob,0),length('Población total') - 1,' ') as 'Población total',
+    -> lpad(format(infectados,0),length('Total de infectados'),' ') as 'Total de infectados'
+    -> from (select clave_edo,nom_estado,count(id_paciente) as 'infectados' from (((pacientes inner join mexicanos using(id_paciente)) inner join municipios on mexicanos.edomun_resi = municipios.edo_mun) inner join estados using(clave_edo)) inner join resultado using(clave_resultado) where clave_edo in (select clave_edo from (SELECT clave_edo from estados NATURAL JOIN municipios group by nom_estado order by sum(pob_total) desc limit 5) sub) group by clave_edo,resultado.descripcion having descripcion = 'Positivo SARS-CoV-2' order by 1) as subfuno natural join (SELECT clave_edo,sum(pob_total) as 'pob' from estados NATURAL JOIN municipios group by nom_estado order by sum(pob_total)) as subfdos 
+    -> where  infectados = (select min(infectados) from (select clave_edo,nom_estado,count(id_paciente) as 'infectados' from (((pacientes inner join mexicanos using(id_paciente)) inner join municipios on mexicanos.edomun_resi = municipios.edo_mun) inner join estados using(clave_edo)) inner join resultado using(clave_resultado) where clave_edo in (select clave_edo from (SELECT clave_edo from estados NATURAL JOIN municipios group by nom_estado order by sum(pob_total) desc limit 5) sub) group by clave_edo,resultado.descripcion having descripcion = 'Positivo SARS-CoV-2' order by 1) as sub) ;
++---------+------------------+---------------------+
+| Estado  | Población total  | Total de infectados |
++---------+------------------+---------------------+
+| Jalisco |       7,350,682  |              16,538 |
++---------+------------------+---------------------+
+1 row in set (34.20 sec)
+
+mysql> 
+mysql> 
+mysql> /* =======================================================
+   /*> 			SECCION 1: Procedimientos Almacenados
+   /*> ========================================================*/
+mysql> /* 
+   /*> 
+   /*> /* 
+   /*> +-------------+
+   /*> | Ejercicio 1 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> DROP PROCEDURE IF EXISTS defExtranjeros;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> 
+mysql> DELIMITER $$
+mysql> 
+mysql> CREATE PROCEDURE defExtranjeros(IN pais_param VARCHAR(50), IN criterio_param CHAR(1))
+    -> BEGIN
+    ->     DECLARE criterio_valido BOOLEAN;
+    ->     DECLARE pais_busqueda VARCHAR(50);
+    ->     DECLARE mensaje VARCHAR(50);
+    ->     
+    ->     -- Validar el criterio de búsqueda ingresado
+    ->     SET criterio_valido = FALSE;
+    ->     CASE criterio_param
+    ->         WHEN '*' THEN SET criterio_valido = TRUE;
+    ->         WHEN '=' THEN SET criterio_valido = TRUE;
+    ->         WHEN '!' THEN SET criterio_valido = TRUE;
+    ->         ELSE SET criterio_valido = FALSE;
+    ->     END CASE;
+    ->     
+    ->     IF criterio_valido THEN
+    ->         -- Ajustar el valor del país de búsqueda según el criterio
+    ->         SET pais_busqueda = pais_param;
+    ->         
+    ->         -- Consulta principal para obtener el reporte de extranjeros fallecidos según el país y criterio
+    ->         #SELECT CONCAT('defExtranjeros("',pais_param,'","',criterio_param,'")' ) AS 'Llamadas a procedimiento 1 ';
+    ->         SELECT p.id_paciente, p.sexo, p.edad, pa.nom_pais AS 'pais_nacionalidad',
+    ->             CASE WHEN ex.pais_origen = ex.pais_nacionalidad THEN pa.nom_pais
+    ->                 ELSE 'Se ignora' END AS 'pais_origen',
+    ->             p.fecha_sintomas, p.fecha_ingreso, d.fecha_defuncion,
+    ->             c.descripcion AS 'Fue intubado?',
+    ->             c2.descripcion AS 'Tuvo neumonia?',
+    ->             tp.nom_tipo AS 'Tipo de paciente',
+    ->             res.descripcion AS 'Prueba COVID'
+    ->         FROM pacientes p
+    ->         JOIN extranjeros ex USING (id_paciente)
+    ->         JOIN pais pa ON ex.pais_nacionalidad = pa.clave_pais
+    ->         JOIN defunciones d USING (id_paciente)
+    ->         JOIN cat_sino c ON p.intubado = c.clave
+    ->         JOIN cat_sino c2 ON p.neumonia = c2.clave
+    ->         JOIN tipos_paciente tp ON p.tipo_paciente = tp.clave_tipo
+    ->         LEFT JOIN resultado res USING (clave_resultado)
+    ->         WHERE pa.nom_pais LIKE CONCAT(pais_busqueda, '%')
+    ->           AND (criterio_param = '*' OR
+    ->                (criterio_param = '=' AND ex.pais_origen = ex.pais_nacionalidad) OR
+    ->                (criterio_param = '!' AND ex.pais_origen <> ex.pais_nacionalidad))
+    ->         ORDER BY p.edad;
+    ->         
+    ->      ELSE
+    ->         -- Mostrar mensaje de "Opción no válida"
+    ->         #SELECT CONCAT('defExtranjeros("',pais_param,'","',criterio_param,'")' ) AS 'Llamadas a procedimiento 1 ';
+    ->         SELECT 'Opción no válida' AS 'Error';
+    ->     END IF;
+    -> END $$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> DELIMITER ;
+mysql> 
+mysql> -- PRUEBAS
+mysql> 
+mysql> call defExtranjeros('repu','*');
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad      | pais_origen            | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba COVID           |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 012d3f      | H    |   38 | República de Honduras  | República de Honduras  | 2020-05-21     | 2020-05-26    | 2020-06-01      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 027071      | H    |   42 | República Dominicana   | Se ignora              | 2020-06-11     | 2020-06-25    | 2020-06-25      | No            | No             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0c821b      | H    |   64 | República de Honduras  | República de Honduras  | 2020-06-10     | 2020-06-15    | 2020-06-22      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 0202fb      | H    |   68 | República de Corea     | Se ignora              | 2020-07-13     | 2020-07-20    | 2020-08-04      | Si            | Si             | Hospitalizado    | Resultado pendiente    |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+4 rows in set (0.23 sec)
+
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> call defExtranjeros('repu','=');
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad      | pais_origen            | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba COVID           |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 012d3f      | H    |   38 | República de Honduras  | República de Honduras  | 2020-05-21     | 2020-05-26    | 2020-06-01      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0c821b      | H    |   64 | República de Honduras  | República de Honduras  | 2020-06-10     | 2020-06-15    | 2020-06-22      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+2 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call defExtranjeros('repu','!');
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad     | pais_origen | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba COVID           |
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 027071      | H    |   42 | República Dominicana  | Se ignora   | 2020-06-11     | 2020-06-25    | 2020-06-25      | No            | No             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0202fb      | H    |   68 | República de Corea    | Se ignora   | 2020-07-13     | 2020-07-20    | 2020-08-04      | Si            | Si             | Hospitalizado    | Resultado pendiente    |
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call defExtranjeros('repu','x');
++--------------------+
+| Error              |
++--------------------+
+| Opción no válida   |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call defExtranjeros('cuba','*');
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad | pais_origen | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba COVID           |
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 18058e      | M    |   28 | Cuba              | Se ignora   | 2020-07-19     | 2020-07-23    | 2020-08-04      | No aplica     | No             | Ambulatorio      | Resultado pendiente    |
+| 185887      | H    |   39 | Cuba              | Se ignora   | 2020-06-22     | 2020-06-25    | 2020-06-26      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 13699a      | M    |   49 | Cuba              | Se ignora   | 2020-07-28     | 2020-07-31    | 2020-08-12      | No            | No             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 13629d      | H    |   57 | Cuba              | Se ignora   | 2020-05-05     | 2020-05-12    | 2020-05-14      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 0d534a      | M    |   78 | Cuba              | Cuba        | 2020-03-18     | 2020-04-01    | 2020-04-01      | Si            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+5 rows in set (0.03 sec)
+
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> 
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 2 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> DROP PROCEDURE IF EXISTS reporteTecnico;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE reporteTecnico(IN parametro VARCHAR(5)) #deje el límite en 5 porque es el máximo empleado
+    -> BEGIN 
+    -> IF parametro='gral' THEN 
+    -> 	SELECT (SELECT MAX(STR_TO_DATE(fecha_actualizacion, '%Y-%m-%d')) FROM pacientes) AS 'Fecha de actualización',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes), 0), LENGTH('Casos registrados'), ' ') AS 'Casos registrados', 
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=1), 0), LENGTH('Positivos'), ' ') AS 'Positivos',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=2), 0), LENGTH('Negativos'), ' ') AS 'Negativos',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=3), 0), LENGTH('Sospechosos'), ' ') AS 'Sospechosos';
+    -> ELSEIF parametro='sexo' THEN
+    -> 	SELECT (SELECT MAX(STR_TO_DATE(fecha_actualizacion, '%Y-%m-%d')) FROM pacientes) AS 'Fecha de actualización',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=1), 0), LENGTH('Positivos'), ' ') AS 'Positivos',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=1 AND sexo='H'), 0), LENGTH('Hombres'), ' ') AS 'Hombres',
+    -> 		LPAD(FORMAT((SELECT COUNT(*) FROM pacientes JOIN resultado USING(clave_resultado) WHERE clave_resultado=1 AND sexo='M'), 0), LENGTH('Mujeres'), ' ') AS 'Mujeres';
+    -> ELSEIF parametro='comor' THEN
+    -> 	SELECT nom_comor AS 'Comorbilidad', LPAD(FORMAT(COUNT(id_paciente), 0), LENGTH('Total de pacientes'), ' ') AS 'Total de pacientes'
+    -> 	FROM paciente_comorbilidad NATURAL JOIN comorbilidades
+    -> 	GROUP BY nom_comor
+    -> 	ORDER BY COUNT(id_paciente) DESC;
+    -> ELSE 
+    -> 	SELECT 'Opción no válida' AS 'Error';
+    -> END IF;
+    -> END $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> call reporteTecnico('gral');
++-------------------------+-------------------+-----------+-----------+-------------+
+| Fecha de actualización  | Casos registrados | Positivos | Negativos | Sospechosos |
++-------------------------+-------------------+-----------+-----------+-------------+
+| 2020-08-17              |         1,181,695 |   525,733 |   577,531 |      78,431 |
++-------------------------+-------------------+-----------+-----------+-------------+
+1 row in set (3.13 sec)
+
+Query OK, 0 rows affected (3.14 sec)
+
+mysql> call reporteTecnico('sexo');
++-------------------------+-----------+---------+---------+
+| Fecha de actualización  | Positivos | Hombres | Mujeres |
++-------------------------+-----------+---------+---------+
+| 2020-08-17              |   525,733 | 277,427 | 248,306 |
++-------------------------+-----------+---------+---------+
+1 row in set (15.15 sec)
+
+Query OK, 0 rows affected (15.15 sec)
+
+mysql> call reporteTecnico('comor');
++------------------------------------------------+--------------------+
+| Comorbilidad                                   | Total de pacientes |
++------------------------------------------------+--------------------+
+| Hipertensión                                   |            192,001 |
+| Obesidad                                       |            187,366 |
+| Diabetes                                       |            146,634 |
+| Tabaquismo                                     |             95,960 |
+| Asma                                           |             34,581 |
+| Otra                                           |             30,293 |
+| Cardiovascular                                 |             23,778 |
+| Renal Crónica                                  |             21,516 |
+| Enfermedad Pulmonar Obstructiva Cronica (EPOC) |             16,461 |
+| Inmunosupresión                                |             15,614 |
++------------------------------------------------+--------------------+
+10 rows in set (1.01 sec)
+
+Query OK, 0 rows affected (1.02 sec)
+
+mysql> call reporteTecnico('otro');
++--------------------+
+| Error              |
++--------------------+
+| Opción no válida   |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 3 |
+   /*> +-------------+
+   /*> */
+mysql> 
+mysql> DROP PROCEDURE IF EXISTS tardanza;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE tardanza()
+    -> BEGIN
+    ->     SELECT
+    ->         p1.id_paciente,
+    ->         p1.sexo,
+    ->         p1.edad,
+    ->         p1.fecha_sintomas,
+    ->         p1.fecha_ingreso,
+    ->         DATEDIFF(p1.fecha_ingreso, p1.fecha_sintomas) AS 'Días transcurridos',
+    ->         u.nom_estado AS 'Entidad de la UM',
+    ->         tp.nom_tipo AS 'Tipo de paciente',
+    ->         cs.descripcion AS 'Fue intubado',
+    ->         cs2.descripcion AS Neumonia,
+    ->         r.descripcion AS Diagnóstico
+    ->     FROM
+    ->         pacientes p1
+    ->         JOIN estados u ON p1.edo_um = u.clave_edo
+    ->         JOIN tipos_paciente tp ON p1.tipo_paciente = tp.clave_tipo
+    ->         JOIN cat_sino cs ON p1.intubado = cs.clave
+    ->         JOIN cat_sino cs2 ON p1.neumonia = cs2.clave
+    ->         JOIN resultado r ON p1.clave_resultado = r.clave_resultado
+    ->     WHERE
+    ->         p1.clave_resultado = 1  -- Paciente positivo
+    ->         AND p1.fecha_sintomas IS NOT NULL
+    ->         AND p1.fecha_ingreso IS NOT NULL
+    ->         AND DATEDIFF(p1.fecha_ingreso, p1.fecha_sintomas) = (
+    ->             SELECT MAX(DATEDIFF(p2.fecha_ingreso, p2.fecha_sintomas))
+    ->             FROM pacientes p2
+    ->             WHERE
+    ->                 p2.clave_resultado = 1
+    ->                 AND p2.fecha_sintomas IS NOT NULL
+    ->                 AND p2.fecha_ingreso IS NOT NULL
+    ->         )
+    ->     UNION ALL
+    ->     SELECT
+    ->         p3.id_paciente,
+    ->         p3.sexo,
+    ->         p3.edad,
+    ->         p3.fecha_sintomas,
+    ->         p3.fecha_ingreso,
+    ->         DATEDIFF(p3.fecha_ingreso, p3.fecha_sintomas) AS 'Días transcurridos',
+    ->         u.nom_estado AS 'Entidad de la UM',
+    ->         tp.nom_tipo AS 'Tipo de paciente',
+    ->         cs.descripcion AS 'Fue intubado',
+    ->         cs2.descripcion AS Neumonia,
+    ->         r.descripcion AS Diagnóstico
+    ->     FROM
+    ->         pacientes p3
+    ->         JOIN estados u ON p3.edo_um = u.clave_edo
+    ->         JOIN tipos_paciente tp ON p3.tipo_paciente = tp.clave_tipo
+    ->         JOIN cat_sino cs ON p3.intubado = cs.clave
+    ->         JOIN cat_sino cs2 ON p3.neumonia = cs2.clave
+    ->         JOIN resultado r ON p3.clave_resultado = r.clave_resultado
+    ->     WHERE
+    ->         p3.clave_resultado = 2  -- Paciente negativo
+    ->         AND p3.fecha_sintomas IS NOT NULL
+    ->         AND p3.fecha_ingreso IS NOT NULL
+    ->         AND DATEDIFF(p3.fecha_ingreso, p3.fecha_sintomas) = (
+    ->             SELECT MAX(DATEDIFF(p4.fecha_ingreso, p4.fecha_sintomas))
+    ->             FROM pacientes p4
+    ->             WHERE
+    ->                 p4.clave_resultado = 2
+    ->                 AND p4.fecha_sintomas IS NOT NULL
+    ->                 AND p4.fecha_ingreso IS NOT NULL
+    ->         )
+    ->     ORDER BY 6 DESC, 1 DESC;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> CALL tardanza();
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+| id_paciente | sexo | edad | fecha_sintomas | fecha_ingreso | Días transcurridos  | Entidad de la UM     | Tipo de paciente | Fue intubado | Neumonia | Diagnóstico            |
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+| 033221      | M    |   34 | 2020-01-01     | 2020-03-30    |                  89 | Coahuila de Zaragoza | Ambulatorio      | No aplica    | No       | No positivo SARS-CoV-2 |
+| 035d18      | H    |   60 | 2020-03-13     | 2020-05-22    |                  70 | Sonora               | Hospitalizado    | No           | Si       | Positivo SARS-CoV-2    |
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+2 rows in set (13.52 sec)
+
+Query OK, 0 rows affected (13.53 sec)
+
+mysql> 
+mysql> 
+mysql> /* 
+   /*> +-------------+
+   /*> | Ejercicio 4 |
+   /*> +-------------+
+   /*> */
+mysql> DROP PROCEDURE IF EXISTS intubados;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter $$
+mysql> CREATE PROCEDURE intubados()
+    -> begin
+    -> select case when fecha_defuncion is NULL then 'Sobreviven' else 'Fallecen' END as 'Intubados',
+    -> lpad(FORMAT(count(id_paciente),0),length('Num. Pacientes'),' ') as 'Num. Pacientes',
+    -> lpad(concat(FORMAT(round((count(*)/(select count(*) 
+    -> from pacientes left join defunciones using(id_paciente) 
+    -> where clave_resultado = 1 and intubado = 1))*100),1),' %'),length('Proporción')-1,' ') as 'Proporción' 
+    -> from pacientes left join defunciones using(id_paciente) where clave_resultado = 1 and intubado = 1 group by 1
+    -> UNION 
+    -> select case when fecha_defuncion is NULL then 'Total' else 'Total' END as 'Intubados',
+    -> lpad(FORMAT(count(id_paciente),0),length('Num. Pacientes'),' ') as 'Num. Pacientes',
+    -> lpad(concat(FORMAT((select sum(Proporción) 
+    -> from (select case when fecha_defuncion is NULL then 'Sobreviven' else 'Fallecen' END as 'Intubados',count(id_paciente) as 'Num. Pacientes',round((count(*)/(select count(*) 
+    -> from pacientes left join defunciones using(id_paciente) 
+    -> where clave_resultado = 1 and intubado = 1))*100) as 'Proporción' from pacientes left join defunciones using(id_paciente) 
+    -> where clave_resultado = 1 and intubado = 1 group by 1) as sum),1),' %'),length('Proporción')-1,' ') as 'Proporción' from pacientes left join defunciones using(id_paciente) 
+    -> where clave_resultado = 1 and intubado = 1 group by 1;
+    -> end;
+    -> $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter ;
+mysql> 
+mysql> call intubados;
++------------+----------------+-------------+
+| Intubados  | Num. Pacientes | Proporción  |
++------------+----------------+-------------+
+| Sobreviven |          3,599 |     27.0 %  |
+| Fallecen   |          9,736 |     73.0 %  |
+| Total      |         13,335 |    100.0 %  |
++------------+----------------+-------------+
+3 rows in set (1.92 sec)
+
+Query OK, 0 rows affected (1.92 sec)
+
+mysql> Terminal close -- exit!

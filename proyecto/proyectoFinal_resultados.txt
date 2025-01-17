@@ -1,0 +1,470 @@
+﻿mysql> source proyectoFinal_equipoN.sql
++-------------+
+|             |
++-------------+
+| Ejercicio 1 |
++-------------+
+1 row in set (0.00 sec)
+
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+| id_paciente | edad | fecha_sintomas | fecha_ingreso | Estado                          | Municipio                               | Prueba COVID           |
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+| 1b4ea0      |   17 | 2020-07-23     | 2020-07-24    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 137bb0      |   24 | 2020-06-06     | 2020-06-07    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 0278bc      |   29 | 2020-06-25     | 2020-06-27    | Veracruz de Ignacio de la Llave | Nanchital De Lázaro Cárdenas Del Río    | Positivo SARS-CoV-2    |
+| 020fc0      |   30 | 2020-06-07     | 2020-06-15    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 1416c5      |   31 | 2020-06-25     | 2020-06-30    | Hidalgo                         | Atotonilco El Grande                    | Positivo SARS-CoV-2    |
+| 0dcaeb      |   33 | 2020-07-10     | 2020-07-17    | Quintana Roo                    | Lázaro Cárdenas                         | Positivo SARS-CoV-2    |
+| 15ec58      |   35 | 2020-05-29     | 2020-05-29    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 135724      |   37 | 2020-07-09     | 2020-07-15    | Quintana Roo                    | Lázaro Cárdenas                         | Positivo SARS-CoV-2    |
+| 120828      |   48 | 2020-07-20     | 2020-07-21    | Tabasco                         | Cárdenas                                | Positivo SARS-CoV-2    |
+| 155dd7      |   18 | 2020-04-02     | 2020-04-06    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 0539f8      |   24 | 2020-04-10     | 2020-04-16    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 1c0997      |   26 | 2020-07-10     | 2020-07-17    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 167d28      |   26 | 2020-03-09     | 2020-03-09    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 169ce5      |   30 | 2020-04-06     | 2020-04-07    | Morelos                         | Emiliano Zapata                         | No positivo SARS-CoV-2 |
+| 041a3e      |   30 | 2020-07-14     | 2020-07-18    | Tabasco                         | Emiliano Zapata                         | No positivo SARS-CoV-2 |
+| 03a9a2      |   32 | 2020-01-23     | 2020-01-23    | Hidalgo                         | Atotonilco De Tula                      | No positivo SARS-CoV-2 |
+| 1893b4      |   34 | 2020-05-12     | 2020-05-18    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 1b4f5c      |   36 | 2020-04-24     | 2020-04-24    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
+| 026cfa      |   39 | 2020-06-27     | 2020-07-09    | Tabasco                         | Cárdenas                                | No positivo SARS-CoV-2 |
++-------------+------+----------------+---------------+---------------------------------+-----------------------------------------+------------------------+
+19 rows in set (6.68 sec)
+
++-------------+
+|             |
++-------------+
+| Ejercicio 2 |
++-------------+
+1 row in set (0.00 sec)
+
++---------------------------------+----------------------+--------------------------+------+
+| Estado de nacimiento            | Estado de residencia | Municipio de residencia  | Edad |
++---------------------------------+----------------------+--------------------------+------+
+| Chiapas                         | Baja California      | Tijuana                  |   24 |
+| Chiapas                         | Puebla               | Tehuacán                 |   41 |
+| Ciudad de México                | México               | Naucalpan De Juárez      |   29 |
+| Ciudad de México                | México               | Ecatepec De Morelos      |   33 |
+| Ciudad de México                | México               | Naucalpan De Juárez      |   39 |
+| Guerrero                        | Michoacán de Ocampo  | Los Reyes                |   20 |
+| Guerrero                        | Michoacán de Ocampo  | Uruapan                  |   31 |
+| Jalisco                         | Baja California      | Tijuana                  |   39 |
+| México                          | Oaxaca               | Santo Domingo Chihuitán  |   31 |
+| México                          | Puebla               | San Pedro Cholula        |   33 |
+| Sinaloa                         | Baja California      | Tijuana                  |   32 |
+| Sinaloa                         | Baja California      | Mexicali                 |   40 |
+| Tabasco                         | Quintana Roo         | Benito Juárez            |   37 |
+| Veracruz de Ignacio de la Llave | Chihuahua            | Juárez                   |   26 |
+| Veracruz de Ignacio de la Llave | Ciudad de México     | Gustavo A. Madero        |   32 |
++---------------------------------+----------------------+--------------------------+------+
+15 rows in set (5.51 sec)
+
++-------------+
+|             |
++-------------+
+| Ejercicio 3 |
++-------------+
+1 row in set (0.00 sec)
+
++---------------------------------+----------------------+
+| Entidad Federativa              | Total de defunciones |
++---------------------------------+----------------------+
+| Aguascalientes                  |                   17 |
+| Baja California                 |                  520 |
+| Baja California Sur             |                   59 |
+| Campeche                        |                  175 |
+| Chiapas                         |                  253 |
+| Chihuahua                       |                  170 |
+| Ciudad de México                |                1,873 |
+| Coahuila de Zaragoza            |                   68 |
+| Colima                          |                   85 |
+| Durango                         |                   58 |
+| Guanajuato                      |                  247 |
+| Guerrero                        |                  547 |
+| Hidalgo                         |                  557 |
+| Jalisco                         |                  363 |
+| México                          |                2,725 |
+| Michoacán de Ocampo             |                  327 |
+| Morelos                         |                  290 |
+| Nayarit                         |                  169 |
+| Nuevo León                      |                  168 |
+| Oaxaca                          |                  430 |
+| Puebla                          |                1,196 |
+| Querétaro                       |                  229 |
+| Quintana Roo                    |                  455 |
+| San Luis Potosí                 |                  304 |
+| Sinaloa                         |                  772 |
+| Sonora                          |                  538 |
+| Tabasco                         |                  868 |
+| Tamaulipas                      |                  392 |
+| Tlaxcala                        |                  224 |
+| Veracruz de Ignacio de la Llave |                1,003 |
+| Yucatán                         |                  138 |
+| Zacatecas                       |                  114 |
++---------------------------------+----------------------+
+32 rows in set (11.43 sec)
+
++-------------+
+|             |
++-------------+
+| Ejercicio 4 |
++-------------+
+1 row in set (0.00 sec)
+
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-----------------+------------------------+
+| id_paciente | edad | Estado de la Unidad Médica  | Nacionalidad                    | Pais de origen                  | Es migrante     | Prueba COVID           |
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-----------------+------------------------+
+| 16df25      |   25 | Baja California             | Cuba                            | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 0f23e8      |   23 | Baja California             | El Salvador                     | El Salvador                     | Si              | Positivo SARS-CoV-2    |
+| 0f77da      |   23 | Baja California             | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 136574      |   32 | Baja California             | Estados Unidos de América       | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 017afe      |   23 | Baja California             | Haití                           | Se Ignora                       | No especificado | Positivo SARS-CoV-2    |
+| 10c500      |   31 | Baja California             | Haití                           | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 01092d      |   25 | Baja California             | República de Honduras           | República de Honduras           | Si              | No positivo SARS-CoV-2 |
+| 001e1a      |   33 | Baja California Sur         | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 10526a      |   37 | Baja California Sur         | Venezuela                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 184217      |   21 | Campeche                    | El Salvador                     | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 18d5ec      |   24 | Campeche                    | República de Honduras           | República de Honduras           | Si              | Positivo SARS-CoV-2    |
+| 0a253b      |   36 | Coahuila de Zaragoza        | El Salvador                     | El Salvador                     | Si              | Positivo SARS-CoV-2    |
+| 15df5a      |   31 | Chiapas                     | Cuba                            | Cuba                            | Si              | Positivo SARS-CoV-2    |
+| 1bf4b5      |   34 | Chiapas                     | Guatemala                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 08e0c4      |   22 | Chiapas                     | Guatemala                       | Guatemala                       | Si              | No positivo SARS-CoV-2 |
+| 07e90c      |   30 | Chiapas                     | Haití                           | Haití                           | Si              | No positivo SARS-CoV-2 |
+| 035579      |   24 | Chiapas                     | República de Honduras           | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 02fadc      |   30 | Chiapas                     | República de Honduras           | República de Honduras           | Si              | Positivo SARS-CoV-2    |
+| 067133      |   27 | Chihuahua                   | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 00db02      |   40 | Chihuahua                   | Taiwán                          | Se Ignora                       | No              | Resultado pendiente    |
+| 16c978      |   38 | Ciudad de México            | Bielorrusia                     | Se Ignora                       | No              | Resultado pendiente    |
+| 10d0c2      |   21 | Ciudad de México            | Bolivia                         | Bolivia                         | Si              | No positivo SARS-CoV-2 |
+| 18df2b      |   40 | Ciudad de México            | Brasil                          | Se Ignora                       | No              | Resultado pendiente    |
+| 1e58ef      |   42 | Ciudad de México            | Brasil                          | Se Ignora                       | No              | Resultado pendiente    |
+| 1a1cd8      |   31 | Ciudad de México            | Camboya                         | Cuba                            | Si              | No positivo SARS-CoV-2 |
+| 167843      |   32 | Ciudad de México            | Chile                           | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 02200a      |   30 | Ciudad de México            | Chile                           | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 122ca8      |   29 | Ciudad de México            | Colombia                        | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0a21d3      |   28 | Ciudad de México            | Colombia                        | Colombia                        | Si              | No positivo SARS-CoV-2 |
+| 072c56      |   39 | Ciudad de México            | Ecuador                         | Se Ignora                       | No              | Resultado pendiente    |
+| 11f122      |   34 | Ciudad de México            | España                          | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 130df3      |   24 | Ciudad de México            | España                          | Se Ignora                       | No              | Resultado pendiente    |
+| 1525a8      |   38 | Ciudad de México            | España                          | Se Ignora                       | No              | Resultado pendiente    |
+| 0d0d9f      |   42 | Ciudad de México            | Estados Unidos de América       | Se Ignora                       | No              | Resultado pendiente    |
+| 090b72      |   38 | Ciudad de México            | Francia                         | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 1ae53e      |   25 | Ciudad de México            | Guatemala                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0ec19d      |   34 | Ciudad de México            | Japón                           | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0270d5      |   28 | Ciudad de México            | Otro                            | Otro                            | Si              | No positivo SARS-CoV-2 |
+| 1789b2      |   42 | Ciudad de México            | Ucrania                         | Se Ignora                       | No              | Resultado pendiente    |
+| 10ff73      |   33 | Ciudad de México            | Venezuela                       | Se Ignora                       | No              | Resultado pendiente    |
+| 0c0399      |   39 | Ciudad de México            | Venezuela                       | Se Ignora                       | No              | Resultado pendiente    |
+| 19d777      |   36 | Ciudad de México            | Venezuela                       | Se Ignora                       | No              | Resultado pendiente    |
+| 0630cc      |   37 | Ciudad de México            | Venezuela                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0b0505      |   34 | Ciudad de México            | Venezuela                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 05c850      |   38 | Ciudad de México            | Venezuela                       | Venezuela                       | Si              | Positivo SARS-CoV-2    |
+| 124e7d      |   33 | Ciudad de México            | Venezuela                       | Venezuela                       | Si              | Positivo SARS-CoV-2    |
+| 1db08b      |   29 | Durango                     | Estados Unidos de América       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 0cf512      |   18 | Guanajuato                  | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 1b692b      |   29 | Guerrero                    | Venezuela                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 079d51      |   26 | Hidalgo                     | Cuba                            | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 083355      |   24 | Jalisco                     | Ecuador                         | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 119afc      |   27 | México                      | Colombia                        | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0ab96f      |   29 | México                      | Letonia                         | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 17462c      |   38 | México                      | Rumania                         | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 1c02b5      |   36 | México                      | Venezuela                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 047618      |   27 | Nayarit                     | Cuba                            | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 1328bc      |   25 | Nuevo León                  | El Salvador                     | El Salvador                     | Si              | No positivo SARS-CoV-2 |
+| 07fc3c      |   19 | Nuevo León                  | El Salvador                     | El Salvador                     | Si              | No positivo SARS-CoV-2 |
+| 10ec16      |   25 | Nuevo León                  | Estados Unidos de América       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 0fca74      |   19 | Nuevo León                  | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0f9dbb      |   26 | Nuevo León                  | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 1685bf      |   29 | Nuevo León                  | Perú                            | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 094eb3      |   21 | Nuevo León                  | República de Honduras           | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 00eefb      |   29 | Nuevo León                  | República de Honduras           | República de Honduras           | Si              | No positivo SARS-CoV-2 |
+| 04568d      |   24 | Nuevo León                  | República de Honduras           | República de Honduras           | Si              | No positivo SARS-CoV-2 |
+| 0fe0bb      |   33 | Puebla                      | Australia                       | Australia                       | Si              | No positivo SARS-CoV-2 |
+| 0a8e87      |   32 | Puebla                      | Eslovaquia                      | Eslovaquia                      | Si              | No positivo SARS-CoV-2 |
+| 11bacf      |   23 | Puebla                      | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 1ca26e      |   26 | Puebla                      | República Oriental del Uruguay  | República Oriental del Uruguay  | Si              | No positivo SARS-CoV-2 |
+| 030823      |   35 | Quintana Roo                | Colombia                        | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 1b02ad      |   30 | Quintana Roo                | Cuba                            | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 137a04      |   28 | Quintana Roo                | Cuba                            | Se Ignora                       | No especificado | No positivo SARS-CoV-2 |
+| 184082      |   30 | Quintana Roo                | Cuba                            | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 1bdc8c      |   31 | Quintana Roo                | Guatemala                       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 0931c3      |   35 | Quintana Roo                | Guatemala                       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 197a07      |   23 | Quintana Roo                | Guatemala                       | Se Ignora                       | No especificado | Resultado pendiente    |
+| 1190c3      |   24 | Quintana Roo                | Venezuela                       | Venezuela                       | Si              | No positivo SARS-CoV-2 |
+| 014226      |   19 | San Luis Potosí             | Estados Unidos de América       | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 14363d      |   20 | San Luis Potosí             | Estados Unidos de América       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 1c866c      |   33 | San Luis Potosí             | Suiza                           | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 16d58a      |   35 | Sonora                      | Estados Unidos de América       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 0d2b98      |   21 | Sonora                      | Estados Unidos de América       | Estados Unidos de América       | Si              | Resultado pendiente    |
+| 0596b6      |   38 | Tamaulipas                  | Cuba                            | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 0b6132      |   28 | Tamaulipas                  | Estados Unidos de América       | Se Ignora                       | No              | Positivo SARS-CoV-2    |
+| 1aafe8      |   37 | Tamaulipas                  | Ghana                           | Ghana                           | Si              | Positivo SARS-CoV-2    |
+| 1abfb9      |   20 | Tamaulipas                  | República de Honduras           | República de Honduras           | Si              | No positivo SARS-CoV-2 |
+| 0e9358      |   33 | Tlaxcala                    | El Salvador                     | Se Ignora                       | No              | No positivo SARS-CoV-2 |
+| 01e42f      |   23 | Tlaxcala                    | República de Honduras           | Se Ignora                       | No              | Positivo SARS-CoV-2    |
++-------------+------+-----------------------------+---------------------------------+---------------------------------+-----------------+------------------------+
+88 rows in set (6.50 sec)
+
++-------------+
+|             |
++-------------+
+| Ejercicio 5 |
++-------------+
+1 row in set (0.00 sec)
+
++--------------+--------+---------+
+| clave_sector | Sector | Total   |
++--------------+--------+---------+
+|           12 | SSA    | 288,777 |
++--------------+--------+---------+
+1 row in set (9.05 sec)
+
++-------------+
+|             |
++-------------+
+| Ejercicio 6 |
++-------------+
+1 row in set (0.00 sec)
+
++----------------------------------------------------------------+
+| Opción 1                                                       |
++----------------------------------------------------------------+
+| Usar la función min(),  NO LIMIT, solo con la tabla mexicanos  |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++---------+------------------+---------------------+
+| Estado  | Población total  | Total de infectados |
++---------+------------------+---------------------+
+| Jalisco |       7,350,682  |              16,538 |
++---------+------------------+---------------------+
+1 row in set (25.89 sec)
+
++-------------------------------------------------------------------------+
+| Opción 2                                                                |
++-------------------------------------------------------------------------+
+| Se permite usar LIMIT, si se usan las 2 tablas: mexicanos y extranjeros |
++-------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++---------+------------------+---------------------+
+| Estado  | Población total  | Total de infectados |
++---------+------------------+---------------------+
+| Jalisco |       7,350,682  |              16,593 |
++---------+------------------+---------------------+
+1 row in set (17.53 sec)
+
+Query OK, 0 rows affected (0.45 sec)
+
+Query OK, 0 rows affected (0.23 sec)
+
++---------------------------------+
+| Llamadas a procedimiento 1      |
++---------------------------------+
+| call defExtranjeros('repu','*') |
++---------------------------------+
+1 row in set (0.00 sec)
+
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad      | pais_origen            | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba covid           |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 012d3f      | H    |   38 | República de Honduras  | República de Honduras  | 2020-05-21     | 2020-05-26    | 2020-06-01      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 027071      | H    |   42 | República Dominicana   | Se Ignora              | 2020-06-11     | 2020-06-25    | 2020-06-25      | No            | No             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0c821b      | H    |   64 | República de Honduras  | República de Honduras  | 2020-06-10     | 2020-06-15    | 2020-06-22      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 0202fb      | H    |   68 | República de Corea     | Se Ignora              | 2020-07-13     | 2020-07-20    | 2020-08-04      | Si            | Si             | Hospitalizado    | Resultado pendiente    |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+4 rows in set (7.08 sec)
+
+Query OK, 0 rows affected (7.14 sec)
+
++---------------------------------+
+| Llamadas a procedimiento 1      |
++---------------------------------+
+| call defExtranjeros('repu','=') |
++---------------------------------+
+1 row in set (0.00 sec)
+
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad      | pais_origen            | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba covid           |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 012d3f      | H    |   38 | República de Honduras  | República de Honduras  | 2020-05-21     | 2020-05-26    | 2020-06-01      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0c821b      | H    |   64 | República de Honduras  | República de Honduras  | 2020-06-10     | 2020-06-15    | 2020-06-22      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
++-------------+------+------+------------------------+------------------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+2 rows in set (6.51 sec)
+
+Query OK, 0 rows affected (6.54 sec)
+
++---------------------------------+
+| Llamadas a procedimiento 1      |
++---------------------------------+
+| call defExtranjeros('repu','!') |
++---------------------------------+
+1 row in set (0.00 sec)
+
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad     | pais_origen | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba covid           |
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 027071      | H    |   42 | República Dominicana  | Se Ignora   | 2020-06-11     | 2020-06-25    | 2020-06-25      | No            | No             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 0202fb      | H    |   68 | República de Corea    | Se Ignora   | 2020-07-13     | 2020-07-20    | 2020-08-04      | Si            | Si             | Hospitalizado    | Resultado pendiente    |
++-------------+------+------+-----------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+2 rows in set (6.95 sec)
+
+Query OK, 0 rows affected (6.98 sec)
+
++---------------------------------+
+| Llamadas a procedimiento 1      |
++---------------------------------+
+| call defExtranjeros('repu','x') |
++---------------------------------+
+1 row in set (0.00 sec)
+
++--------------------+
+| Error              |
++--------------------+
+| Opción no válida   |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
++---------------------------------+
+| Llamadas a procedimiento 1      |
++---------------------------------+
+| call defExtranjeros('cuba','*') |
++---------------------------------+
+1 row in set (0.00 sec)
+
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| id_paciente | sexo | edad | pais_nacionalidad | pais_origen | fecha_sintomas | fecha_ingreso | fecha_defuncion | Fue intubado? | Tuvo neumonia? | Tipo de paciente | Prueba covid           |
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+| 185887      | H    |   39 | Cuba              | Se Ignora   | 2020-06-22     | 2020-06-25    | 2020-06-26      | No            | Si             | Hospitalizado    | No positivo SARS-CoV-2 |
+| 13629d      | H    |   57 | Cuba              | Se Ignora   | 2020-05-05     | 2020-05-12    | 2020-05-14      | No            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 18058e      | M    |   28 | Cuba              | Se Ignora   | 2020-07-19     | 2020-07-23    | 2020-08-04      | No aplica     | No             | Ambulatorio      | Resultado pendiente    |
+| 13699a      | M    |   49 | Cuba              | Se Ignora   | 2020-07-28     | 2020-07-31    | 2020-08-12      | No            | No             | Hospitalizado    | Positivo SARS-CoV-2    |
+| 0d534a      | M    |   78 | Cuba              | Cuba        | 2020-03-18     | 2020-04-01    | 2020-04-01      | Si            | Si             | Hospitalizado    | Positivo SARS-CoV-2    |
++-------------+------+------+-------------------+-------------+----------------+---------------+-----------------+---------------+----------------+------------------+------------------------+
+5 rows in set (6.61 sec)
+
+Query OK, 0 rows affected (6.67 sec)
+
+Query OK, 0 rows affected (0.37 sec)
+
+Query OK, 0 rows affected (0.18 sec)
+
++-----------------------------+
+| Llamadas a procedimiento 2  |
++-----------------------------+
+| call reporteTecnico('gral') |
++-----------------------------+
+1 row in set (0.00 sec)
+
++-------------------------+-------------------+-----------+-----------+-------------+
+| Fecha de actualización  | Casos registrados | Positivos | Negativos | Sospechosos |
++-------------------------+-------------------+-----------+-----------+-------------+
+| 2020-08-17              |         1,181,695 |   525,733 |   577,531 |      78,431 |
++-------------------------+-------------------+-----------+-----------+-------------+
+1 row in set (11.32 sec)
+
+Query OK, 0 rows affected (11.32 sec)
+
++-----------------------------+
+| Llamadas a procedimiento 2  |
++-----------------------------+
+| call reporteTecnico('sexo') |
++-----------------------------+
+1 row in set (0.00 sec)
+
++-------------------------+-----------+---------+---------+
+| Fecha de actualización  | Positivos | Hombres | Mujeres |
++-------------------------+-----------+---------+---------+
+| 2020-08-17              |   525,733 | 277,427 | 248,306 |
++-------------------------+-----------+---------+---------+
+1 row in set (13.40 sec)
+
+Query OK, 0 rows affected (13.40 sec)
+
++------------------------------+
+| Llamadas a procedimiento 2   |
++------------------------------+
+| call reporteTecnico('comor') |
++------------------------------+
+1 row in set (0.00 sec)
+
++------------------------------------------------+--------------------+
+| Comorbilidad                                   | Total de pacientes |
++------------------------------------------------+--------------------+
+| Hipertensión                                   |            192,001 |
+| Obesidad                                       |            187,366 |
+| Diabetes                                       |            146,634 |
+| Tabaquismo                                     |             95,960 |
+| Asma                                           |             34,581 |
+| Otra                                           |             30,293 |
+| Cardiovascular                                 |             23,778 |
+| Renal Crónica                                  |             21,516 |
+| Enfermedad Pulmonar Obstructiva Cronica (EPOC) |             16,461 |
+| Inmunosupresión                                |             15,614 |
++------------------------------------------------+--------------------+
+10 rows in set (2.10 sec)
+
+Query OK, 0 rows affected (2.13 sec)
+
++-----------------------------+
+| Llamadas a procedimiento 2  |
++-----------------------------+
+| call reporteTecnico('otro') |
++-----------------------------+
+1 row in set (0.00 sec)
+
++--------------------+
+| Error              |
++--------------------+
+| Opción no válida   |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.19 sec)
+
+Query OK, 0 rows affected (0.16 sec)
+
++---------------------------+
+| Llamada a procedimiento 3 |
++---------------------------+
+| call tardanza()           |
++---------------------------+
+1 row in set (0.00 sec)
+
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+| id_paciente | sexo | edad | fecha_sintomas | fecha_ingreso | Días transcurridos  | Entidad de la UM     | Tipo de paciente | Fue intubado | Neumonia | Diagnóstico            |
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+| 035d18      | H    |   60 | 2020-03-13     | 2020-05-22    |                  70 | Sonora               | Hospitalizado    | No           | Si       | Positivo SARS-CoV-2    |
+| 033221      | M    |   34 | 2020-01-01     | 2020-03-30    |                  89 | Coahuila de Zaragoza | Ambulatorio      | No aplica    | No       | No Positivo SARS-CoV-2 |
++-------------+------+------+----------------+---------------+---------------------+----------------------+------------------+--------------+----------+------------------------+
+2 rows in set (13.64 sec)
+
+Query OK, 0 rows affected (13.66 sec)
+
+Query OK, 0 rows affected (0.21 sec)
+
+Query OK, 0 rows affected (0.16 sec)
+
++---------------------------+
+| Llamada a procedimiento 4 |
++---------------------------+
+| call intubados()          |
++---------------------------+
+1 row in set (0.00 sec)
+
++------------+----------------+-------------+
+| Intubados  | Num. Pacientes | Proporción  |
++------------+----------------+-------------+
+| Sobreviven |          3,599 |     27.0 %  |
+| Fallecen   |          9,736 |     73.0 %  |
+| Total      |         13,335 |    100.0 %  |
++------------+----------------+-------------+
+3 rows in set (21.47 sec)
+
+Query OK, 0 rows affected (21.48 sec)
+
+mysql> notee
